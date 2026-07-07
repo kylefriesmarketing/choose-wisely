@@ -291,11 +291,12 @@ view flags, trigger any ending.
   *Endings* → *"There Is No Ending."* Deeply haunted players can also stumble on a
   **false-victory** ending at the party that looks like a perfect reunion and is
   quietly, horribly wrong (her eyes are buttons).
-- **44 endings** across Good / Bad / Funny / Cursed / Secret / True / **Nightmare**,
-  including the hidden **Fifth Aisle**, the **Cellar Below** (see The Descent),
-  the **Unmaking Room** where the shop does its work, *The Regular* (see The Shop
-  Remembers), the **true-ending questline** (below), and **The Empty Shelves** —
-  the capstone for freeing every child (see below).
+- **50 endings** across Good / Bad / Funny / Cursed / Secret / True / **Nightmare**,
+  including the hidden **Fifth Aisle**, the **Cellar Below** (see The Descent), the
+  **Unmaking Room** where the shop does its work and the **Larder** beneath it —
+  the shop's living insides, where it keeps the warm *middle* of every child it
+  ever took — *The Regular* (see The Shop Remembers), the **true-ending questline**
+  (below), and **The Empty Shelves** — the capstone for freeing every child.
 
 **The true-ending questline:** across many runs you gather **the Truth** — five
 persistent facts about the shop and about June (it trades children; it winds you
