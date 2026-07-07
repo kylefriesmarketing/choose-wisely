@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c0910" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Choose Wisely — a branching storybook. One shop. Four gifts. Hundreds of endings." />
+  <title>Choose Wisely — One shop. Four gifts. Hundreds of endings.</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Living scene background: theme gradient sky + animated SVG scene art. -->
+  <div id="scene" class="scene theme-shop">
+    <div id="scene-image" class="scene-image"></div>
+    <div id="scene-art" class="scene-art"></div>
+    <div id="faces" class="faces"></div>
+    <div class="particles"></div>
+    <div class="vignette"></div>
+    <div id="dread-overlay" class="dread-overlay"></div>
+  </div>
+
+  <!-- Character layer: animated cast above the scene, behind the dialogue plate -->
+  <div id="characters" class="characters"></div>
+
+  <!-- Location caption (top-left, in-game) -->
+  <div id="scene-caption" class="scene-caption"></div>
+
+  <!-- MAIN MENU -->
+  <div id="main-menu" class="overlay main-menu open">
+    <div class="menu-card">
+      <div class="menu-kicker">A playable book</div>
+      <h1 class="menu-title">CHOOSE WISELY</h1>
+      <div class="menu-tag">One shop. Four gifts. Hundreds of endings.</div>
+      <div id="menu-haunt" class="menu-haunt"></div>
+      <div class="menu-buttons">
+        <button id="menu-new" class="primary-btn">New Run</button>
+        <button id="menu-continue" class="ghost-btn disabled" disabled>Continue</button>
+        <button id="menu-endings" class="ghost-btn">Endings</button>
+        <button id="menu-settings" class="ghost-btn">Settings</button>
+        <button id="menu-about" class="ghost-btn">About</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATMOSPHERIC INTRO (plays before the first run) -->
+  <div id="intro" class="intro-screen">
+    <div id="intro-line" class="intro-line"></div>
+    <div class="intro-skip">tap to skip</div>
+  </div>
+
+  <!-- IN-GAME TOP BAR -->
+  <header id="topbar">
+    <div id="hud-stats" class="hud-stats"></div>
+    <div id="hud-bracelet" class="hud-bracelet" title="Your friendship bracelet"></div>
+    <div class="hud-right">
+      <span id="hud-endings" class="hud-endings">0 / 0 endings</span>
+      <button id="btn-menu" class="icon-btn" title="Main menu">☰</button>
+      <button id="btn-endings" class="icon-btn" title="Ending tracker">📖</button>
+      <button id="btn-history" class="icon-btn" title="Choice history">🕘</button>
+      <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
+      <button id="btn-mute" class="icon-btn" title="Mute">🔊</button>
+      <button id="btn-debug" class="icon-btn" title="Developer tools (~)">🛠</button>
+    </div>
+  </header>
+
+  <div id="popups" class="popups"></div>
+
+  <!-- STORY VIEW -->
+  <main id="stage">
+    <section id="story-panel" class="story-panel">
+      <div id="node-title" class="node-title"></div>
+      <div id="speaker" class="speaker"></div>
+      <p id="story-text" class="story-text"></p>
+      <div id="subtle" class="subtle"></div>
+      <div id="trace" class="trace" aria-live="polite"></div>
+      <div id="shopkeeper-aside" class="sk-aside" aria-live="polite"></div>
+      <div id="choices" class="choices"></div>
+      <div id="inventory" class="inventory"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- ENDING SCREEN -->
+  <div id="ending-screen" class="overlay ending-screen">
+    <div class="ending-card cat-good">
+      <div id="ending-number" class="ending-number"></div>
+      <div id="ending-new" class="ending-new"></div>
+      <h1 id="ending-name" class="ending-name"></h1>
+      <div id="ending-cat" class="ending-cat-chip"></div>
+      <div id="ending-art" class="ending-art"></div>
+      <p id="ending-text" class="ending-text"></p>
+      <div id="ending-stats" class="ending-stats"></div>
+      <div id="ending-choices" class="ending-choices"></div>
+      <div id="ending-unlocks"></div>
+      <div id="ending-progress" class="ending-progress"></div>
+      <div id="ending-hint" class="ending-hint"></div>
+      <div class="ending-actions">
+        <button id="btn-replay" class="primary-btn">↻ Play Again</button>
+        <button id="btn-ending-hint" class="ghost-btn">💡 Hint</button>
+        <button id="btn-ending-tracker" class="ghost-btn">📖 Endings</button>
+        <button id="btn-ending-menu" class="ghost-btn">☰ Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENDING TRACKER + MEMORY -->
+  <div id="tracker-screen" class="overlay sheet-screen">
+    <div class="sheet">
+      <div class="sheet-head"><h2>Ending Tracker</h2><button id="tracker-close" class="icon-btn">✕</button></div>
+      <div id="tracker-body" class="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="settings-screen" class="overlay sheet-screen">
+    <div class="sheet">
+      <div class="sheet-head"><h2>Settings</h2><button id="settings-close" class="icon-btn">✕</button></div>
+      <div id="settings-body" class="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="history-screen" class="overlay sheet-screen">
+    <div class="sheet">
+      <div class="sheet-head"><h2>Choice History</h2><button id="history-close" class="icon-btn">✕</button></div>
+      <div id="history-body" class="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- ABOUT / CREDITS -->
+  <div id="about-screen" class="overlay sheet-screen">
+    <div class="sheet">
+      <div class="sheet-head"><h2>About</h2><button id="about-close" class="icon-btn">✕</button></div>
+      <div id="about-body" class="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- ENDING DETAIL (gallery) -->
+  <div id="ending-detail" class="overlay ending-detail-screen">
+    <div class="detail-card">
+      <button id="detail-close" class="icon-btn detail-close">✕</button>
+      <div id="detail-art" class="detail-art"></div>
+      <div id="detail-num" class="ending-number"></div>
+      <h2 id="detail-name" class="ending-name"></h2>
+      <div id="detail-cat" class="ending-cat-chip"></div>
+      <p id="detail-text" class="ending-text"></p>
+      <div id="detail-clue" class="detail-clue"></div>
+    </div>
+  </div>
+
+  <!-- DEVELOPER TOOLS -->
+  <aside id="debug-panel" class="debug-panel"></aside>
+
+  <!-- Load order: data -> engine -> view -> boot -->
+  <script src="js/storyData.js"></script>
+  <script src="js/gameState.js"></script>
+  <script src="js/requirements.js"></script>
+  <script src="js/applyChoice.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/characters.js"></script>
+  <script src="js/shopkeeper.js"></script>
+  <script src="js/traces.js"></script>
+  <script src="js/dread.js"></script>
+  <script src="js/sceneManager.js"></script>
+  <script src="js/uiController.js"></script>
+  <script src="js/storyEngine.js"></script>
+  <script src="js/debug.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
