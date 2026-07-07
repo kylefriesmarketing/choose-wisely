@@ -13,6 +13,7 @@ CW.SceneManager = (function () {
   // Per-node scene overrides where the illustration differs from the theme default.
   const OVERRIDE = {
     S02_FOUR_GIFTS: "gifts", S04_CHOOSE_GIFT: "gifts", F01_FIFTH_AISLE: "fifth",
+    S03_SHOPKEEPER_WARNING: "shopkeeper", // the shopkeeper reveal — he looms as he speaks the rule
     T02: "alley", T03: "street", C02: "street",
     B02: "sky", B03: "sky", B04: "sky",
     P02_BIRTHDAY_ROOM: "party_room",
@@ -40,6 +41,7 @@ CW.SceneManager = (function () {
   const SCENE_IMAGES = {
     street: 1, shop: 1, gifts: 1, teddy: 1, alley: 1, candle: 1,
     balloon: 1, sky: 1, dragon: 1, party_gate: 1, party_room: 1, fifth: 1,
+    shopkeeper: 1,
   };
 
   let sceneEl = null, artEl = null, imageEl = null, currentTheme = null, currentScene = null;

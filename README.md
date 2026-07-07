@@ -30,12 +30,14 @@ engine because the data model is plain and portable.
 
 **Illustrated scenes:** the game uses a visual-novel layout — a full illustrated
 scene sits behind a bottom dialogue plate, with animated dust, the dread overlay,
-and the character cast layered on top. Twelve painterly storybook illustrations
-(the rainy shop street, the shop interior, the four gifts, the breathing alley,
-floating over rooftops, the candle, the dragon workshop, the party gate, the
-birthday room, the secret aisle) live in `assets/images/<scene>.png`. Each node
-maps to a scene via `sceneManager.js` (by `theme`, with per-node overrides); if a
-scene has no illustration it **falls back to the animated SVG art** in
+and the character cast layered on top. Twelve **stop-motion / Laika "Coraline"
+style** scene illustrations (the rainy shop street, the shop interior full of
+stitched button-eyed toys, the four gifts under glass, the breathing alley, the
+balloon sky, the candle, the dragon foundry, the party gate, the birthday room,
+the secret aisle) plus a **shopkeeper reveal** live in `assets/images/<scene>.png`,
+matching the character art. Each node maps to a scene via `sceneManager.js` (by
+`theme`, with per-node overrides — e.g. the shopkeeper looms in on his warning);
+if a scene has no illustration it **falls back to the animated SVG art** in
 `scenes.js`, so the game degrades gracefully. Illustrations also desaturate and
 bleed red under dread, same as the vector art.
 

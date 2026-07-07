@@ -288,7 +288,8 @@ CW.Cast = (function () {
     const speaker = node.speaker;
     const cast = [{ id: "boy", speaking: false }];
 
-    if (speaker === "Shopkeeper" || SHOP_NODES.indexOf(node.id) > -1) {
+    // (At S03 the painted shopkeeper-reveal background IS him — don't double him up.)
+    if ((speaker === "Shopkeeper" || SHOP_NODES.indexOf(node.id) > -1) && node.id !== "S03_SHOPKEEPER_WARNING") {
       cast.push({ id: "shopkeeper", speaking: speaker === "Shopkeeper" });
     }
     const gift = run && run.chosenGift;
