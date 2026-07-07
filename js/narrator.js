@@ -1,22 +1,24 @@
 /* ============================================================================
  * narrator.js  -  voiced narration. Off by default; a Settings toggle turns it
- * on. It plays a REAL recorded voice on the game's signature moments (keyed by
- * node/ending id in CW.VoiceClips -> assets/voice/<file>). Everything else stays
- * silent on purpose: a machine reading the text aloud killed the atmosphere, so
- * there is no browser text-to-speech fallback — only the real voice, where we
- * have it. More moments get a voice over time.
+ * on. It plays a REAL recorded voice (Sterling, one signature reader) over the
+ * game's key moments. Everything else stays silent on purpose: a machine reading
+ * the text aloud killed the atmosphere, so there is no browser text-to-speech
+ * fallback — only the real voice.
+ *
+ * Coverage:
+ *   - EVERY ending is voiced. An ending id (e.g. END_FED) resolves to
+ *     assets/voice/END_<ID>.mp3 automatically — no per-ending bookkeeping.
+ *   - A handful of signature NODES get their own clip via CW.VoiceClips below.
  *
  * Voice clips respect the master mute (the 🔊 button / CW.Audio).
  * ========================================================================== */
 window.CW = window.CW || {};
 
-/* Signature lines with a real recorded voice, keyed by node/ending id (files in
- * assets/voice/). Unlisted moments are simply not spoken. */
+/* Signature NODE lines with a real recorded voice (files in assets/voice/).
+ * Endings are handled separately (see clipSrc) and do NOT belong here. */
 CW.VoiceClips = {
-  S03_SHOPKEEPER_WARNING: "s03_warning.wav",       // the shopkeeper's rule
-  UNMAKING_ROOM:          "unmaking_room.wav",      // the warm room where the work is done
-  END_NEW_STOCK:          "end_new_stock.wav",      // becoming stock
-  END_EMPTY_SHELVES:      "end_empty_shelves.wav",  // the capstone
+  S03_SHOPKEEPER_WARNING: "s03_warning.wav",   // the shopkeeper's rule
+  UNMAKING_ROOM:          "unmaking_room.wav",  // the warm room where the work is done
 };
 
 CW.Narrator = (function () {
@@ -26,7 +28,12 @@ CW.Narrator = (function () {
   function enabled() { return !!GS().getSettings().narration; }
   function muted() { return !!(CW.Audio && CW.Audio.isMuted && CW.Audio.isMuted()); }
   function clipSrc(key) {
-    return (key && CW.VoiceClips && CW.VoiceClips[key]) ? "assets/voice/" + CW.VoiceClips[key] : null;
+    if (!key) return null;
+    // Signature node clips (mapped explicitly).
+    if (CW.VoiceClips && CW.VoiceClips[key]) return "assets/voice/" + CW.VoiceClips[key];
+    // Every ending is voiced: assets/voice/END_<ID>.mp3.
+    if (CW.Endings && CW.Endings[key]) return "assets/voice/" + key + ".mp3";
+    return null;
   }
   function isVoiced(key) { return !!clipSrc(key); }
 
