@@ -44,12 +44,15 @@ CW.SceneManager = (function () {
     shopkeeper: 1,
   };
 
-  // Living video backgrounds (assets/video/<key>.mp4). A scene listed here plays
-  // a looping muted clip over its still (the still is the poster/fallback). Falls
-  // back to the still under reduce-motion or if the clip can't play. The
-  // menu/title uses the "__cover__" entry. More scenes get video over time.
+  // Living video backgrounds. Each entry: { src, loop }. The clip plays muted
+  // over the scene's still (which is the poster/fallback). Falls back to the
+  // still under reduce-motion or if the clip can't play. loop:false holds the
+  // final frame (used for one-time entrances); loop:true is a seamless ambient
+  // loop. The menu/title uses "__cover__". More scenes get video over time.
   const SCENE_VIDEOS = {
-    __cover__: "assets/video/cover_hero.mp4",
+    // The title opens with a one-time entrance: the child walks up out of the
+    // rain and steps inside; it holds on the glowing, now-empty storefront.
+    __cover__: { src: "assets/video/cover_entrance.mp4", loop: false },
   };
 
   let sceneEl = null, artEl = null, imageEl = null, videoEl = null, currentTheme = null, currentScene = null;
@@ -79,12 +82,16 @@ CW.SceneManager = (function () {
     });
   }
 
-  // Play a looping clip over the still. Returns true if a clip is being shown.
-  function showVideo(src) {
+  // Play a clip (cfg = { src, loop }) over the still. Returns true if shown.
+  function showVideo(cfg) {
+    const src = cfg && cfg.src, loop = !!(cfg && cfg.loop);
     if (!videoEl || !src || !motionOK()) { hideVideo(); return false; }
+    videoEl.loop = loop;
     if (videoEl.getAttribute("data-src") !== src) {
       videoEl.setAttribute("data-src", src);
       videoEl.src = src;
+    } else if (!loop) {
+      try { videoEl.currentTime = 0; } catch (e) {} // replay the entrance from the top
     }
     const p = videoEl.play();
     if (p && p.catch) p.catch(function () {}); // autoplay blocked -> still shows through
@@ -118,14 +125,14 @@ CW.SceneManager = (function () {
   function renderArt(key) {
     if (key === currentScene) return;
     currentScene = key;
-    const vsrc = SCENE_VIDEOS[key];
+    const vcfg = SCENE_VIDEOS[key];
     // Prefer a real illustration when one exists; otherwise use the SVG art.
     if (SCENE_IMAGES[key] && imageEl) {
       imageEl.style.backgroundImage = 'url("assets/images/' + key + '.png")';
       imageEl.classList.add("shown");
       if (sceneEl) sceneEl.classList.add("has-image");
       if (artEl) artEl.innerHTML = "";
-      if (vsrc) showVideo(vsrc); else hideVideo();
+      if (vcfg) showVideo(vcfg); else hideVideo();
       return;
     }
     hideVideo();

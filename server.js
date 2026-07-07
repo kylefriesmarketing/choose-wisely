@@ -18,6 +18,9 @@ const TYPES = {
   ".ico": "image/x-icon",
   ".wav": "audio/wav",
   ".mp3": "audio/mpeg",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".webmanifest": "application/manifest+json",
 };
 
 const server = http.createServer((req, res) => {
