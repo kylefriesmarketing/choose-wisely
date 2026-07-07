@@ -41,8 +41,9 @@ if a scene has no illustration it **falls back to the animated SVG art** in
 `scenes.js`, so the game degrades gracefully. Illustrations also desaturate and
 bleed red under dread, same as the vector art.
 
-**Every ending is illustrated too.** All 37 endings have their own painterly card
-art in `assets/endings/<END_ID>.png`, shown on the ending screen and as thumbnails
+**Every ending is illustrated too.** All 50 endings have their own **Coraline
+stop-motion** card art in `assets/endings/<END_ID>.png`, shown on the ending
+screen and as thumbnails
 in the ending tracker — which is now an illustrated **gallery**: discovered endings
 reveal their art, undiscovered ones stay silhouetted. Any ending without art falls
 back to its `imagePrompt` text (`ENDING_IMG` manifest in `uiController.js`).

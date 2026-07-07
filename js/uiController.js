@@ -21,17 +21,9 @@ CW.UIController = (function () {
   const STAT_ICONS = { wisdom: "🧠", intelligence: "📘", perception: "👁", strength: "💪" };
   const STAT_NAMES = { wisdom: "Wisdom", intelligence: "Intelligence", perception: "Perception", strength: "Strength" };
 
-  // Endings with an illustrated card in assets/endings/<ID>.png. Endings not
-  // listed here fall back to showing their imagePrompt as text.
-  const ENDING_IMG = {
-    END_T_GOOD: 1, END_T_BAD: 1, END_T_FUNNY: 1, END_T_LITTLE_KEEPER: 1, END_T_HOLLOW_GIFT: 1, END_T_REUNITED: 1,
-    END_C_GOOD: 1, END_C_CURSED: 1, END_C_SECRET: 1, END_C_WAXWORK: 1, END_C_MELTED_FREE: 1, END_C_SNUFFED: 1,
-    END_B_GOOD: 1, END_B_BAD: 1, END_B_FUNNY: 1, END_B_FREED_SKY: 1, END_B_ANCHORED: 1, END_B_QUIET_RETURN: 1,
-    END_D_GOOD: 1, END_D_BAD: 1, END_D_SECRET: 1, END_D_FOUNDRY_HALT: 1, END_D_TOYMAKER: 1, END_D_BIGGER: 1,
-    END_DISPLAY_PRISONER: 1, END_FIFTH_GIFT: 1, END_TRUE: 1, END_THE_REGULAR: 1, END_JUST_CAME: 1, END_COLD_FEET: 1,
-    END_LAST_THREAD: 1, END_WHOLE_AGAIN: 1, END_NO_ESCAPE: 1, END_TAKEN: 1, END_SHATTERED: 1, END_FORTY_FIRST: 1, END_WOUND_BACK: 1,
-  };
-  function endingImgPath(id) { return ENDING_IMG[id] ? "assets/endings/" + id + ".png" : null; }
+  // Every ending has an illustrated card in assets/endings/<ID>.png (all in the
+  // same Coraline stop-motion style). New endings should ship with their card.
+  function endingImgPath(id) { return CW.Endings[id] ? "assets/endings/" + id + ".png" : null; }
 
   function $(id) { return document.getElementById(id); }
 
