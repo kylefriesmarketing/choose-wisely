@@ -29,17 +29,28 @@
   <!-- MAIN MENU -->
   <div id="main-menu" class="overlay main-menu open">
     <div class="menu-card">
-      <div class="menu-kicker">A playable book</div>
+      <div class="menu-kicker"><span>A playable book</span></div>
       <h1 class="menu-title">CHOOSE WISELY</h1>
+      <div class="menu-rule" aria-hidden="true">
+        <svg viewBox="0 0 240 12" width="220" height="11" fill="none">
+          <path d="M6 6H98M142 6H234" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M120 1.5l6.5 4.5-6.5 4.5-6.5-4.5z" fill="currentColor"/>
+          <circle cx="104" cy="6" r="1.5" fill="currentColor"/>
+          <circle cx="136" cy="6" r="1.5" fill="currentColor"/>
+        </svg>
+      </div>
       <div class="menu-tag">One shop. Four gifts. Hundreds of endings.</div>
       <div id="menu-haunt" class="menu-haunt"></div>
-      <div class="menu-buttons">
-        <button id="menu-new" class="primary-btn">New Run</button>
-        <button id="menu-continue" class="ghost-btn disabled" disabled>Continue</button>
-        <button id="menu-endings" class="ghost-btn">Endings</button>
-        <button id="menu-settings" class="ghost-btn">Settings</button>
-        <button id="menu-about" class="ghost-btn">About</button>
+      <div class="menu-actions">
+        <button id="menu-new" class="primary-btn menu-cta">Begin</button>
+        <button id="menu-continue" class="ghost-btn menu-cta disabled" disabled>Continue</button>
       </div>
+      <div class="menu-more">
+        <button id="menu-endings" class="chip-btn" data-icon="📖">Endings</button>
+        <button id="menu-settings" class="chip-btn" data-icon="⚙">Settings</button>
+        <button id="menu-about" class="chip-btn" data-icon="♥">About</button>
+      </div>
+      <div id="menu-progress" class="menu-progress" aria-live="polite"></div>
     </div>
   </div>
 

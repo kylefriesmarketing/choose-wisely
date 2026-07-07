@@ -64,7 +64,7 @@ CW.UIController = (function () {
   const HAUNT_TAGLINES = ["", "It remembers you.", "You keep coming back.", "You always come back.", "There was never an empty lot. Only the shop, and you, again."];
   // The menu lies more the deeper it remembers you (indexed by haunt 0..4).
   const MENU_DECAY = {
-    "menu-new":      ["New Run", "New Run", "New Run", "Again.", "Come In Out of the Rain."],
+    "menu-new":      ["Begin", "Begin", "Begin Again", "Again.", "Come In Out of the Rain."],
     "menu-continue": ["Continue", "Continue", "Continue", "You Never Left", "You Never Left"],
     "menu-endings":  ["Endings", "Endings", "Endings", "There Is No Ending", "There Is No Ending"],
     "menu-about":    ["About", "About", "About", "About You", "About You"],
@@ -87,7 +87,20 @@ CW.UIController = (function () {
     const cont = $("menu-continue");
     if (GS().hasSavedRun()) { cont.classList.remove("disabled"); cont.disabled = false; }
     else { cont.classList.add("disabled"); cont.disabled = true; }
+    renderMenuProgress();
     startMenuGlitch();
+  }
+  // A quiet line of progress for returning players (endings collected, truths known).
+  function renderMenuProgress() {
+    const prog = $("menu-progress");
+    if (!prog) return;
+    const found = GS().foundCount(), total = GS().totalEndings();
+    if (found <= 0) { prog.innerHTML = ""; prog.classList.remove("show"); return; }
+    const known = GS().knowledgeCount(), truths = GS().truthsTotal();
+    let html = '<span class="mp-stat"><b>' + found + '</b> / ' + total + ' endings</span>';
+    if (known > 0) html += '<span class="mp-dot">&bull;</span><span class="mp-stat"><b>' + known + '</b> / ' + truths + ' truths</span>';
+    prog.innerHTML = html;
+    prog.classList.add("show");
   }
   function hideMenu() {
     el.menu.classList.remove("open");
