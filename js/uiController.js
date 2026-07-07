@@ -12,6 +12,7 @@ CW.UIController = (function () {
   let currentNode = null;
   let typeTimer = null;
   let rotTimer = null;
+  let menuGreeted = false;
   let trackerFilter = "all";
   let introTimer = null;
   let menuGlitchTimer = null;
@@ -77,7 +78,7 @@ CW.UIController = (function () {
     el.stage.classList.remove("visible");
     const hl = $("menu-haunt");
     const haunt = CW.GameState.hauntLevel();
-    if (hl) { const t = HAUNT_TAGLINES[haunt] || ""; hl.textContent = t; hl.className = "menu-haunt" + (t ? " show" : ""); }
+    if (hl) { const t = menuGreeting(haunt); hl.textContent = t; hl.className = "menu-haunt" + (t ? " show" : ""); }
     Object.keys(MENU_DECAY).forEach((id) => { const b = $(id); if (b) b.textContent = MENU_DECAY[id][haunt]; });
     if (el.caption) el.caption.textContent = "";
     stopTextRot();
@@ -92,6 +93,23 @@ CW.UIController = (function () {
     renderMenuProgress();
     startMenuGlitch();
   }
+  // The shop's greeting when you come back. Once per session it may acknowledge,
+  // in real-world time, how long you were gone — or that you wiped it and it kept
+  // you anyway. After that (and for true newcomers) it falls back to the haunt line.
+  function menuGreeting(haunt) {
+    if (!menuGreeted) {
+      menuGreeted = true;
+      if (GS().wasWiped()) {
+        const s = GS().shardInfo();
+        const when = s && s.wipedAt ? " on " + GS().weekdayOf(s.wipedAt) : "";
+        return "You cleared the shelf" + when + ". It remembered you anyway.";
+      }
+      const phrase = GS().awayPhrase();
+      if (phrase) return "You were gone " + phrase + ". It kept your place.";
+    }
+    return HAUNT_TAGLINES[haunt] || "";
+  }
+
   // A quiet line of progress for returning players (endings collected, truths known).
   function renderMenuProgress() {
     const prog = $("menu-progress");
@@ -270,7 +288,8 @@ CW.UIController = (function () {
     const friend = ((s.friendName || "June").trim()) || "June";
     return String(t)
       .replace(/\{HERO\}/g, hero).replace(/\{FRIEND\}/g, friend)
-      .replace(/\{VISITS\}/g, GS().getVisits()).replace(/\{CELLAR_COUNT\}/g, ordinal(GS().cellarCount()));
+      .replace(/\{VISITS\}/g, GS().getVisits()).replace(/\{CELLAR_COUNT\}/g, ordinal(GS().cellarCount()))
+      .replace(/\{AWAY\}/g, GS().awayPhrase() || "a while");
   }
   function hauntedText(node) {
     let text = node.text || "", speaker = node.speaker || "";

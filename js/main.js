@@ -4,9 +4,11 @@
 (function () {
   function boot() {
     CW.GameState.loadMeta();
+    CW.GameState.noteVisit();          // the shop counts the time you were gone
     CW.SceneManager.init(document.getElementById("scene"));
     CW.UIController.init();
     CW.Debug.init();
+    if (CW.TabHorror) CW.TabHorror.init();
 
     const UI = CW.UIController;
     const Engine = CW.StoryEngine;

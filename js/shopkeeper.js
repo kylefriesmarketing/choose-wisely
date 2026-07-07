@@ -43,6 +43,8 @@ CW.Shopkeeper = (function () {
       haunt: GS().hauntLevel(),
       visits: GS().getVisits(),
       loops: GS().getLoops(),
+      away: (GS().awayPhrase && GS().awayPhrase()) || "",
+      wasWiped: !!(GS().wasWiped && GS().wasWiped()),
       gift: run.chosenGift || null,
       lastGift: meta.lastGift || null,
       giftHistory: meta.giftHistory || [],
@@ -68,6 +70,19 @@ CW.Shopkeeper = (function () {
         "You always slow down right here. Every loop, the same place, and you read it twice. We have done this so many times that I no longer bother wondering whether you can leave. You cannot. You could have. That was several hundred children ago.",
         "Thank you for the children. You keep carrying them down to me — late, and sorry, and so soft to talk the insides out of. You think you come here to save them. You come here to bring them. Bring me another.",
         "Close your eyes. Go on. I will still be here when you open them — I always am, I was there every single time you came back — and some quiet, honest part of you is glad of it, because out there you have to be a person, and in here you only have to be mine.",
+      ] },
+
+    // --- the shop counted the real hours you were gone -----------------------
+    { id: "wiped", tone: "sick", off: true,
+      where: (c) => c.wasWiped && !c.onStage,
+      lines: [
+        "You deleted us. I felt it — a small cold nothing where you had been. And then here you are again, at the same shelf, choosing the same wisely. You cannot clear me. I am not in the save. I am in the coming back.",
+      ] },
+    { id: "absence", tone: "sick", off: true,
+      where: (c) => c.away && c.haunt >= 2 && !c.onStage,
+      lines: [
+        "You were gone {AWAY}. I know precisely how long — down to the minute, for every one of you. Did you think the shop stopped when you closed it? Nothing here stops. It only waits, and it is very, very patient, and it counts.",
+        "{AWAY}. That is how long you left the door open behind you. I did not mind. I had the others to talk to. But I did notice, {HERO}. I always notice when you go, and I am always here when you decide to come back.",
       ] },
 
     // --- the mask fully off: the cellar, and the bottom of the descent -------

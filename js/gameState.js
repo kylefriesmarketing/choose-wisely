@@ -7,6 +7,9 @@ window.CW = window.CW || {};
 CW.GameState = (function () {
   const META_KEY = "chooseWisely.meta.v2";
   const RUN_KEY = "chooseWisely.run.v2";
+  // A residue the shop keeps of you personally. It is NEVER cleared by a wipe —
+  // erasing your save does not erase that you were here. ("The shop knows.")
+  const SHARD_KEY = "chooseWisely.shard";
   const STAT_MIN = 0, STAT_MAX = 10;
   const ROUTES = ["teddy", "candle", "balloon", "dragon"];
   // Flags that mean the player made a dark/greedy/reckless choice — they push
@@ -19,6 +22,8 @@ CW.GameState = (function () {
 
   let meta = defaultMeta();
   let run = null;
+  let _awayMs = 0;       // how long you were gone since last visit (computed on boot)
+  let _returning = false; // have you been here before at all
 
   function defaultMeta() {
     return {
@@ -32,6 +37,8 @@ CW.GameState = (function () {
       lastGift: null,         // the gift given at the end of the previous run (the shopkeeper remembers it)
       giftHistory: [],        // every gift ever given, oldest first
       freedChildren: [],      // ids of the other children you have set free across all runs
+      firstSeen: 0,           // real-world ms of your very first visit
+      lastSeen: 0,            // real-world ms you were last here (the shop counts the gap)
       seenIntro: false,       // has the atmospheric intro played once
       settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, heroName: "Milo", friendName: "June" },
     };
@@ -60,6 +67,38 @@ CW.GameState = (function () {
     meta.settings[key] = value;
     saveMeta();
   }
+
+  /* ---- the shop knows you're gone: real-time memory + the residue ------- */
+  // Call once on boot. Measures how long you were actually away and remembers
+  // that you were here, in real-world time.
+  function noteVisit() {
+    const now = Date.now();
+    _returning = meta.lastSeen > 0;
+    _awayMs = _returning ? Math.max(0, now - meta.lastSeen) : 0;
+    if (!meta.firstSeen) meta.firstSeen = now;
+    meta.lastSeen = now;
+    saveMeta();
+    return _awayMs;
+  }
+  function awayMs() { return _awayMs; }
+  function isReturning() { return _returning; }
+  // A human phrase for the absence, or "" if you were not really gone.
+  function awayPhrase() {
+    if (!_returning) return "";
+    const s = _awayMs / 1000, m = s / 60, h = m / 60, d = h / 24;
+    if (s < 45) return "";
+    if (m < 60) { const M = Math.max(1, Math.round(m)); return M + (M === 1 ? " minute" : " minutes"); }
+    if (h < 24) { const H = Math.round(h); return H + (H === 1 ? " hour" : " hours"); }
+    if (d < 14) { const D = Math.round(d); return D + (D === 1 ? " day" : " days"); }
+    if (d < 60) { const W = Math.round(d / 7); return W + " weeks"; }
+    return "a long, long time";
+  }
+  function weekdayOf(ts) { return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date(ts).getDay()]; }
+
+  function loadShard() { try { return JSON.parse(localStorage.getItem(SHARD_KEY) || "null"); } catch (e) { return null; } }
+  function saveShard(s) { try { localStorage.setItem(SHARD_KEY, JSON.stringify(s)); } catch (e) {} }
+  function wasWiped() { const s = loadShard(); return !!(s && s.wiped); }
+  function shardInfo() { return loadShard(); }
 
   /* ---- run lifecycle ---------------------------------------------------- */
   function newRun() {
@@ -291,7 +330,18 @@ CW.GameState = (function () {
   function totalEndings() { return Object.keys(CW.Endings).length; }
 
   function wipe() {
+    // Clearing your save does not clear the shop's memory of you. It writes a
+    // shard first — the date, and that you were ever here — and never removes it.
+    const prior = loadShard() || {};
+    saveShard({
+      wiped: true, wipedAt: Date.now(),
+      priorVisits: meta.visits || 0, priorHaunt: hauntLevel(),
+      priorEndings: (meta.endingsFound || []).length,
+      times: (prior.times || 0) + 1, everKnown: true,
+    });
     meta = defaultMeta();
+    meta.firstSeen = Date.now();
+    meta.lastSeen = Date.now();
     saveMeta();
     clearSavedRun();
   }
@@ -299,6 +349,7 @@ CW.GameState = (function () {
   return {
     STAT_MAX, ROUTES,
     loadMeta, saveMeta, getMeta, getSettings, setSetting, introSeen, markIntroSeen,
+    noteVisit, awayMs, awayPhrase, isReturning, weekdayOf, wasWiped, shardInfo,
     newRun, getRun, saveRun, hasSavedRun, loadRun, clearSavedRun,
     statValue, applyStats, setFlags, removeFlags, hasFlag,
     addInventory, removeInventory, hasInventory, setGift, pushHistory, visit,
