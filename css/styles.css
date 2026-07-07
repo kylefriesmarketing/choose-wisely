@@ -483,6 +483,10 @@ body[data-haunt="3"] .menu-title, body[data-haunt="4"] .menu-title { background:
 @keyframes btnSheen { 0%, 22% { left: -60%; } 42%, 100% { left: 130%; } }
 .ghost-btn { font-family: var(--font-ui); font-size: 14px; cursor: pointer; background: rgba(255,255,255,0.06); color: var(--ink); border: 1px solid var(--panel-edge); border-radius: 12px; padding: 12px 16px; transition: 0.15s; }
 .ghost-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,207,122,0.5); }
+/* Share = a gold-tinted ghost so the viral action reads as inviting, not loud. */
+.share-btn { color: var(--gold); border-color: rgba(255,207,122,0.45); background: rgba(255,200,120,0.09); font-weight: 700; }
+.share-btn:hover { background: rgba(255,200,120,0.18); border-color: var(--gold); color: #fff2d6; }
+.detail-actions { display: flex; justify-content: center; margin-top: 16px; }
 body.reduce-motion .primary-btn::after { animation: none; display: none; }
 
 /* sheets (tracker / settings / history) */

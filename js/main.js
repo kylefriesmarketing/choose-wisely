@@ -53,8 +53,20 @@
     document.getElementById("btn-ending-hint").addEventListener("click", UI.showHint);
     document.getElementById("btn-ending-tracker").addEventListener("click", UI.showTracker);
     document.getElementById("btn-ending-menu").addEventListener("click", () => { UI.hideEnding(); UI.showMenu(); });
+    if (CW.Share) {
+      document.getElementById("btn-ending-share").addEventListener("click", () => CW.Share.shareEnding());
+      document.getElementById("btn-detail-share").addEventListener("click", () => {
+        const d = document.getElementById("ending-detail");
+        CW.Share.shareEnding(d && d.dataset ? d.dataset.ending : null);
+      });
+    }
 
     UI.showMenu();
+
+    // Make the game installable + fast on repeat visits (safe network-first SW).
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

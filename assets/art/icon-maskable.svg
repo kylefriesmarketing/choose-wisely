@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Choose Wisely">
+  <defs>
+    <radialGradient id="mbg" cx="50%" cy="42%" r="78%">
+      <stop offset="0%" stop-color="#2a1730"/>
+      <stop offset="60%" stop-color="#160d1c"/>
+      <stop offset="100%" stop-color="#0a0710"/>
+    </radialGradient>
+    <radialGradient id="mbtn" cx="42%" cy="38%" r="72%">
+      <stop offset="0%" stop-color="#453c4c"/>
+      <stop offset="55%" stop-color="#1a151f"/>
+      <stop offset="100%" stop-color="#0a0810"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#mbg)"/>
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#ffb347" stroke-opacity="0.26" stroke-width="6"/>
+  <circle cx="256" cy="256" r="132" fill="url(#mbtn)" stroke="#ffcf7a" stroke-opacity="0.5" stroke-width="7"/>
+  <g fill="#050409">
+    <circle cx="212" cy="212" r="17"/><circle cx="300" cy="212" r="17"/>
+    <circle cx="212" cy="300" r="17"/><circle cx="300" cy="300" r="17"/>
+  </g>
+  <path d="M212 212 L300 300 M300 212 L212 300" stroke="#ffcf7a" stroke-opacity="0.85" stroke-width="12" stroke-linecap="round"/>
+</svg>

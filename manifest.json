@@ -1,0 +1,18 @@
+{
+  "name": "Choose Wisely",
+  "short_name": "Choose Wisely",
+  "description": "A branching horror storybook. One shop. Four gifts. Fifty endings. Choose wisely.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0c0910",
+  "theme_color": "#0c0910",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "assets/art/icon-512.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "assets/art/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" },
+    { "src": "assets/art/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

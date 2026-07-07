@@ -5,8 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0c0910" />
   <meta name="color-scheme" content="dark" />
-  <meta name="description" content="Choose Wisely — a branching storybook. One shop. Four gifts. Hundreds of endings." />
-  <title>Choose Wisely — One shop. Four gifts. Hundreds of endings.</title>
+  <meta name="description" content="A branching horror storybook. One shop. Four gifts. Fifty endings. Choose wisely." />
+  <title>Choose Wisely — One shop. Four gifts. Fifty endings.</title>
+  <link rel="canonical" href="https://kylefriesmarketing.github.io/choose-wisely/" />
+
+  <!-- Rich link previews (Open Graph / Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Choose Wisely" />
+  <meta property="og:title" content="Choose Wisely — One shop. Four gifts. Fifty endings." />
+  <meta property="og:description" content="A branching horror storybook where every gift takes something back. Fifty endings. Choose wisely." />
+  <meta property="og:url" content="https://kylefriesmarketing.github.io/choose-wisely/" />
+  <meta property="og:image" content="https://kylefriesmarketing.github.io/choose-wisely/assets/art/cover_hero.png" />
+  <meta property="og:image:alt" content="A child with an umbrella before a glowing shop that reads CHOOSE WISELY." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Choose Wisely — One shop. Four gifts. Fifty endings." />
+  <meta name="twitter:description" content="A branching horror storybook where every gift takes something back. Fifty endings." />
+  <meta name="twitter:image" content="https://kylefriesmarketing.github.io/choose-wisely/assets/art/cover_hero.png" />
+
+  <!-- Identity / installable PWA -->
+  <link rel="icon" href="assets/art/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/art/icon-512.png" />
+  <meta name="apple-mobile-web-app-title" content="Choose Wisely" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json" />
+
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -109,6 +133,7 @@
       <div id="ending-hint" class="ending-hint"></div>
       <div class="ending-actions">
         <button id="btn-replay" class="primary-btn">↻ Play Again</button>
+        <button id="btn-ending-share" class="ghost-btn share-btn">↗ Share</button>
         <button id="btn-ending-hint" class="ghost-btn">💡 Hint</button>
         <button id="btn-ending-tracker" class="ghost-btn">📖 Endings</button>
         <button id="btn-ending-menu" class="ghost-btn">☰ Menu</button>
@@ -158,6 +183,9 @@
       <div id="detail-cat" class="ending-cat-chip"></div>
       <p id="detail-text" class="ending-text"></p>
       <div id="detail-clue" class="detail-clue"></div>
+      <div class="detail-actions">
+        <button id="btn-detail-share" class="ghost-btn share-btn">↗ Share this ending</button>
+      </div>
     </div>
   </div>
 
@@ -180,6 +208,7 @@
   <script src="js/sceneManager.js"></script>
   <script src="js/uiController.js"></script>
   <script src="js/storyEngine.js"></script>
+  <script src="js/share.js"></script>
   <script src="js/debug.js"></script>
   <script src="js/main.js"></script>
 </body>

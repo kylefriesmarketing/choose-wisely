@@ -202,6 +202,8 @@ CW.UIController = (function () {
     $("detail-cat").textContent = e.category; $("detail-cat").className = "ending-cat-chip cat-" + cat;
     $("detail-text").textContent = replaceTokens(e.text);
     $("detail-clue").textContent = e.clue ? "“" + replaceTokens(e.clue) + "”" : "";
+    el.detail.dataset.ending = id;
+    if (CW.Share) CW.Share.prepare(id);
     el.detail.classList.add("open");
   }
   function hideEndingDetail() { el.detail.classList.remove("open"); }
@@ -522,6 +524,8 @@ CW.UIController = (function () {
 
     $("ending-progress").textContent = GS().foundCount() + " / " + GS().totalEndings() + " endings found";
     $("ending-hint").textContent = "";
+    el.ending.dataset.ending = e.id;              // so Share knows which ending
+    if (CW.Share) CW.Share.prepare(e.id);         // pre-build the share card
     el.ending.classList.add("open");
   }
   function hideEnding() { el.ending.classList.remove("open"); if (CW.Narrator) CW.Narrator.stop(); }
@@ -719,7 +723,7 @@ CW.UIController = (function () {
     init, showMenu, hideMenu,
     renderNode, renderStats, renderInventory,
     showStatPopups, showBondChange, showSubtle, flashLocked, toast,
-    showEnding, hideEnding, showHint,
+    showEnding, hideEnding, showHint, replaceTokens,
     showTracker, hideTracker, showSettings, hideSettings, applySettingsToDom,
     showHistory, hideHistory, playIntro, showAbout, hideAbout, showEndingDetail, hideEndingDetail,
   };
