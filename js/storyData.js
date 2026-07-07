@@ -319,7 +319,10 @@ CW.StoryNodes = {
     cast: ["june"], poses: { june: "idle", boy: "sad" },
     speaker: "A Memory of {FRIEND}", musicCue: "teddy_theme", effects: {},
     text: "The bear's button eyes catch the light and all at once you are eight years old again, and it is {FRIEND}'s stuffed rabbit — the one she carried until it was more thread than rabbit — and she is making you pinky-swear never, ever to tell anyone she still sleeps with it. You never told. You told her everything and she told you everything; that was the whole deal, the two of you against the quiet. You are not sure when you stopped keeping up your end.",
-    haunt: { 3: { text: "The bear's button eyes catch the light and you wait for the memory to rise — there was a rabbit, wasn't there, a pinky-swear, a her — but the light just slides off the buttons and nothing comes. You are holding a stranger's toy on a street you don't remember choosing. Whatever this used to remind you of has gone somewhere you can't follow." } },
+    haunt: {
+      3: { text: "The bear's button eyes catch the light and you wait for the memory to rise — there was a rabbit, wasn't there, a pinky-swear, a her — but the light just slides off the buttons and nothing comes. You are holding a stranger's toy on a street you don't remember choosing. Whatever this used to remind you of has gone somewhere you can't follow." },
+      4: { text: "The bear's button eyes catch the light and the memory comes, warm and perfect — the threadbare rabbit, the pinky-swear, her snorting laugh — except you can see the seams in it now, the small neat stitches where the shop sewed this memory into you, because it is not yours. There was a her, once. This soft, bought, button-eyed copy of the feeling of her is all the shop left you to keep loving, so that you would keep coming back to the only place it still plays. You pinky-swear, in the dark, with a girl the shop is wearing like a glove. And somewhere on a low shelf below your feet, the real thing — what is left of her — turns its stitched face toward the sound of you and tries, and fails, to remember your name." },
+    },
     imagePrompt: "storybook illustration of two small kids pinky-swearing over a threadbare stuffed rabbit, warm nostalgic light",
     choices: [
       { id: "TMT_HOLD", text: "Hold onto that — the pinky-swear, the trust.", nextNodeId: "T01", gains: { wisdom: 1 }, bond: 1 },
@@ -766,6 +769,21 @@ CW.StoryNodes = {
       { id: "CE1_CLIMB", text: "Turn around and climb back toward the party.", nextNodeId: "END_NO_ESCAPE" },
       { id: "CE1_COUNT", text: "Count the little doors as you pass them.", nextNodeId: "CELLAR_2", requirements: { stats: { intelligence: 3 } }, gains: { intelligence: 1 }, setFlags: { countedDoors: true }, lockedText: "You lose count somewhere past a hundred, and start again, and lose it again." },
       { id: "CE1_WALL", text: "A side passage glitters, low down, with something small and frayed. Go to it.", nextNodeId: "CELLAR_BRACELETS", gains: { perception: 1 } },
+      { id: "CE1_WORK", text: "One door is larger than the rest, and warm, and leaking a wet and patient sound — a needle drawn slow through cloth, and drawn again. Open that one.", nextNodeId: "UNMAKING_ROOM", requirements: { stats: { perception: 3 } }, lockedText: "You do not want to know what makes that sound. Some mercy in you refuses to reach for the handle." },
+    ],
+  },
+  UNMAKING_ROOM: {
+    id: "UNMAKING_ROOM", title: "Where the Work Is Done", location: "The Warm Room", theme: "secret", scene: "fifth", dread: 4,
+    speaker: "Narrator",
+    text: "The door gives on a low warm room that smells of cut cloth and, underneath the cloth, of something that used to be warm a different way. This is where the shop does its work. A girl sits very still in a good chair while hands you cannot quite see draw waxed thread through her lips, careful stitch over careful stitch — and she keeps trying to finish a sentence around them, \"...but I only wanted to go to the—\", until the thread pulls the last of it shut. The boy beside her is cotton to the elbows already, watching his own hands quietly stop being hands. On hooks along every wall the half-made children hang patient and nearly done, and the worst of it — the part you will not get to un-know — is how gently it is all done, and how each of them was told, first, that it was a gift.",
+    imagePrompt: "storybook illustration of a dim warm workroom where children sit very still being sewn into toys, unseen hands, hooks of half-made toys",
+    musicCue: "secret_theme",
+    effects: { setFlags: { sawTheWork: true } },
+    choices: [
+      { id: "UNM_FREE", text: "Pull the thread out of her mouth with your fingers, and to hell with what it costs you.", nextNodeId: "END_UNDERSTITCH", requirements: { stats: { strength: 3 } }, lockedText: "Your hands will not obey. Some animal part of you already knows how this ends and refuses to start it." },
+      { id: "UNM_SIT", text: "Sit down in the one empty chair. You are so tired, and it all looks so gentle.", nextNodeId: "END_NEW_STOCK" },
+      { id: "UNM_NAME", text: "Say the children's names aloud, all of them, so that at least it is witnessed.", nextNodeId: "CELLAR_2", gains: { wisdom: 1 }, setFlags: { witnessedWork: true }, bond: 1 },
+      { id: "UNM_BACK", text: "Back out. Pull the door shut. Pretend, for as long as you can, that you never opened it.", nextNodeId: "CELLAR_2", setFlags: { pushedItDown: true }, bond: -1 },
     ],
   },
   CELLAR_BRACELETS: {
@@ -1036,4 +1054,12 @@ CW.Endings = {
     text: "You lift your own bracelet down from the last nail, and the wall is bare. Every shelf in the shop above — the bears, the candles, the balloons, the little wound-down dragons — sits empty, because you came back, and came back, and came back, and carried every stolen child up out of the dark and home. Greta, Tomas, Odile, Sam, Pia, Wren, and all the ones whose names you never learned: gone, out into a rain that feels, for once, like morning. The shop has nothing left to sell. The gold sign gutters, and goes out. And somewhere not far above, at a party you are only a little late to, {FRIEND} turns toward a door — and this time when it opens it is only you, and your two empty hands, and everything you finally understand about staying. It is enough. It was always going to have to be enough. It is.",
     imagePrompt: "storybook illustration of a boy before a wall of empty nails and bare shelves, the gold shop sign gone dark, cold dawn light spilling in",
     clue: "Set free every child the shop ever took, and there is nothing left for it to be." },
+  END_NEW_STOCK: { number: 43, id: "END_NEW_STOCK", title: "New Stock", category: "Nightmare", route: "cellar",
+    text: "You sit down. The chair is warm from the last one. The hands find your shoulders, kind as anything, and a voice you have heard your whole life leans close and says, pleased, that you were always going to end up in this chair — that of all of them you were the easiest, that you brought yourself, that you saved everyone the trouble of the door. The first stitch does not hurt. That is the trick of it, the mercy of it: none of it hurts. {FRIEND}'s name goes somewhere around the fourth stitch, lifted out clean, and you do not miss it, because missing is a thing that needs a mouth. By the time your lips are a neat closed seam you are only glad — glad to be finished, glad to be soft, glad most of all to be, at last, for sale. A child comes in from the rain with empty hands. You would love to be chosen. You hope it is you.",
+    imagePrompt: "storybook illustration from inside: a child in a chair being gently sewn soft, their eyes becoming buttons, warm lamplight",
+    clue: "Sit in the warm chair in the workroom and the shop finishes you into stock." },
+  END_UNDERSTITCH: { number: 44, id: "END_UNDERSTITCH", title: "Run", category: "Nightmare", route: "cellar",
+    text: "You get two stitches out — two — before the warm room decides it has been patient long enough. The girl looks at you through her half-freed mouth, and what she says is not thank you. What she says, wet and urgent around the thread still in her, is run — and you do. You run, and you leave her there on her hook with your two stitches undone and the rest of her still to go, because that is the last thing the shop needs you to understand about yourself: that when it is you or the ones on the hooks, you will save yourself, every time, in every loop, and call it having no choice. You reach the party. Your hands are clean. You are perfectly, permanently fine — and that, and not the room, is the punishment it built for you.",
+    imagePrompt: "storybook illustration of a boy fleeing a warm workroom doorway, looking back at a half-sewn girl reaching after him",
+    clue: "Try to free the girl in the workroom, fail, and flee — and learn what you always do." },
 };

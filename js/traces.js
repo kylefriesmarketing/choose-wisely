@@ -121,6 +121,8 @@ CW.Faces = (function () {
       '<ellipse cx="' + x + '" cy="' + y + '" rx="15" ry="19" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1"/>' +
       '<ellipse class="eye" cx="' + (x - 5) + '" cy="' + (y - 2) + '" rx="2.6" ry="4" fill="#0a0608"/>' +
       '<ellipse class="eye" cx="' + (x + 5) + '" cy="' + (y - 2) + '" rx="2.6" ry="4" fill="#0a0608"/>' +
+      // a mouth, closed to nothing until the very bottom of the descent, when it gapes
+      '<ellipse class="mouth" cx="' + x + '" cy="' + (y + 9) + '" rx="4" ry="6" fill="#060305"/>' +
       '</g>';
   }
 

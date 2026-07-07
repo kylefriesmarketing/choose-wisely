@@ -59,6 +59,17 @@ CW.Shopkeeper = (function () {
      an unseen candidate wins. tone drives the styling; `off` = he isn't on stage,
      so the voice arrives disembodied. */
   const RULES = [
+    // --- the shop itself, not the keeper, speaking to a soul it has kept too
+    //     many times. Highest priority, rare, and it stops pretending you are
+    //     anywhere it does not own. Only once the shop truly remembers you. -----
+    { id: "shop_meta", tone: "sick", off: true,
+      where: (c) => c.haunt >= 4 && !c.onStage,
+      lines: [
+        "You always slow down right here. Every loop, the same place, and you read it twice. We have done this so many times that I no longer bother wondering whether you can leave. You cannot. You could have. That was several hundred children ago.",
+        "Thank you for the children. You keep carrying them down to me — late, and sorry, and so soft to talk the insides out of. You think you come here to save them. You come here to bring them. Bring me another.",
+        "Close your eyes. Go on. I will still be here when you open them — I always am, I was there every single time you came back — and some quiet, honest part of you is glad of it, because out there you have to be a person, and in here you only have to be mine.",
+      ] },
+
     // --- the mask fully off: the cellar, and the bottom of the descent -------
     { id: "cellar", tone: "slip", off: true,
       where: (c) => c.isCellar,

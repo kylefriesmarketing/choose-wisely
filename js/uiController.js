@@ -11,6 +11,7 @@ CW.UIController = (function () {
   let el = {};
   let currentNode = null;
   let typeTimer = null;
+  let rotTimer = null;
   let trackerFilter = "all";
   let introTimer = null;
   let menuGlitchTimer = null;
@@ -79,6 +80,7 @@ CW.UIController = (function () {
     if (hl) { const t = HAUNT_TAGLINES[haunt] || ""; hl.textContent = t; hl.className = "menu-haunt" + (t ? " show" : ""); }
     Object.keys(MENU_DECAY).forEach((id) => { const b = $(id); if (b) b.textContent = MENU_DECAY[id][haunt]; });
     if (el.caption) el.caption.textContent = "";
+    stopTextRot();
     if (CW.Cast) CW.Cast.clear();
     if (CW.Faces) CW.Faces.clear();
     if (CW.Dread) CW.Dread.reset();
@@ -287,9 +289,11 @@ CW.UIController = (function () {
 
   function typeText(str) {
     clearInterval(typeTimer);
+    stopTextRot();
     const speed = GS().getSettings().textSpeed;
     if (speed === "instant" || document.body.classList.contains("reduce-motion")) {
       el.text.textContent = str;
+      maybeStartTextRot(str);
       return;
     }
     const stepMs = speed === "slow" ? 22 : 8;
@@ -297,8 +301,45 @@ CW.UIController = (function () {
     let i = 0;
     typeTimer = setInterval(() => {
       el.text.textContent = str.slice(0, ++i);
-      if (i >= str.length) clearInterval(typeTimer);
+      if (i >= str.length) { clearInterval(typeTimer); maybeStartTextRot(str); }
     }, stepMs);
+  }
+
+  // The deeper the dread, the more the narration itself sickens: individual
+  // glyphs curdle green, and at the very bottom they warp to wrong lookalikes,
+  // as if the shop has begun, quietly, to eat the words. Reduce-motion opts out.
+  const ROT_SWAP = { a: "ą", e: "ë", i: "ï", o: "ø", u: "ü", n: "ñ", s: "ş", r: "ř", t: "ţ", c: "ç", g: "ğ", y: "ÿ" };
+  function stopTextRot() { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } }
+  function maybeStartTextRot(str) {
+    stopTextRot();
+    if (document.body.classList.contains("reduce-motion")) return;
+    const dread = (CW.Dread && CW.Dread.level && CW.Dread.level()) || 0;
+    if (dread < 3 || !str) return;
+    const warp = dread >= 4;
+    const per = dread >= 4 ? 6 : 3;
+    // eligible positions: letters only
+    const spots = [];
+    for (let i = 0; i < str.length; i++) if (/[a-z]/i.test(str[i])) spots.push(i);
+    if (!spots.length) return;
+    const paint = () => {
+      const chosen = {};
+      for (let k = 0; k < per; k++) chosen[spots[(Math.random() * spots.length) | 0]] = true;
+      el.text.textContent = "";
+      let run = "";
+      for (let i = 0; i < str.length; i++) {
+        if (chosen[i]) {
+          if (run) { el.text.appendChild(document.createTextNode(run)); run = ""; }
+          const span = document.createElement("span");
+          span.className = "rot-char";
+          const low = str[i].toLowerCase();
+          span.textContent = warp && ROT_SWAP[low] ? (str[i] === low ? ROT_SWAP[low] : ROT_SWAP[low].toUpperCase()) : str[i];
+          el.text.appendChild(span);
+        } else { run += str[i]; }
+      }
+      if (run) el.text.appendChild(document.createTextNode(run));
+    };
+    paint();
+    rotTimer = setInterval(paint, 720);
   }
 
   function buildChoiceButton(node, choice) {
