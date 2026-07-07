@@ -71,6 +71,11 @@ CW.StoryEngine = (function () {
       CW.UIController.showBondChange(res.bond);
       CW.Audio.play(res.bond > 0 ? "mend" : "fray");
     }
+    if (res.freed && res.freed.length) {
+      const n = GS().freedCount(), t = GS().childrenTotal();
+      CW.UIController.toast("You set " + res.freed.join(" and ") + " free.  (" + n + " of " + t + " children)");
+      CW.Audio.play("mend");
+    }
     CW.UIController.renderStats();
     CW.UIController.renderInventory();
     enterNode(choice.nextNodeId);

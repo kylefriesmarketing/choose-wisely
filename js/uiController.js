@@ -97,8 +97,10 @@ CW.UIController = (function () {
     const found = GS().foundCount(), total = GS().totalEndings();
     if (found <= 0) { prog.innerHTML = ""; prog.classList.remove("show"); return; }
     const known = GS().knowledgeCount(), truths = GS().truthsTotal();
+    const freed = GS().freedCount(), kids = GS().childrenTotal();
     let html = '<span class="mp-stat"><b>' + found + '</b> / ' + total + ' endings</span>';
     if (known > 0) html += '<span class="mp-dot">&bull;</span><span class="mp-stat"><b>' + known + '</b> / ' + truths + ' truths</span>';
+    if (freed > 0) html += '<span class="mp-dot">&bull;</span><span class="mp-stat"><b>' + freed + '</b> / ' + kids + ' freed</span>';
     prog.innerHTML = html;
     prog.classList.add("show");
   }
@@ -160,7 +162,7 @@ CW.UIController = (function () {
     el.aboutBody.innerHTML =
       '<div class="about-title">CHOOSE WISELY</div>' +
       '<div class="about-tag">One shop. Four gifts. Hundreds of endings.</div>' +
-      '<p class="about-p">A playable storybook about ' + friend + "'s birthday — and the little shop that appears on the corner with exactly what you need, for exactly what it takes. Every choice moves four attributes, frays or mends a friendship bracelet, and steers toward one of forty collectible endings. The deeper you go, the darker it gets; the more you play, the more the shop remembers you.</p>" +
+      '<p class="about-p">A playable storybook about ' + friend + "'s birthday — and the little shop that appears on the corner with exactly what you need, for exactly what it takes. Every choice moves four attributes, frays or mends a friendship bracelet, and steers toward one of more than forty collectible endings. The deeper you go, the darker it gets; the more you play, the more the shop remembers you.</p>" +
       '<div class="about-sec"><b>Made with</b><div>Design, writing, art, and music generated for this build. Scenes and ending cards are painted illustrations; the soundtrack is composed live in your browser with WebAudio — no audio files, no dependencies, no build step.</div></div>' +
       '<div class="about-sec"><b>How to play</b><div>Read, choose, and watch your stats and the bracelet in the corner. Locked choices are goals, not walls. Every ending — even the sad ones — is worth collecting. Press <b>~</b> for developer tools.</div></div>' +
       '<div class="about-sec"><b>Your story</b><div>You are <b>' + hero + "</b>. Your friend is <b>" + friend + "</b>. Rename them any time in Settings.</div></div>" +
@@ -535,6 +537,27 @@ CW.UIController = (function () {
       });
       const ready = GS().getMeta().unlockedSecrets.includes("theWayBack");
       html += '<div class="unlock-status">The Way Back to ' + friend + ": " + (ready ? "🔓 open — find it in the fifth aisle, and keep the bracelet whole" : "🔒 locked — gather every truth") + "</div></div>";
+    }
+
+    // The Children — the ones you have carried out, and the ones still waiting.
+    if (CW.OtherChildren && CW.OtherChildren.length) {
+      const HOW = {
+        talking_teddy: "Free the boy inside the bear — its good ending.",
+        wish_candle: "Melt a wax child back to life with the last wish.",
+        everlasting_balloon: "Untie the ring and let every rider down home.",
+        clockwork_dragon: "Turn the foundry into a workshop and mend them all.",
+      };
+      html += '<div class="coll-route"><h3>The Children <span>' + GS().freedCount() + "/" + GS().childrenTotal() + " freed</span></h3>";
+      CW.OtherChildren.forEach((c) => {
+        if (GS().isChildFreed(c.id)) {
+          html += '<div class="child-row freed"><div class="child-name">✔ ' + c.name + " — free</div><div class=\"child-fate\">" + replaceTokens(c.fate) + "</div></div>";
+        } else {
+          const how = c.gift ? (HOW[c.gift] || "Reach their route's freeing ending.") : "Lift their bracelet from the wall, deep below the party.";
+          html += '<div class="child-row trapped"><div class="child-name">◦ ' + c.name + " — still on a shelf</div><div class=\"child-fate\">" + how + "</div></div>";
+        }
+      });
+      if (GS().allChildrenFreed()) html += '<div class="unlock-status">Every child is free. 🔓 The Empty Shelves wait for you at the wall.</div>';
+      html += "</div>";
     }
 
     el.trackerBody.innerHTML = html;

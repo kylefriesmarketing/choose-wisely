@@ -124,6 +124,18 @@ CW.OtherChildren = [
   },
 ];
 
+/* Which endings set which of the other children free — they walk out of the
+ * shop for good. Reaching one of these frees that child permanently (tracked in
+ * meta.freedChildren); the two children with no gift route (Pia, Wren) are freed
+ * by hand at the cellar wall (CELLAR_BRACELETS). Free all six -> the capstone. */
+CW.ChildFreedom = {
+  END_T_GOOD:        ["sam"],   // the spirit in the bear walks home
+  END_T_REUNITED:    ["sam"],   // the child and their bear, out together
+  END_C_MELTED_FREE: ["greta"], // a wax child melted back to breathing life
+  END_B_FREED_SKY:   ["odile"], // every balloon sets its rider down home
+  END_D_TOYMAKER:    ["tomas"], // the broken toys mended and walking free
+};
+
 /* -------------------------------------------------------------------------- */
 /* THE FOUR GIFTS                                                             */
 /* -------------------------------------------------------------------------- */
@@ -767,6 +779,8 @@ CW.StoryNodes = {
       { id: "CW_READ", text: "Read every single name, slowly, so that at least once someone did.", nextNodeId: "CELLAR_2", gains: { wisdom: 1 }, setFlags: { readTheNames: true }, bond: 1 },
       { id: "CW_JUNE", text: "Search the whole wall for {FRIEND}'s bracelet.", nextNodeId: "CELLAR_2", gains: { perception: 1 }, setFlags: { lookedForHer: true } },
       { id: "CW_TAKE", text: "Take one child's bracelet down, so that one of them leaves here with you.", nextNodeId: "CELLAR_2", requirements: { stats: { wisdom: 3 } }, setFlags: { tookABracelet: true }, bond: 1, lockedText: "To lift one down is to choose one, and to leave all the rest — and you cannot make your hand do it." },
+      { id: "CW_FREE_WALL", text: "The two with no toy and nowhere to go — Pia, all her threads pulled out; Wren, knotted to her little brother. Lift them from their nails and carry them out yourself.", nextNodeId: "CELLAR_2", gains: { wisdom: 1 }, bond: 1, freeChild: ["pia", "wren"] },
+      { id: "CW_EMPTY", text: "The wall is bare now. Every nail empty but one — yours. Take your own bracelet down too, and let the whole shop end.", nextNodeId: "END_EMPTY_SHELVES", requirements: { flags: { allChildrenFreed: true } }, hideWhenLocked: true },
       { id: "CW_BACK", text: "Back away from the wall and climb, fast, toward the party.", nextNodeId: "END_NO_ESCAPE" },
     ],
   },
@@ -1018,4 +1032,8 @@ CW.Endings = {
     text: "The shopkeeper does not pretend either, not for a regular. He lifts the hinged counter and holds it open for you like a doorman. \"We've been shorthanded,\" he says. \"You know the rule, you know the gifts, you know the stair and everyone on it. Honestly — at this point you practically run the place.\" You step behind the counter. It fits you like a coat you have worn many times. A bell rings. Outside, in the rain, a boy who forgot a present is staring at an empty lot where a shop has just appeared. You smile, and you lean forward, and you already know exactly what you are going to say to him.",
     imagePrompt: "storybook illustration of a boy stepping behind a magic shop counter in a patched coat as a new child arrives in the rain outside",
     clue: "Come back to the shop often enough and it offers you the counter." },
+  END_EMPTY_SHELVES: { number: 42, id: "END_EMPTY_SHELVES", title: "The Empty Shelves", category: "True", route: "meta",
+    text: "You lift your own bracelet down from the last nail, and the wall is bare. Every shelf in the shop above — the bears, the candles, the balloons, the little wound-down dragons — sits empty, because you came back, and came back, and came back, and carried every stolen child up out of the dark and home. Greta, Tomas, Odile, Sam, Pia, Wren, and all the ones whose names you never learned: gone, out into a rain that feels, for once, like morning. The shop has nothing left to sell. The gold sign gutters, and goes out. And somewhere not far above, at a party you are only a little late to, {FRIEND} turns toward a door — and this time when it opens it is only you, and your two empty hands, and everything you finally understand about staying. It is enough. It was always going to have to be enough. It is.",
+    imagePrompt: "storybook illustration of a boy before a wall of empty nails and bare shelves, the gold shop sign gone dark, cold dawn light spilling in",
+    clue: "Set free every child the shop ever took, and there is nothing left for it to be." },
 };

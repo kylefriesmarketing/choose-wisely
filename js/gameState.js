@@ -31,6 +31,7 @@ CW.GameState = (function () {
       knowledge: [],          // truths gathered across runs (see CW.Truths)
       lastGift: null,         // the gift given at the end of the previous run (the shopkeeper remembers it)
       giftHistory: [],        // every gift ever given, oldest first
+      freedChildren: [],      // ids of the other children you have set free across all runs
       seenIntro: false,       // has the atmospheric intro played once
       settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, heroName: "Milo", friendName: "June" },
     };
@@ -80,6 +81,9 @@ CW.GameState = (function () {
     if (meta.unlockedSecrets.includes("theWayBack")) run.flags.wayBackKnown = true;
     // Bridge gathered truths so cellar reveals can gate on them.
     meta.knowledge.forEach((t) => { run.flags["know_" + t] = true; });
+    // Bridge freed children so data requirements can gate on them.
+    (meta.freedChildren || []).forEach((id) => { run.flags["freed_" + id] = true; });
+    if (allChildrenFreed()) run.flags.allChildrenFreed = true;
     // The shop remembers you: entering counts as a visit, and haunted players
     // start a run already partway into the dread (the shop is wrong for them).
     meta.visits = (meta.visits || 0) + 1;
@@ -201,6 +205,29 @@ CW.GameState = (function () {
   }
 
   /* ---- endings / meta-progression (§17) --------------------------------- */
+  /* ---- freeing the other children (persistent across runs) -------------- */
+  function childrenRoster() { return CW.OtherChildren || []; }
+  function childrenTotal() { return childrenRoster().length; }
+  function isChildFreed(id) { return (meta.freedChildren || []).indexOf(id) > -1; }
+  function freedCount() { return (meta.freedChildren || []).length; }
+  function childName(id) { const c = childrenRoster().find((x) => x.id === id); return c ? c.name : id; }
+  function allChildrenFreed() {
+    const list = childrenRoster();
+    return list.length > 0 && list.every((c) => isChildFreed(c.id));
+  }
+  // Set a child free (permanent, across runs). Returns { freed, allFreed };
+  // freed = newly freed by this call.
+  function freeChild(id) {
+    if (!id || isChildFreed(id) || !childrenRoster().some((c) => c.id === id)) {
+      return { freed: false, allFreed: allChildrenFreed() };
+    }
+    meta.freedChildren.push(id);
+    const done = allChildrenFreed();
+    if (done && !meta.unlockedSecrets.includes("allFreed")) meta.unlockedSecrets.push("allFreed");
+    saveMeta();
+    return { freed: true, allFreed: done };
+  }
+
   function recordEnding(endingId) {
     const ending = CW.Endings[endingId];
     if (!ending) return { isNew: false, ending: null, newlyUnlocked: [] };
@@ -228,6 +255,16 @@ CW.GameState = (function () {
       if (k.learned) newlyUnlocked.push('You learned something true: "' + CW.Truths[truthId].title + '"');
       if (k.completed) newlyUnlocked.push("You know the whole truth now. A way back to June has opened, deep in the fifth aisle.");
     }
+
+    // Some endings set a trapped child free (see CW.ChildFreedom).
+    const freedIds = (CW.ChildFreedom && CW.ChildFreedom[endingId]) || [];
+    freedIds.forEach((cid) => {
+      const r = freeChild(cid);
+      if (r.freed) {
+        newlyUnlocked.push("You set " + childName(cid) + " free.  (" + freedCount() + " of " + childrenTotal() + " children)");
+        if (r.allFreed) newlyUnlocked.push("Every child you found is free now. The shelves stand empty — and something waits at the wall of bracelets.");
+      }
+    });
 
     // The fifth aisle unlocks after one ending from each gift route.
     if (!meta.unlockedSecrets.includes("fifthAisle") && ROUTES.every(routeHasEnding)) {
@@ -268,6 +305,7 @@ CW.GameState = (function () {
     updateDread, dreadLevel, applyBond, bondValue, bondMax,
     hauntLevel, baselineDread, getVisits, getLoops, cellarCount, nightmareCount,
     hasKnowledge, knowledgeCount, truthsTotal, learnKnowledge, allTruths,
+    freeChild, isChildFreed, freedCount, childrenTotal, allChildrenFreed, childName,
     recordEnding, isFound, foundCount, totalEndings, wipe,
   };
 })();

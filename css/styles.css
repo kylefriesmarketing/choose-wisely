@@ -482,6 +482,13 @@ body.reduce-motion .primary-btn::after { animation: none; display: none; }
 .truth-row.unknown { color: var(--ink-dim); font-style: italic; border-left: 3px solid var(--panel-edge); }
 .truth-title { font-weight: 700; color: var(--true); font-size: 14px; }
 .truth-text { font-size: 13px; color: var(--ink); margin-top: 3px; font-family: var(--font-body); }
+.child-row { margin: 7px 0; padding: 8px 10px; border-radius: 8px; }
+.child-row.freed { background: rgba(123,224,138,0.09); border-left: 3px solid var(--good); }
+.child-row.trapped { border-left: 3px solid var(--panel-edge); color: var(--ink-dim); }
+.child-name { font-weight: 700; font-size: 14px; }
+.child-row.freed .child-name { color: var(--good); }
+.child-fate { font-size: 12.5px; color: var(--ink-dim); margin-top: 3px; font-family: var(--font-body); font-style: italic; }
+.child-row.freed .child-fate { color: var(--ink); }
 
 /* ---- cinematic front door ------------------------------------------------ */
 /* Title screen over the illustrated cover */

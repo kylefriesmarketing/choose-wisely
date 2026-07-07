@@ -24,6 +24,13 @@ CW.ApplyChoice = (function () {
     // 5. The bracelet: warm/cold choices mend or fray the bond.
     const bond = GS().applyBond(choice.bond);
 
+    // 5b. Setting the other children free (see CW.Traces / the cellar wall).
+    const freed = [];
+    if (choice.freeChild) {
+      const ids = Array.isArray(choice.freeChild) ? choice.freeChild : [choice.freeChild];
+      ids.forEach((id) => { if (GS().freeChild(id).freed) freed.push(GS().childName(id)); });
+    }
+
     // 6. Record what mattered.
     const deltas = spent.concat(gained);
     GS().pushHistory({
@@ -34,7 +41,7 @@ CW.ApplyChoice = (function () {
       setFlags: choice.setFlags ? Object.keys(choice.setFlags) : [],
     });
 
-    return { deltas: deltas, bond: bond };
+    return { deltas: deltas, bond: bond, freed: freed };
   }
 
   // Node-enter effects (statChanges / setFlags / addInventory / learn).
