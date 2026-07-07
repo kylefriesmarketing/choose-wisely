@@ -37,6 +37,7 @@
     btnMute.addEventListener("click", () => {
       const now = !CW.Audio.isMuted();
       CW.Audio.setMuted(now);
+      if (now && CW.Narrator) CW.Narrator.stop(); // muting silences the voice too
       btnMute.textContent = now ? "🔇" : "🔊";
     });
 

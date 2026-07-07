@@ -142,14 +142,13 @@ stings** — with June's theme resolving warm for the bracelet-mend endings. The
 button is a master mute; Settings "Ambient music" turns just the music off. Every
 node's `musicCue` selects its theme.
 
-**Narration (read-aloud):** an optional Settings toggle (`narrator.js`, off by
-default) reads the story to you. Most text uses the browser's built-in speech —
-free, offline, reading the real on-screen words (your name, the counts, all of
-it) — **horror-tuned to slow and lower as the dread deepens**. A handful of
-**signature moments carry a real recorded voice** instead (the shopkeeper's
-rule, the Unmaking Room, and two endings — `assets/voice/`, mapped by
-`CW.VoiceClips`); anything unvoiced falls back to the browser voice, so it never
-breaks for a missing file.
+**Voiced narration:** an optional Settings toggle (`narrator.js`, off by
+default) plays a **real recorded voice** on the game's signature moments — the
+shopkeeper's rule, the Unmaking Room, and certain endings (`assets/voice/`,
+mapped by `CW.VoiceClips`). Everything else is deliberately left silent: a robotic
+machine reading the text aloud sapped the atmosphere, so there is **no browser
+text-to-speech** — only the real voice, where we have it. More moments get a
+voice over time. Clips respect the 🔊 master mute.
 
 ## Run it
 
