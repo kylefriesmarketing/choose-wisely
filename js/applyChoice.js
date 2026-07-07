@@ -31,6 +31,12 @@ CW.ApplyChoice = (function () {
       ids.forEach((id) => { if (GS().freeChild(id).freed) freed.push(GS().childName(id)); });
     }
 
+    // 5c. The Ledger writes down certain choices (see CW.LedgerDeeds / the book).
+    if (choice.ledger) {
+      const ids = Array.isArray(choice.ledger) ? choice.ledger : [choice.ledger];
+      ids.forEach((id) => GS().ledgerAdd(id));
+    }
+
     // 6. Record what mattered.
     const deltas = spent.concat(gained);
     GS().pushHistory({

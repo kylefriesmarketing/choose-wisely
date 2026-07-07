@@ -45,6 +45,8 @@ CW.Shopkeeper = (function () {
       loops: GS().getLoops(),
       away: (GS().awayPhrase && GS().awayPhrase()) || "",
       wasWiped: !!(GS().wasWiped && GS().wasWiped()),
+      ledger: (GS().getLedger && GS().getLedger()) || {},
+      sins: (GS().ledgerSins && GS().ledgerSins()) || 0,
       gift: run.chosenGift || null,
       lastGift: meta.lastGift || null,
       giftHistory: meta.giftHistory || [],
@@ -84,6 +86,23 @@ CW.Shopkeeper = (function () {
         "You were gone {AWAY}. I know precisely how long — down to the minute, for every one of you. Did you think the shop stopped when you closed it? Nothing here stops. It only waits, and it is very, very patient, and it counts.",
         "{AWAY}. That is how long you left the door open behind you. I did not mind. I had the others to talk to. But I did notice, {HERO}. I always notice when you go, and I am always here when you decide to come back.",
       ] },
+    // --- the book of what you did, cited back to you, by count ---------------
+    { id: "ledger", tone: "sick", off: true,
+      where: (c) => c.sins >= 4 && c.haunt >= 2 && !c.onStage,
+      lines: (c) => {
+        const L = c.ledger || {};
+        const items = [
+          [L.gave || 0, "children lifted down off my shelves to be given away"],
+          [L.stock || 0, "who sat in the warm chair and let me finish them into stock"],
+          [L.hooked || 0, "left hanging on their hooks the moment you decided to run"],
+          [L.passed || 0, "little frayed bracelets you walked straight past"],
+          [L.fled || 0, "times you simply turned and fled and called it no choice"],
+          [L.pushed || 0, "times you pushed her down so your feet could keep moving"],
+        ].filter((x) => x[0] > 0).sort((a, b) => b[0] - a[0]);
+        if (!items.length) return [];
+        const t = items[0];
+        return ["I keep a book, {HERO}, in a hand very like your own. Your page is getting long. " + t[0] + " " + t[1] + " — and that is only the one line I chose to read you today. You walked in so certain you were the one being robbed. Shall I read you the rest of it?"];
+      } },
 
     // --- the mask fully off: the cellar, and the bottom of the descent -------
     { id: "cellar", tone: "slip", off: true,

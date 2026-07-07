@@ -620,8 +620,39 @@ CW.UIController = (function () {
       html += "</div>";
     }
 
+    // The Ledger — the book the shop keeps of what you did. You are the customer;
+    // the tally says otherwise.
+    if (GS().ledgerSins) {
+      const sins = GS().ledgerSins(), freed = GS().ledgerFreed();
+      html += '<div class="coll-route ledger-panel"><h3>The Ledger <span>' + sins + " against you</span></h3>";
+      html += '<div class="ledger-note">A book the shopkeeper keeps, in a hand very like your own. It does not forget, and it does not flatter.</div>';
+      LEDGER_LINES.forEach((l) => {
+        const n = GS().ledgerCount(l.key);
+        html += '<div class="ledger-row' + (n > 0 ? " inked" : "") + '"><span class="lg-text">' + l.text + '</span><span class="lg-n">' + n + "</span></div>";
+      });
+      html += '<div class="ledger-row freed"><span class="lg-text">Children you carried all the way home</span><span class="lg-n">' + freed + "</span></div>";
+      html += '<div class="ledger-verdict">' + ledgerVerdict(sins, freed) + "</div></div>";
+    }
+
     el.trackerBody.innerHTML = html;
     el.tracker.classList.add("open");
+  }
+  // Line items in the Ledger, phrased the way the shop would phrase them.
+  const LEDGER_LINES = [
+    { key: "gave",   text: "Children taken off the shelf, to be given away" },
+    { key: "stock",  text: "Children — and, once, you — sat down and made into stock" },
+    { key: "hooked", text: "Children left hanging on their hooks in the warm room" },
+    { key: "passed", text: "Little frayed bracelets you walked straight past" },
+    { key: "fled",   text: "Times you turned and ran, and called it having no choice" },
+    { key: "pushed", text: "Times you pushed her down, to keep your feet moving" },
+    { key: "wound",  text: "Times you let it wind you back rather than remember" },
+  ];
+  function ledgerVerdict(sins, freed) {
+    if (sins === 0 && freed === 0) return "The book is open to a blank first page. It is waiting for you, the way it waits for everyone.";
+    if (freed > 0 && freed >= sins) return "The right-hand column is longer than the left. Almost no one who keeps coming back can say that. Almost no one tries.";
+    if (sins > 0 && freed === 0) return "There is nothing at all in the other column. You keep telling yourself you came here to be robbed. The book, in your own handwriting, keeps a different story.";
+    if (sins > freed * 2) return "The shopkeeper turns the pages slowly, so you can read every line. You were never the customer. You only ever thought you were.";
+    return "The tally does not fall in your favour. It rarely does, for anyone the shop gets to keep.";
   }
   function hideTracker() { el.tracker.classList.remove("open"); }
 

@@ -136,6 +136,19 @@ CW.ChildFreedom = {
   END_D_TOYMAKER:    ["tomas"], // the broken toys mended and walking free
 };
 
+/* THE LEDGER — the book the shop keeps of what you did, across every run. These
+ * endings write a sin into it; choices can too (choice.ledger). The tally is
+ * read in the tracker's Ledger panel and cited back at you by the shopkeeper.
+ * Counters: gave (children taken off the shelf to give away) / hooked (left in
+ * the warm room) / passed (bracelets walked past) / stock (made into stock, and
+ * once, you) / fled (turned and ran) / pushed (pushed her down to keep moving).
+ * "wound" (loops) and "freed" are derived, not stored here. */
+CW.LedgerDeeds = {
+  END_NEW_STOCK: "stock", END_TAKEN: "stock", END_DISPLAY_PRISONER: "stock",
+  END_UNDERSTITCH: "hooked",
+  END_NO_ESCAPE: "fled",
+};
+
 /* -------------------------------------------------------------------------- */
 /* THE FOUR GIFTS                                                             */
 /* -------------------------------------------------------------------------- */
@@ -304,10 +317,10 @@ CW.StoryNodes = {
     musicCue: "shop_theme",
     effects: {},
     choices: [
-      { id: "S04_TEDDY", text: "Take the Talking Teddy Bear.", nextNodeId: "TM_TEDDY", gains: { wisdom: 1 }, setFlags: { chosenGift: "talking_teddy" }, addInventory: ["talking_teddy"] },
-      { id: "S04_CANDLE", text: "Take the Wish Candle.", nextNodeId: "TM_CANDLE", gains: { intelligence: 1 }, setFlags: { chosenGift: "wish_candle" }, addInventory: ["wish_candle"] },
-      { id: "S04_BALLOON", text: "Take the Everlasting Balloon.", nextNodeId: "TM_BALLOON", gains: { perception: 1 }, setFlags: { chosenGift: "everlasting_balloon" }, addInventory: ["everlasting_balloon"] },
-      { id: "S04_DRAGON", text: "Take the Clockwork Dragon.", nextNodeId: "TM_DRAGON", gains: { strength: 1 }, setFlags: { chosenGift: "clockwork_dragon" }, addInventory: ["clockwork_dragon"] },
+      { id: "S04_TEDDY", text: "Take the Talking Teddy Bear.", nextNodeId: "TM_TEDDY", gains: { wisdom: 1 }, setFlags: { chosenGift: "talking_teddy" }, addInventory: ["talking_teddy"], ledger: "gave" },
+      { id: "S04_CANDLE", text: "Take the Wish Candle.", nextNodeId: "TM_CANDLE", gains: { intelligence: 1 }, setFlags: { chosenGift: "wish_candle" }, addInventory: ["wish_candle"], ledger: "gave" },
+      { id: "S04_BALLOON", text: "Take the Everlasting Balloon.", nextNodeId: "TM_BALLOON", gains: { perception: 1 }, setFlags: { chosenGift: "everlasting_balloon" }, addInventory: ["everlasting_balloon"], ledger: "gave" },
+      { id: "S04_DRAGON", text: "Take the Clockwork Dragon.", nextNodeId: "TM_DRAGON", gains: { strength: 1 }, setFlags: { chosenGift: "clockwork_dragon" }, addInventory: ["clockwork_dragon"], ledger: "gave" },
       { id: "S04_FIFTH", text: "Follow the cat toward a fifth aisle you never noticed.", nextNodeId: "F01_FIFTH_AISLE", requirements: { flags: { cat_friend: true, fifthAisleUnlocked: true } }, hideWhenLocked: true },
       { id: "S04_STEAL", text: "Grab all four gifts and run.", nextNodeId: "END_DISPLAY_PRISONER", bond: -2 },
     ],
@@ -783,7 +796,7 @@ CW.StoryNodes = {
       { id: "UNM_FREE", text: "Pull the thread out of her mouth with your fingers, and to hell with what it costs you.", nextNodeId: "END_UNDERSTITCH", requirements: { stats: { strength: 3 } }, lockedText: "Your hands will not obey. Some animal part of you already knows how this ends and refuses to start it." },
       { id: "UNM_SIT", text: "Sit down in the one empty chair. You are so tired, and it all looks so gentle.", nextNodeId: "END_NEW_STOCK" },
       { id: "UNM_NAME", text: "Say the children's names aloud, all of them, so that at least it is witnessed.", nextNodeId: "CELLAR_2", gains: { wisdom: 1 }, setFlags: { witnessedWork: true }, bond: 1 },
-      { id: "UNM_BACK", text: "Back out. Pull the door shut. Pretend, for as long as you can, that you never opened it.", nextNodeId: "CELLAR_2", setFlags: { pushedItDown: true }, bond: -1 },
+      { id: "UNM_BACK", text: "Back out. Pull the door shut. Pretend, for as long as you can, that you never opened it.", nextNodeId: "CELLAR_2", setFlags: { pushedItDown: true }, bond: -1, ledger: "hooked" },
     ],
   },
   CELLAR_BRACELETS: {
@@ -799,7 +812,7 @@ CW.StoryNodes = {
       { id: "CW_TAKE", text: "Take one child's bracelet down, so that one of them leaves here with you.", nextNodeId: "CELLAR_2", requirements: { stats: { wisdom: 3 } }, setFlags: { tookABracelet: true }, bond: 1, lockedText: "To lift one down is to choose one, and to leave all the rest — and you cannot make your hand do it." },
       { id: "CW_FREE_WALL", text: "The two with no toy and nowhere to go — Pia, all her threads pulled out; Wren, knotted to her little brother. Lift them from their nails and carry them out yourself.", nextNodeId: "CELLAR_2", gains: { wisdom: 1 }, bond: 1, freeChild: ["pia", "wren"] },
       { id: "CW_EMPTY", text: "The wall is bare now. Every nail empty but one — yours. Take your own bracelet down too, and let the whole shop end.", nextNodeId: "END_EMPTY_SHELVES", requirements: { flags: { allChildrenFreed: true } }, hideWhenLocked: true },
-      { id: "CW_BACK", text: "Back away from the wall and climb, fast, toward the party.", nextNodeId: "END_NO_ESCAPE" },
+      { id: "CW_BACK", text: "Back away from the wall and climb, fast, toward the party.", nextNodeId: "END_NO_ESCAPE", ledger: "passed" },
     ],
   },
   CELLAR_2: {

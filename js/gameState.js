@@ -39,6 +39,7 @@ CW.GameState = (function () {
       freedChildren: [],      // ids of the other children you have set free across all runs
       firstSeen: 0,           // real-world ms of your very first visit
       lastSeen: 0,            // real-world ms you were last here (the shop counts the gap)
+      ledger: { gave: 0, hooked: 0, passed: 0, stock: 0, fled: 0, pushed: 0 }, // the book of what you did
       seenIntro: false,       // has the atmospheric intro played once
       settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, heroName: "Milo", friendName: "June" },
     };
@@ -267,6 +268,19 @@ CW.GameState = (function () {
     return { freed: true, allFreed: done };
   }
 
+  /* ---- The Ledger: the book the shop keeps of what you did -------------- */
+  // Sin counters live in meta.ledger; "wound" (loops) and "freed" are derived.
+  const SIN_KEYS = ["gave", "hooked", "passed", "stock", "fled", "pushed"];
+  function ledger() { if (!meta.ledger) meta.ledger = { gave: 0, hooked: 0, passed: 0, stock: 0, fled: 0, pushed: 0 }; return meta.ledger; }
+  function ledgerAdd(id, n) { if (!id) return; ledger()[id] = (ledger()[id] || 0) + (n || 1); saveMeta(); }
+  function ledgerCount(id) {
+    if (id === "wound") return meta.loops || 0;
+    if (id === "freed") return (meta.freedChildren || []).length;
+    return ledger()[id] || 0;
+  }
+  function ledgerSins() { return SIN_KEYS.reduce(function (s, k) { return s + (ledger()[k] || 0); }, 0) + (meta.loops || 0); }
+  function ledgerFreed() { return (meta.freedChildren || []).length; }
+
   function recordEnding(endingId) {
     const ending = CW.Endings[endingId];
     if (!ending) return { isNew: false, ending: null, newlyUnlocked: [] };
@@ -304,6 +318,11 @@ CW.GameState = (function () {
         if (r.allFreed) newlyUnlocked.push("Every child you found is free now. The shelves stand empty — and something waits at the wall of bracelets.");
       }
     });
+
+    // The Ledger writes down what this run cost (see CW.LedgerDeeds).
+    const deed = CW.LedgerDeeds && CW.LedgerDeeds[endingId];
+    if (deed) ledgerAdd(deed, 1);
+    if (run && run.flags && run.flags.pushedItDown) ledgerAdd("pushed", 1);
 
     // The fifth aisle unlocks after one ending from each gift route.
     if (!meta.unlockedSecrets.includes("fifthAisle") && ROUTES.every(routeHasEnding)) {
@@ -357,6 +376,7 @@ CW.GameState = (function () {
     hauntLevel, baselineDread, getVisits, getLoops, cellarCount, nightmareCount,
     hasKnowledge, knowledgeCount, truthsTotal, learnKnowledge, allTruths,
     freeChild, isChildFreed, freedCount, childrenTotal, allChildrenFreed, childName,
+    ledgerAdd, ledgerCount, ledgerSins, ledgerFreed, getLedger: ledger,
     recordEnding, isFound, foundCount, totalEndings, wipe,
   };
 })();
