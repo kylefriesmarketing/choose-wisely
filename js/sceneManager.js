@@ -44,12 +44,57 @@ CW.SceneManager = (function () {
     shopkeeper: 1,
   };
 
-  let sceneEl = null, artEl = null, imageEl = null, currentTheme = null, currentScene = null;
+  // Living video backgrounds (assets/video/<key>.mp4). A scene listed here plays
+  // a looping muted clip over its still (the still is the poster/fallback). Falls
+  // back to the still under reduce-motion or if the clip can't play. The
+  // menu/title uses the "__cover__" entry. More scenes get video over time.
+  const SCENE_VIDEOS = {
+    __cover__: "assets/video/cover_hero.mp4",
+  };
+
+  let sceneEl = null, artEl = null, imageEl = null, videoEl = null, currentTheme = null, currentScene = null;
 
   function init(el) {
     sceneEl = el;
     artEl = document.getElementById("scene-art");
     imageEl = document.getElementById("scene-image");
+    videoEl = document.getElementById("scene-video");
+    armVideoUnlock();
+  }
+
+  function motionOK() { return !document.body.classList.contains("reduce-motion"); }
+
+  // If a browser blocks muted autoplay (strict policies / iOS Low Power Mode),
+  // kick the clip on the first user interaction. The still shows until then.
+  let unlockArmed = false;
+  function armVideoUnlock() {
+    if (unlockArmed) return; unlockArmed = true;
+    const kick = function () {
+      if (videoEl && videoEl.classList.contains("shown") && videoEl.paused) {
+        const p = videoEl.play(); if (p && p.catch) p.catch(function () {});
+      }
+    };
+    ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
+      document.addEventListener(ev, kick, { passive: true });
+    });
+  }
+
+  // Play a looping clip over the still. Returns true if a clip is being shown.
+  function showVideo(src) {
+    if (!videoEl || !src || !motionOK()) { hideVideo(); return false; }
+    if (videoEl.getAttribute("data-src") !== src) {
+      videoEl.setAttribute("data-src", src);
+      videoEl.src = src;
+    }
+    const p = videoEl.play();
+    if (p && p.catch) p.catch(function () {}); // autoplay blocked -> still shows through
+    videoEl.classList.add("shown");
+    return true;
+  }
+  function hideVideo() {
+    if (!videoEl) return;
+    videoEl.classList.remove("shown");
+    try { videoEl.pause(); } catch (e) {}
   }
 
   function sceneKeyFor(node) {
@@ -73,14 +118,17 @@ CW.SceneManager = (function () {
   function renderArt(key) {
     if (key === currentScene) return;
     currentScene = key;
+    const vsrc = SCENE_VIDEOS[key];
     // Prefer a real illustration when one exists; otherwise use the SVG art.
     if (SCENE_IMAGES[key] && imageEl) {
       imageEl.style.backgroundImage = 'url("assets/images/' + key + '.png")';
       imageEl.classList.add("shown");
       if (sceneEl) sceneEl.classList.add("has-image");
       if (artEl) artEl.innerHTML = "";
+      if (vsrc) showVideo(vsrc); else hideVideo();
       return;
     }
+    hideVideo();
     if (imageEl) { imageEl.classList.remove("shown"); }
     if (sceneEl) sceneEl.classList.remove("has-image");
     if (!artEl) return;
@@ -101,6 +149,7 @@ CW.SceneManager = (function () {
       if (sceneEl) sceneEl.classList.add("has-image");
     }
     if (artEl) artEl.innerHTML = "";
+    showVideo(SCENE_VIDEOS.__cover__); // living title background; the still is the fallback
   }
 
   return { init, showScene, setTheme, sceneKeyFor, theme, cover, THEME_DEFAULT };

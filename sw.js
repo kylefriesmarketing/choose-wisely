@@ -51,7 +51,7 @@ self.addEventListener("activate", function (e) {
 });
 
 function isMedia(url) {
-  return /\.(png|jpe?g|webp|gif|svg|mp3|wav|ogg|woff2?)$/i.test(url.pathname) ||
+  return /\.(png|jpe?g|webp|gif|svg|mp3|wav|ogg|mp4|webm|mov|woff2?)$/i.test(url.pathname) ||
          url.pathname.indexOf("/assets/") !== -1;
 }
 
