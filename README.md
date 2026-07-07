@@ -2,6 +2,10 @@
 
 *One shop. Four gifts. Hundreds of endings.*
 
+**▶ Play it now: https://kylefriesmarketing.github.io/choose-wisely/** — works on
+desktop and phones (touch-ready, responsive). No install, no sign-in; your
+progress saves in the browser.
+
 A standalone, **engine-agnostic** playable book: part interactive fiction, part
 stat-driven adventure, part ending-collection game.
 
