@@ -41,7 +41,7 @@ CW.GameState = (function () {
       lastSeen: 0,            // real-world ms you were last here (the shop counts the gap)
       ledger: { gave: 0, hooked: 0, passed: 0, stock: 0, fled: 0, pushed: 0 }, // the book of what you did
       seenIntro: false,       // has the atmospheric intro played once
-      settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, heroName: "Milo", friendName: "June" },
+      settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, narration: false, heroName: "Milo", friendName: "June" },
     };
   }
 

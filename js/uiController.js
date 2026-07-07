@@ -82,6 +82,7 @@ CW.UIController = (function () {
     Object.keys(MENU_DECAY).forEach((id) => { const b = $(id); if (b) b.textContent = MENU_DECAY[id][haunt]; });
     if (el.caption) el.caption.textContent = "";
     stopTextRot();
+    if (CW.Narrator) CW.Narrator.stop();
     if (CW.Cast) CW.Cast.clear();
     if (CW.Faces) CW.Faces.clear();
     if (CW.Dread) CW.Dread.reset();
@@ -224,6 +225,7 @@ CW.UIController = (function () {
     el.panel.classList.add("fade-in");
 
     typeText(h.text || "");
+    if (CW.Narrator) CW.Narrator.speak(h.text || "", node.id);
     el.subtle.classList.remove("show");
 
     el.choices.innerHTML = "";
@@ -504,6 +506,7 @@ CW.UIController = (function () {
     if (eImg) { $("ending-art").innerHTML = '<img src="' + eImg + '" alt="" />'; $("ending-art").className = "ending-art has-img"; }
     else { $("ending-art").textContent = e.imagePrompt ? "🖼  " + e.imagePrompt : ""; $("ending-art").className = "ending-art"; }
     $("ending-text").textContent = replaceTokens(e.text);
+    if (CW.Narrator) CW.Narrator.speak(replaceTokens(e.text), e.id);
 
     // Discovered stats snapshot.
     $("ending-stats").innerHTML = CW.STATS.map((k) =>
@@ -524,7 +527,7 @@ CW.UIController = (function () {
     $("ending-hint").textContent = "";
     el.ending.classList.add("open");
   }
-  function hideEnding() { el.ending.classList.remove("open"); }
+  function hideEnding() { el.ending.classList.remove("open"); if (CW.Narrator) CW.Narrator.stop(); }
 
   function showHint() {
     // Optional vague hint toward an undiscovered ending (brief §16, §17).
@@ -663,6 +666,7 @@ CW.UIController = (function () {
       settingRow("showLockedChoices", "Show locked choices", "Display unavailable choices greyed out, so you know a hidden path exists.", s.showLockedChoices) +
       settingRow("reduceMotion", "Reduce motion", "Turn off background drift, page fades, and typewriter text.", s.reduceMotion) +
       settingRow("musicOn", "Ambient music", "Gentle synthesized music and scene ambience. The 🔊 button mutes everything.", s.musicOn !== false) +
+      settingRow("narration", "Narration (read aloud)", "Read the story aloud — a real recorded voice on key moments, your device's voice for the rest. It slows and lowers as the dread deepens.", s.narration === true) +
       '<div class="set-row"><div class="set-info"><div class="set-name">Text speed</div><div class="set-desc">How quickly narration appears.</div></div>' +
       '<select id="set-textSpeed"><option value="instant">Instant</option><option value="fast">Fast</option><option value="slow">Slow</option></select></div>';
     el.settingsBody.insertAdjacentHTML("beforeend",
@@ -682,6 +686,10 @@ CW.UIController = (function () {
         GS().setSetting(key, box.checked);
         applySettingsToDom();
         if (key === "musicOn" && CW.Audio && CW.Audio.refreshMusic) CW.Audio.refreshMusic();
+        if (key === "narration" && CW.Narrator) {
+          if (box.checked && currentNode) CW.Narrator.speak(replaceTokens(hauntedText(currentNode).text), currentNode.id);
+          else CW.Narrator.stop();
+        }
       });
     });
     $("set-textSpeed").addEventListener("change", (ev) => GS().setSetting("textSpeed", ev.target.value));

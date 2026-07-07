@@ -16,6 +16,8 @@ const TYPES = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".ico": "image/x-icon",
+  ".wav": "audio/wav",
+  ".mp3": "audio/mpeg",
 };
 
 const server = http.createServer((req, res) => {

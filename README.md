@@ -142,6 +142,15 @@ stings** — with June's theme resolving warm for the bracelet-mend endings. The
 button is a master mute; Settings "Ambient music" turns just the music off. Every
 node's `musicCue` selects its theme.
 
+**Narration (read-aloud):** an optional Settings toggle (`narrator.js`, off by
+default) reads the story to you. Most text uses the browser's built-in speech —
+free, offline, reading the real on-screen words (your name, the counts, all of
+it) — **horror-tuned to slow and lower as the dread deepens**. A handful of
+**signature moments carry a real recorded voice** instead (the shopkeeper's
+rule, the Unmaking Room, and two endings — `assets/voice/`, mapped by
+`CW.VoiceClips`); anything unvoiced falls back to the browser voice, so it never
+breaks for a missing file.
+
 ## Run it
 
 - **Just open it:** double-click `index.html`. Plain HTML/CSS/JS, no build step,

@@ -9,6 +9,7 @@
     CW.UIController.init();
     CW.Debug.init();
     if (CW.TabHorror) CW.TabHorror.init();
+    if (CW.Narrator) CW.Narrator.init();
 
     const UI = CW.UIController;
     const Engine = CW.StoryEngine;
