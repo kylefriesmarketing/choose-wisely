@@ -89,8 +89,17 @@ CW.SceneManager = (function () {
   }
 
   function theme() { return currentTheme; }
-  // Illustrated cover for the title screen.
-  function cover(sceneKey) { setTheme("street"); renderArt(sceneKey || "street"); }
+  // Illustrated cover for the title screen — the Coraline-style hero image.
+  function cover() {
+    setTheme("street");
+    currentScene = "__cover__"; // so the next real scene always re-renders
+    if (imageEl) {
+      imageEl.style.backgroundImage = 'url("assets/art/cover_hero.png")';
+      imageEl.classList.add("shown");
+      if (sceneEl) sceneEl.classList.add("has-image");
+    }
+    if (artEl) artEl.innerHTML = "";
+  }
 
   return { init, showScene, setTheme, sceneKeyFor, theme, cover, THEME_DEFAULT };
 })();

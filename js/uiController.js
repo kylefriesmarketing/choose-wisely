@@ -184,6 +184,11 @@ CW.UIController = (function () {
       '<div class="about-title">CHOOSE WISELY</div>' +
       '<div class="about-tag">One shop. Four gifts. Hundreds of endings.</div>' +
       '<p class="about-p">A playable storybook about ' + friend + "'s birthday — and the little shop that appears on the corner with exactly what you need, for exactly what it takes. Every choice moves four attributes, frays or mends a friendship bracelet, and steers toward one of more than forty collectible endings. The deeper you go, the darker it gets; the more you play, the more the shop remembers you.</p>" +
+      '<div class="cast-gallery">' +
+        '<figure class="cast-card"><img src="assets/art/cast_milo.png" alt="' + hero + '" loading="lazy"><figcaption>' + hero + "<span>late, and sorry, and trying</span></figcaption></figure>" +
+        '<figure class="cast-card"><img src="assets/art/cast_june.png" alt="' + friend + '" loading="lazy"><figcaption>' + friend + "<span>the friend at the party</span></figcaption></figure>" +
+        '<figure class="cast-card creep"><img src="assets/art/cast_shopkeeper.png" alt="The Shopkeeper" loading="lazy"><figcaption>The Shopkeeper<span>every gift takes something</span></figcaption></figure>' +
+      "</div>" +
       '<div class="about-sec"><b>Made with</b><div>Design, writing, art, and music generated for this build. Scenes and ending cards are painted illustrations; the soundtrack is composed live in your browser with WebAudio — no audio files, no dependencies, no build step.</div></div>' +
       '<div class="about-sec"><b>How to play</b><div>Read, choose, and watch your stats and the bracelet in the corner. Locked choices are goals, not walls. Every ending — even the sad ones — is worth collecting. Press <b>~</b> for developer tools.</div></div>' +
       '<div class="about-sec"><b>Your story</b><div>You are <b>' + hero + "</b>. Your friend is <b>" + friend + "</b>. Rename them any time in Settings.</div></div>" +

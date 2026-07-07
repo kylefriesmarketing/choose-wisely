@@ -51,6 +51,8 @@ CW.Characters = (function () {
       ${arms}
       <rect x="${x - 26}" y="392" width="52" height="104" rx="18" fill="none" stroke="rgba(255,210,150,0.25)" stroke-width="2"/>
       <rect x="${x - 22}" y="404" width="44" height="14" rx="7" fill="#c0453f"/>
+      <circle cx="${x - 26}" cy="398" r="2.8" fill="#20263e"/><circle cx="${x + 26}" cy="398" r="2.8" fill="#20263e"/>
+      <line x1="${x}" y1="422" x2="${x}" y2="488" stroke="rgba(18,14,28,0.3)" stroke-width="1.2" stroke-dasharray="2 3"/>
       <rect x="${x - 9}" y="${hy + 34}" width="18" height="26" fill="#e8c4a2"/>
       <circle cx="${x}" cy="${hy}" r="30" fill="#ecc9a6"/>
       <path d="M${x - 30} ${hy - 6} q30 -42 60 0 q-12 -20 -30 -20 q-18 0 -30 20z" fill="#3a2a1c"/>
@@ -93,6 +95,8 @@ CW.Characters = (function () {
       <path d="M${x - 34} 512 q34 -122 68 0 z" fill="${D}"/>
       ${arms}
       <rect x="${x - 20}" y="404" width="40" height="72" rx="16" fill="${D}"/>
+      <circle cx="${x - 20}" cy="410" r="2.6" fill="#204a40"/><circle cx="${x + 20}" cy="410" r="2.6" fill="#204a40"/>
+      <line x1="${x}" y1="416" x2="${x}" y2="470" stroke="rgba(12,30,26,0.32)" stroke-width="1.1" stroke-dasharray="2 3"/>
       <rect x="${x - 7}" y="${hy + 30}" width="14" height="22" fill="#e8c4a2"/>
       <circle cx="${x}" cy="${hy}" r="26" fill="#ecc9a6"/>
       ${hair}${face}
