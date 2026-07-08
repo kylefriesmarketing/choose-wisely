@@ -41,6 +41,7 @@ CW.GameState = (function () {
       lastSeen: 0,            // real-world ms you were last here (the shop counts the gap)
       ledger: { gave: 0, hooked: 0, passed: 0, stock: 0, fled: 0, pushed: 0 }, // the book of what you did
       seenIntro: false,       // has the atmospheric intro played once
+      seenHowTo: false,       // has the first-run how-to-play hint shown once
       narrationDefaultedOn: true, // marks that this save already has the narration-on default (fresh saves do; legacy saves lack the key)
       settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, narration: true, heroName: "Milo", friendName: "June" },
     };
@@ -74,6 +75,8 @@ CW.GameState = (function () {
   function getSettings() { return meta.settings; }
   function introSeen() { return !!meta.seenIntro; }
   function markIntroSeen() { meta.seenIntro = true; saveMeta(); }
+  function howToSeen() { return !!meta.seenHowTo; }
+  function markHowToSeen() { meta.seenHowTo = true; saveMeta(); }
   function setSetting(key, value) {
     meta.settings[key] = value;
     saveMeta();
@@ -377,7 +380,7 @@ CW.GameState = (function () {
 
   return {
     STAT_MAX, ROUTES,
-    loadMeta, saveMeta, getMeta, getSettings, setSetting, introSeen, markIntroSeen,
+    loadMeta, saveMeta, getMeta, getSettings, setSetting, introSeen, markIntroSeen, howToSeen, markHowToSeen,
     noteVisit, awayMs, awayPhrase, isReturning, weekdayOf, wasWiped, shardInfo,
     newRun, getRun, saveRun, hasSavedRun, loadRun, clearSavedRun,
     statValue, applyStats, setFlags, removeFlags, hasFlag,

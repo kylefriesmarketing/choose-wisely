@@ -790,6 +790,60 @@ body.reduce-motion .hud-bracelet.mended, body.reduce-motion .hud-bracelet.frayed
 body.reduce-motion .hud-bracelet svg { animation: none; }
 body.reduce-motion .overlay.open:not(.main-menu) > * { animation: none; }
 
+/* ---- UI polish 4: menu ambience, haunt-reactive chrome, how-to hint ------ */
+.menu-motes {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55;
+  background-image:
+    radial-gradient(2px 2px at 18% 82%, rgba(255,220,160,0.5), transparent 60%),
+    radial-gradient(1.5px 1.5px at 62% 66%, rgba(255,220,160,0.4), transparent 60%),
+    radial-gradient(2px 2px at 42% 44%, rgba(255,220,160,0.35), transparent 60%),
+    radial-gradient(1px 1px at 82% 32%, rgba(255,220,160,0.45), transparent 60%),
+    radial-gradient(2.5px 2.5px at 28% 22%, rgba(255,220,160,0.3), transparent 60%),
+    radial-gradient(1.5px 1.5px at 72% 88%, rgba(255,220,160,0.4), transparent 60%);
+  animation: moteDrift 26s linear infinite;
+}
+@keyframes moteDrift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: 0 -520px, 0 -760px, 0 -480px, 0 -880px, 0 -640px, 0 -700px; }
+}
+.menu-card { position: relative; z-index: 1; }
+.menu-card::before {
+  content: ""; position: absolute; left: 50%; top: 30%; width: 300px; height: 190px;
+  transform: translate(-50%, -50%); z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(255,180,90,0.13), transparent 70%);
+  filter: blur(10px); animation: menuBreathe 6.5s ease-in-out infinite;
+}
+@keyframes menuBreathe { 0%,100% { opacity: 0.55; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.08); } }
+body[data-haunt="3"] .menu-motes, body[data-haunt="4"] .menu-motes { filter: hue-rotate(-45deg) saturate(1.4) brightness(0.8); opacity: 0.4; }
+body[data-haunt="4"] .menu-card::before { background: radial-gradient(ellipse at center, rgba(200,40,40,0.16), transparent 70%); }
+
+/* haunt-reactive chrome: the shop's presence tints the UI as it remembers you */
+#haunt-veil { position: fixed; inset: 0; pointer-events: none; z-index: 4; opacity: 0; transition: opacity 2s ease;
+  background: radial-gradient(135% 105% at 50% 50%, transparent 55%, rgba(40,0,8,0.55) 100%); }
+body[data-haunt="2"] #haunt-veil { opacity: 0.28; }
+body[data-haunt="3"] #haunt-veil { opacity: 0.55; }
+body[data-haunt="4"] #haunt-veil { opacity: 0.85; background: radial-gradient(130% 100% at 50% 50%, transparent 44%, rgba(64,0,10,0.62) 100%); }
+body[data-haunt="2"] #topbar { filter: saturate(0.9); }
+body[data-haunt="3"] #topbar { filter: saturate(0.72) brightness(0.94); }
+body[data-haunt="4"] #topbar { filter: saturate(0.5) brightness(0.88) hue-rotate(-6deg); }
+body[data-haunt="3"] .stat-chip, body[data-haunt="3"] .hud-bracelet { border-color: rgba(180,80,80,0.4); }
+body[data-haunt="4"] .stat-chip, body[data-haunt="4"] .hud-bracelet { border-color: rgba(200,50,50,0.5); }
+
+/* first-run how-to hint */
+.howto-hint { position: relative; margin: 14px 0 4px; padding: 12px 34px 12px 14px; border-radius: 12px;
+  font-family: var(--font-ui); font-size: 13.5px; line-height: 1.5; color: var(--ink);
+  background: linear-gradient(to bottom, rgba(255,200,120,0.12), rgba(255,200,120,0.05));
+  border: 1px solid rgba(255,207,122,0.4); box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  animation: overlayIn 0.5s cubic-bezier(0.22,1,0.36,1); transition: opacity 0.6s ease; }
+.howto-hint.fade { opacity: 0; }
+.howto-hint b { color: var(--gold); }
+.howto-hint em { color: var(--gold-strong); font-style: italic; }
+.howto-x { position: absolute; top: 6px; right: 8px; width: 22px; height: 22px; border: none; background: transparent; color: var(--ink-dim); font-size: 14px; cursor: pointer; border-radius: 6px; }
+.howto-x:hover { color: var(--gold); background: rgba(255,255,255,0.08); }
+
+body.reduce-motion .menu-motes, body.reduce-motion .menu-card::before, body.reduce-motion .howto-hint { animation: none; }
+body.reduce-motion #haunt-veil { transition: none; }
+
 /* ---- responsive: phones & small tablets --------------------------------- */
 /* On touch devices a tap shouldn't leave a button stuck in its hover state. */
 @media (hover: none) {

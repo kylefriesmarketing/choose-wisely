@@ -280,6 +280,8 @@ CW.UIController = (function () {
     if (CW.Narrator) CW.Narrator.speak(h.text || "", node.id);
     el.subtle.classList.remove("show");
 
+    const staleHint = el.panel.querySelector(".howto-hint");
+    if (staleHint) staleHint.remove();
     el.choices.innerHTML = "";
     (node.choices || []).forEach((choice) => {
       const btn = buildChoiceButton(node, choice);
@@ -289,10 +291,29 @@ CW.UIController = (function () {
     Array.prototype.slice.call(el.choices.querySelectorAll(".choice:not(.locked)")).forEach((b, i) => {
       if (i < 9) b.setAttribute("aria-keyshortcuts", String(i + 1));
     });
+    if (!GS().howToSeen()) showHowToHint();
 
     // His voice, or the shop's dead children, but not both piling onto one beat.
     const aside = renderShopkeeperAside(node);
     renderTrace(node, !!aside);
+  }
+
+  // A one-time, dismissible how-to-play hint on the very first run. Sits above the
+  // choices, auto-clears the moment you navigate (renderNode removes it), and never
+  // returns once seen (persisted in meta).
+  function showHowToHint() {
+    GS().markHowToSeen();
+    const friend = replaceTokens("{FRIEND}");
+    const tip = document.createElement("div");
+    tip.className = "howto-hint";
+    tip.innerHTML =
+      '<button class="howto-x" aria-label="Dismiss">✕</button>' +
+      '<b>How to play.</b> Tap a choice — or press <b>1–9</b>. Every choice shifts your wits and ' +
+      'mends or frays the bracelet you share with ' + friend + '. There are many endings, and the shop ' +
+      'remembers you between them. <em>Choose wisely.</em>';
+    el.choices.parentNode.insertBefore(tip, el.choices);
+    tip.querySelector(".howto-x").addEventListener("click", () => tip.remove());
+    setTimeout(() => { if (tip.parentNode) { tip.classList.add("fade"); setTimeout(() => tip.remove(), 700); } }, 15000);
   }
 
   // The shopkeeper's reactive murmur. It fades in a beat after the narration so
