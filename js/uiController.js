@@ -25,6 +25,13 @@ CW.UIController = (function () {
   // same Coraline stop-motion style). New endings should ship with their card.
   function endingImgPath(id) { return CW.Endings[id] ? "assets/endings/" + id + ".png" : null; }
 
+  // A slim filling progress bar (collection completion). `cls` lets callers theme it.
+  function progressBarHTML(found, total, cls) {
+    const pct = total ? Math.max(0, Math.min(100, Math.round((found / total) * 100))) : 0;
+    return '<div class="prog-bar ' + (cls || "") + '" role="progressbar" aria-valuemin="0" aria-valuenow="' +
+      found + '" aria-valuemax="' + total + '"><span class="prog-fill" style="width:' + pct + '%"></span></div>';
+  }
+
   function $(id) { return document.getElementById(id); }
 
   function init() {
@@ -145,7 +152,7 @@ CW.UIController = (function () {
     let html = '<span class="mp-stat"><b>' + found + '</b> / ' + total + ' endings</span>';
     if (known > 0) html += '<span class="mp-dot">&bull;</span><span class="mp-stat"><b>' + known + '</b> / ' + truths + ' truths</span>';
     if (freed > 0) html += '<span class="mp-dot">&bull;</span><span class="mp-stat"><b>' + freed + '</b> / ' + kids + ' freed</span>';
-    prog.innerHTML = html;
+    prog.innerHTML = html + progressBarHTML(found, total, "mp-bar");
     prog.classList.add("show");
   }
   function hideMenu() {
@@ -267,6 +274,9 @@ CW.UIController = (function () {
     el.panel.scrollTop = 0; // always start a new beat from the top of the panel
 
     typeText(h.text || "");
+    // Storybook drop-cap — only when the beat opens on an actual letter (never on a
+    // line that starts with a quotation mark, where ::first-letter would balloon it).
+    el.text.classList.toggle("dropcap", /^[A-Za-z]/.test((h.text || "").trim()));
     if (CW.Narrator) CW.Narrator.speak(h.text || "", node.id);
     el.subtle.classList.remove("show");
 
@@ -549,7 +559,17 @@ CW.UIController = (function () {
     $("ending-cat").textContent = e.category;
     $("ending-cat").className = "ending-cat-chip cat-" + cat;
     const eImg = endingImgPath(e.id);
-    if (eImg) { $("ending-art").innerHTML = '<img src="' + eImg + '" alt="" />'; $("ending-art").className = "ending-art has-img"; }
+    if (eImg) {
+      const art = $("ending-art");
+      art.className = "ending-art has-img loading"; // shimmer skeleton until the card loads
+      art.innerHTML = "";
+      const im = document.createElement("img");
+      im.alt = "";
+      const done = () => art.classList.remove("loading"); // fade the card in
+      im.addEventListener("load", done); im.addEventListener("error", done);
+      im.src = eImg;
+      art.appendChild(im);
+    }
     else { $("ending-art").textContent = e.imagePrompt ? "🖼  " + e.imagePrompt : ""; $("ending-art").className = "ending-art"; }
     $("ending-text").textContent = replaceTokens(e.text);
     if (CW.Narrator) CW.Narrator.speak(replaceTokens(e.text), e.id);
@@ -597,7 +617,8 @@ CW.UIController = (function () {
       { key: "meta", label: "Hidden" },
       { key: "cellar", label: "The Cellar" },
     ];
-    let html = '<div class="coll-summary">' + GS().foundCount() + " / " + GS().totalEndings() + " endings discovered</div>";
+    let html = '<div class="coll-summary">' + GS().foundCount() + " / " + GS().totalEndings() + " endings discovered</div>" +
+      progressBarHTML(GS().foundCount(), GS().totalEndings());
     const FILTERS = [{ key: "all", label: "All" }].concat(routes);
     html += '<div class="coll-filters">' + FILTERS.map((f) => '<button class="filter-chip' + (trackerFilter === f.key ? " active" : "") + '" data-filter="' + f.key + '">' + f.label + "</button>").join("") + "</div>";
 

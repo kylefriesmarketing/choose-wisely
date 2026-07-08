@@ -395,7 +395,7 @@ body.reduce-motion .scene.omen #scene-video, body.reduce-motion .scene.omen .sce
 .chip-btn:hover { color: var(--ink); border-color: var(--gold); background: rgba(255,200,120,0.12); transform: translateY(-1px); }
 
 /* returning-player progress */
-.menu-progress { margin-top: 16px; min-height: 15px; font-family: var(--font-ui); font-size: 12.5px; color: var(--ink-dim); letter-spacing: 0.5px; opacity: 0; transition: opacity 1s ease; display: flex; gap: 10px; justify-content: center; align-items: center; }
+.menu-progress { margin-top: 16px; min-height: 15px; font-family: var(--font-ui); font-size: 12.5px; color: var(--ink-dim); letter-spacing: 0.5px; opacity: 0; transition: opacity 1s ease; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
 .menu-progress.show { opacity: 0.85; }
 .menu-progress b { color: var(--gold); font-weight: 700; }
 .menu-progress .mp-dot { opacity: 0.4; }
@@ -438,9 +438,13 @@ body[data-haunt="3"] .menu-title, body[data-haunt="4"] .menu-title { background:
 #stage.visible { display: flex; }
 .story-panel {
   width: min(820px, 96vw); max-height: 48vh; overflow-y: auto;
-  background: linear-gradient(to bottom, rgba(24,18,30,0.82), rgba(16,11,22,0.94));
+  /* a faint paper grain over the plate so it reads like a page */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E") repeat,
+    linear-gradient(to bottom, rgba(24,18,30,0.82), rgba(16,11,22,0.94));
   border: 1px solid var(--panel-edge); border-top: 2px solid rgba(255,207,122,0.4);
-  border-radius: var(--radius); box-shadow: var(--shadow), 0 -10px 40px rgba(0,0,0,0.4);
+  border-radius: var(--radius);
+  box-shadow: inset 0 1px 0 rgba(255,220,150,0.28), var(--shadow), 0 -10px 40px rgba(0,0,0,0.4);
   padding: 18px 30px 22px; backdrop-filter: blur(10px);
 }
 .story-panel.fade-in { animation: fadeUp 0.5s ease; }
@@ -722,6 +726,35 @@ body.reduce-motion .popup { animation: none; }
 ::-webkit-scrollbar-thumb { background: rgba(255,200,120,0.25); border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,200,120,0.45); }
 ::-webkit-scrollbar-track { background: transparent; }
+
+/* ---- UI polish: progress bar, drop-cap, image load-in, gallery ----------- */
+.prog-bar { position: relative; width: 100%; height: 7px; background: rgba(0,0,0,0.35); border: 1px solid var(--panel-edge); border-radius: 999px; overflow: hidden; margin: 10px 0 2px; }
+.prog-fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--gold-strong), var(--gold)); box-shadow: 0 0 10px rgba(255,200,120,0.5); transition: width 0.85s cubic-bezier(0.22,1,0.36,1); }
+.menu-progress .prog-bar.mp-bar { flex: 1 1 100%; height: 6px; margin: 8px auto 0; max-width: 280px; }
+
+/* storybook illuminated first letter (only when the beat opens on a letter) */
+.story-text.dropcap::first-letter {
+  float: left; font-family: var(--font-body); font-weight: 700;
+  font-size: 3em; line-height: 0.82; margin: 0.06em 0.1em -0.02em 0;
+  color: var(--gold); text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* ending art loads in behind a shimmer, then fades up (no pop) */
+.ending-art.has-img { position: relative; min-height: 120px; }
+.ending-art.has-img.loading { background: linear-gradient(100deg, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.03) 70%); background-size: 220% 100%; animation: shimmer 1.25s linear infinite; }
+.ending-art.has-img img { opacity: 0; transition: opacity 0.6s ease; }
+.ending-art.has-img:not(.loading) img { opacity: 1; }
+@keyframes shimmer { from { background-position: 220% 0; } to { background-position: -220% 0; } }
+
+/* ending tracker gallery: category-topped found cards, deeper hover, ? silhouette */
+.coll-card { position: relative; }
+.coll-card.found { border-top: 2px solid var(--cc, var(--gold)); }
+.coll-card.clickable:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.5); filter: drop-shadow(0 0 6px var(--cc, var(--gold))); }
+.coll-card.hidden::after { content: "?"; position: absolute; top: 50%; right: 12px; transform: translateY(-50%); font-family: var(--font-body); font-size: 30px; font-weight: 700; color: var(--ink-dim); opacity: 0.16; pointer-events: none; }
+
+body.reduce-motion .prog-fill { transition: none; }
+body.reduce-motion .ending-art.has-img.loading { animation: none; }
+body.reduce-motion .ending-art.has-img img { transition: none; }
 
 /* ---- responsive: phones & small tablets --------------------------------- */
 /* On touch devices a tap shouldn't leave a button stuck in its hover state. */
