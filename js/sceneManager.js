@@ -59,13 +59,14 @@ CW.SceneManager = (function () {
     __cover__: { src: "assets/video/cover_entrance.mp4", loop: true },
   };
 
-  let sceneEl = null, artEl = null, imageEl = null, videoEl = null, currentTheme = null, currentScene = null;
+  let sceneEl = null, artEl = null, imageEl = null, videoEl = null, loaderEl = null, currentTheme = null, currentScene = null;
 
   function init(el) {
     sceneEl = el;
     artEl = document.getElementById("scene-art");
     imageEl = document.getElementById("scene-image");
     videoEl = document.getElementById("scene-video");
+    loaderEl = document.getElementById("scene-loader");
     armVideoUnlock();
   }
 
@@ -155,14 +156,26 @@ CW.SceneManager = (function () {
     const vcfg = SCENE_VIDEOS[key];
     // Prefer a real illustration when one exists; otherwise use the SVG art.
     if (SCENE_IMAGES[key] && imageEl) {
-      imageEl.style.backgroundImage = 'url("assets/images/' + key + '.png")';
-      imageEl.classList.add("shown");
+      const url = 'assets/images/' + key + '.png';
       if (sceneEl) sceneEl.classList.add("has-image");
       if (artEl) artEl.innerHTML = "";
       if (vcfg) showVideo(vcfg); else hideVideo();
+      // Load-aware: shimmer while an uncached image loads, then fade it in. If one
+      // is already showing, keep it up until the new one is ready (no flash).
+      if (!imageEl.classList.contains("shown") && loaderEl) loaderEl.classList.add("show");
+      const pre = new Image();
+      const apply = function () {
+        if (currentScene !== key) return; // a newer scene already took over
+        imageEl.style.backgroundImage = 'url("' + url + '")';
+        imageEl.classList.add("shown");
+        if (loaderEl) loaderEl.classList.remove("show");
+      };
+      pre.onload = apply; pre.onerror = apply;
+      pre.src = url;
       return;
     }
     hideVideo();
+    if (loaderEl) loaderEl.classList.remove("show");
     if (imageEl) { imageEl.classList.remove("shown"); }
     if (sceneEl) sceneEl.classList.remove("has-image");
     if (!artEl) return;

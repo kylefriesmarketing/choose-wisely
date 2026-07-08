@@ -458,16 +458,27 @@ CW.UIController = (function () {
   function renderStats() {
     const run = GS().getRun();
     if (!run || !el.hudStats) return;
-    el.hudStats.innerHTML = "";
-    CW.STATS.forEach((k) => {
-      const chip = document.createElement("div");
-      chip.className = "stat-chip stat-" + k;
-      chip.innerHTML =
-        '<span class="stat-ico">' + STAT_ICONS[k] + "</span>" +
-        '<span class="stat-name">' + STAT_NAMES[k] + "</span>" +
-        '<span class="stat-val" data-stat="' + k + '">' + run.stats[k] + "</span>";
-      el.hudStats.appendChild(chip);
-    });
+    if (el.hudStats.childElementCount !== CW.STATS.length) {
+      el.hudStats.innerHTML = "";
+      CW.STATS.forEach((k) => {
+        const chip = document.createElement("div");
+        chip.className = "stat-chip stat-" + k; chip.dataset.chip = k;
+        chip.innerHTML =
+          '<span class="stat-ico">' + STAT_ICONS[k] + "</span>" +
+          '<span class="stat-name">' + STAT_NAMES[k] + "</span>" +
+          '<span class="stat-val" data-stat="' + k + '">' + run.stats[k] + "</span>";
+        el.hudStats.appendChild(chip);
+      });
+    } else {
+      // Update values in place (don't rebuild) so change animations aren't wiped.
+      CW.STATS.forEach((k) => {
+        const v = el.hudStats.querySelector('.stat-val[data-stat="' + k + '"]');
+        if (v && String(run.stats[k]) !== v.textContent) {
+          v.textContent = run.stats[k];
+          v.classList.remove("pulse"); void v.offsetWidth; v.classList.add("pulse");
+        }
+      });
+    }
     el.hudEndings.textContent = GS().foundCount() + " / " + GS().totalEndings() + " endings";
     renderBracelet();
   }
@@ -502,6 +513,7 @@ CW.UIController = (function () {
       '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '">' + strands + "</svg>" +
       '<span class="brc-label">' + (bond <= 0 ? "snapped" : bond >= max ? "whole" : bond + "/" + max) + "</span>";
     el.hudBracelet.classList.toggle("snapped", bond <= 0);
+    el.hudBracelet.classList.toggle("whole", bond >= max);
   }
 
   function showBondChange(delta) {
@@ -511,7 +523,12 @@ CW.UIController = (function () {
     p.textContent = "🧵 " + (delta > 0 ? "a thread mends" : "a thread frays");
     el.popups.appendChild(p);
     setTimeout(() => p.remove(), 1800);
-    if (el.hudBracelet) { el.hudBracelet.classList.remove("pulse"); void el.hudBracelet.offsetWidth; el.hudBracelet.classList.add("pulse"); }
+    if (el.hudBracelet) {
+      const cls = delta > 0 ? "mended" : "frayed";
+      el.hudBracelet.classList.remove("pulse", "mended", "frayed"); void el.hudBracelet.offsetWidth;
+      el.hudBracelet.classList.add("pulse", cls);
+      setTimeout(() => el.hudBracelet.classList.remove("mended", "frayed"), 850);
+    }
   }
 
   function renderInventory() {
@@ -532,8 +549,12 @@ CW.UIController = (function () {
       p.textContent = (c.amount > 0 ? "+" : "") + c.amount + " " + STAT_NAMES[c.stat];
       p.style.animationDelay = i * 0.12 + "s";
       el.popups.appendChild(p);
-      const hv = document.querySelector('.stat-val[data-stat="' + c.stat + '"]');
-      if (hv) { hv.classList.remove("pulse"); void hv.offsetWidth; hv.classList.add("pulse"); }
+      const chip = document.querySelector('.stat-chip[data-chip="' + c.stat + '"]');
+      if (chip) {
+        const cls = c.amount > 0 ? "bumped" : "dropped";
+        chip.classList.remove("bumped", "dropped"); void chip.offsetWidth; chip.classList.add(cls);
+        setTimeout(() => chip.classList.remove(cls), 760);
+      }
       setTimeout(() => p.remove(), 1700 + i * 120);
     });
   }

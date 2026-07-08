@@ -756,6 +756,40 @@ body.reduce-motion .prog-fill { transition: none; }
 body.reduce-motion .ending-art.has-img.loading { animation: none; }
 body.reduce-motion .ending-art.has-img img { transition: none; }
 
+/* ---- UI polish 2: scene load-in, stat bumps, richer bracelet, overlays ---- */
+.scene-loader { position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none; transition: opacity 0.45s ease;
+  background: linear-gradient(110deg, rgba(255,240,220,0.015) 30%, rgba(255,240,220,0.06) 50%, rgba(255,240,220,0.015) 70%);
+  background-size: 240% 100%; }
+.scene-loader.show { opacity: 1; animation: shimmer 1.5s linear infinite; }
+
+/* stat chips flash by direction when a stat changes */
+.stat-chip.bumped { animation: statBump 0.76s ease; }
+.stat-chip.dropped { animation: statDrop 0.76s ease; }
+@keyframes statBump { 0%,100% { transform: none; box-shadow: none; border-color: var(--panel-edge); }
+  28% { transform: translateY(-3px) scale(1.09); box-shadow: 0 0 15px rgba(123,224,138,0.6); border-color: var(--good); } }
+@keyframes statDrop { 0%,100% { transform: none; box-shadow: none; border-color: var(--panel-edge); }
+  20% { transform: translateX(-2px); border-color: var(--bad); box-shadow: 0 0 13px rgba(255,123,123,0.5); }
+  45% { transform: translateX(2px); } 70% { transform: translateX(-1px); } }
+
+/* richer bracelet: whole glows gold, mend/fray flash by direction, idle breathe */
+.hud-bracelet.whole { border-color: rgba(255,207,122,0.6); box-shadow: 0 0 12px rgba(255,207,122,0.35); }
+.hud-bracelet.mended { animation: brcMend 0.85s ease; }
+.hud-bracelet.frayed { animation: brcFray 0.85s ease; }
+@keyframes brcMend { 0%,100% { box-shadow: none; } 35% { box-shadow: 0 0 16px rgba(123,224,138,0.65); border-color: var(--good); } }
+@keyframes brcFray { 0%,100% { transform: none; box-shadow: none; } 20% { transform: translateX(-2px); box-shadow: 0 0 14px rgba(255,123,123,0.55); border-color: var(--bad); } 50% { transform: translateX(2px); } 75% { transform: translateX(-1px); } }
+.hud-bracelet svg { animation: brcBreathe 3.6s ease-in-out infinite; }
+@keyframes brcBreathe { 0%,100% { opacity: 0.86; } 50% { opacity: 1; } }
+
+/* overlay contents settle in (menu excluded — it runs its own cold-open) */
+.overlay.open:not(.main-menu) > * { animation: overlayIn 0.42s cubic-bezier(0.22,1,0.36,1); }
+@keyframes overlayIn { from { opacity: 0; transform: translateY(14px) scale(0.972); } to { opacity: 1; transform: none; } }
+
+body.reduce-motion .scene-loader.show { animation: none; }
+body.reduce-motion .stat-chip.bumped, body.reduce-motion .stat-chip.dropped,
+body.reduce-motion .hud-bracelet.mended, body.reduce-motion .hud-bracelet.frayed,
+body.reduce-motion .hud-bracelet svg { animation: none; }
+body.reduce-motion .overlay.open:not(.main-menu) > * { animation: none; }
+
 /* ---- responsive: phones & small tablets --------------------------------- */
 /* On touch devices a tap shouldn't leave a button stuck in its hover state. */
 @media (hover: none) {
