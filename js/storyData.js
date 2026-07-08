@@ -220,7 +220,7 @@ CW.StoryNodes = {
     location: "A quiet side street",
     theme: "street",
     speaker: "Narrator",
-    text: "The shop has no business existing, and yet here it is: warm light spilling out under a door that was not a door a minute ago. A skinny stray cat sits on the step, watching you, unbothered — as if it has seen a hundred late children stop right here, in the rain, with empty hands.",
+    text: "The shop has no business existing, and yet here it is: warm light spilling under a door that was not a door a minute ago. The light is the exact colour of being forgiven. A skinny stray cat sits on the step, not asking to be let in, which is its own kind of warning. It has watched a hundred late children stop on this spot, in this rain, with these empty hands. It watches you take your place.",
     haunt: {
       1: { text: "You are late to your best friend's birthday party, and you forgot the gift. On the corner, the little shop is glowing warm — the way it was last time. You are fairly sure you have stood on this exact spot before. The cat on the step blinks at you like it knows you." },
       2: { text: "The shop is on the corner again. Of course it is. You are late again, you forgot the gift again, the sign says CHOOSE WISELY again — and some tired part of you thinks, quite clearly: haven't I already done this?" },
@@ -248,7 +248,7 @@ CW.StoryNodes = {
     theme: "shop",
     poses: { boy: "surprised" },
     speaker: "Narrator",
-    text: "The bell above the door rings once, then twice, then a third time after your hand has already left the handle. Warm candlelight pools over shelves of strange toys. A tall shopkeeper in a patched coat smiles as though he has been expecting you.",
+    text: "The bell above the door rings once, twice — then a third time, after your hand has already left the handle. Somewhere under the floorboards, something rings back. Candlelight pools over shelves of toys that were arranged, you would swear, a moment before you came in. The tall shopkeeper in the patched coat is already smiling. He has been smiling since before the door opened. It is a good smile. It fits him like something bought secondhand.",
     haunt: {
       2: { text: "The bell rings three times, and the shopkeeper is smiling before you are through the door. \"Back again,\" he says warmly, like you are an old friend. \"I kept your spot on the shelf. I mean — your spot at the counter. Come in.\"" },
       4: { text: "The bell does not bother to ring. The shopkeeper is already holding the gift you will choose, wrapped, your name on the tag. \"Welcome back,\" he says, not looking up. \"You know where everything is by now.\"" },
@@ -271,7 +271,7 @@ CW.StoryNodes = {
     location: "Magic Shop",
     theme: "shop",
     speaker: "Narrator",
-    text: "Four gifts wait under glass: a Talking Teddy Bear whose button eyes follow you, a Wish Candle with a flame that leans toward your ear, an Everlasting Balloon straining upward on its string, and a Clockwork Dragon ticking like a small heart.",
+    text: "Four gifts wait under glass. A Talking Teddy Bear whose button eyes have already chosen you back. A Wish Candle whose flame bends toward your ear like a listener at a keyhole. An Everlasting Balloon straining at its string the way a dog strains at the end of a walk it does not intend to finish. And a Clockwork Dragon, ticking — not like a heart. Like something counting.",
     imagePrompt: "storybook illustration of four magical gifts under glass: a teddy bear, a candle, a balloon, and a clockwork dragon",
     musicCue: "shop_theme",
     effects: {},
@@ -392,7 +392,7 @@ CW.StoryNodes = {
   T01: {
     id: "T01", title: "The Whisper in the Wrapping", location: "Shop Doorway", theme: "teddy",
     speaker: "Teddy Bear",
-    text: "Before you reach the door the bear speaks against your ear. \"Don't trust him. He wraps children in soft shapes. Listen only to me.\"",
+    text: "Before you reach the door the bear turns its head — you feel the little grind of it against your collarbone — and speaks so only you can hear. \"Don't trust him. He wraps children in soft shapes and sells them to other children. Listen only to me.\" Its voice is warm and small and certain, and that is the trouble with it: you want, very badly, to listen only to it.",
     imagePrompt: "storybook illustration of a teddy bear whispering to a boy, button eyes gleaming, warm uneasy shadows",
     musicCue: "teddy_theme",
     effects: {},
@@ -406,7 +406,7 @@ CW.StoryNodes = {
   T02: {
     id: "T02", title: "The Hungry Alley", location: "Night Street", theme: "teddy",
     speaker: "Teddy Bear",
-    text: "The bear steers you toward a narrow alley. \"A shortcut,\" it hums. Somewhere in the dark, the walls seem to breathe.",
+    text: "The bear steers you — you did not decide to turn here — toward an alley too narrow for the two buildings that make it. \"A shortcut,\" it hums, pleased. The brick walls swell and sink, slow and even, warm to be near. It is not the wind. Walls do not do this. You know a chest breathing when you are pressed against one, and you are pressed against one now, on both sides, walking down the throat of it.",
     imagePrompt: "storybook illustration of a dark narrow alley that looks like it is breathing, a boy hesitating with a teddy bear",
     musicCue: "teddy_theme",
     effects: {},
@@ -420,7 +420,7 @@ CW.StoryNodes = {
   T03: {
     id: "T03", title: "A Small Pair of Hands", location: "Main Road", theme: "teddy",
     speaker: "Lost Child",
-    text: "A small child with no shoes reaches up. \"Can I hold him? Just for a moment. He looks so lonely.\"",
+    text: "A small child with no shoes steps out of a doorway that has no house behind it and reaches up with both hands. \"Can I hold him? Just for a moment. He looks so lonely.\" Rain is falling on the whole street except on the child, who is dry, and pale, and patient in a way children never are — and the bear against your chest has gone very stiff and very silent, the way you go silent when someone you know walks into the room wearing your face.",
     imagePrompt: "storybook illustration of a barefoot lost child reaching for a teddy bear on a dim street",
     musicCue: "teddy_theme",
     effects: {},
@@ -434,7 +434,7 @@ CW.StoryNodes = {
   T04: {
     id: "T04", title: "What the Bear Remembers", location: "Near the Party", theme: "teddy",
     speaker: "Teddy Bear",
-    text: "\"I remember this shop,\" the bear says quietly, \"from inside the shelf. I was a boy once, late to a party, just like you.\"",
+    text: "\"I remember this shop,\" the bear says, quieter now, \"from the inside of the shelf. It is dark in there, and you can hear the bell every time the door opens, and every time you think: this one. This one will pick me up and carry me out. I was a boy once. Late to a party. Empty hands.\" It pauses. \"I don't remember the party. I don't remember the friend. That's the part they take first, so you'll stop trying to leave.\"",
     imagePrompt: "storybook illustration of a teddy bear glowing faintly as it confesses a secret, a boy listening in the dark",
     musicCue: "teddy_theme",
     effects: {},
@@ -451,7 +451,7 @@ CW.StoryNodes = {
   C01: {
     id: "C01", title: "Make It Quick", location: "Shop Doorway", theme: "candle",
     speaker: "Wish Candle",
-    text: "The candle lights itself and its flame bends toward you. \"Make it quick,\" it crackles. \"You are late, and I can shorten anything.\"",
+    text: "The candle lights itself the moment you are alone with it, and the flame lies down flat, reaching, pointing at you like a finger. \"Make it quick,\" it crackles, kind as a nurse. \"You're late, and I can shorten anything. The walk. The waiting. The wanting.\" The wax has already begun to run, though nothing is burning it. \"A whole year of missing her — I could take that down to nothing. You wouldn't even feel where it used to be.\"",
     imagePrompt: "storybook illustration of a candle whose flame bends into a small grinning face, amber light",
     musicCue: "candle_theme",
     effects: {},
@@ -465,7 +465,7 @@ CW.StoryNodes = {
   C02: {
     id: "C02", title: "The Road That Grows", location: "Long Road", theme: "candle",
     speaker: "Narrator",
-    text: "The road to the party stretches longer with every step, as if the candle is testing you.",
+    text: "The road to the party grows a little longer each time you look up from your feet — a house you passed is ahead of you again; a lamp you left behind is throwing your shadow forward. The candle is not testing you. The candle is waiting, the way a patient thing waits, for you to get tired enough to spend it. That is all the road is for. It is the length of your own resolve, laid out in wet cobblestone, so you can watch it run out.",
     imagePrompt: "storybook illustration of a road that stretches impossibly long under a strange orange sky",
     musicCue: "candle_theme",
     effects: {},
@@ -479,7 +479,7 @@ CW.StoryNodes = {
   C03: {
     id: "C03", title: "A Tempting Offer", location: "Long Road", theme: "candle",
     speaker: "Wish Candle",
-    text: "\"I can make your friend adore whatever you bring,\" the flame whispers, \"even a handful of ash. Just say yes.\"",
+    text: "\"I can make her adore whatever you bring,\" the flame whispers, right at your ear now, close enough to warm it. \"A handful of ash. An empty box. Nothing at all. She'll throw her arms around it and mean it — really mean it, all the way down.\" The offer is so gentle. That is how you know the size of it. \"It isn't lying,\" the candle adds, reading your face. \"Not exactly. You'd be changing her instead of the gift. Isn't that easier? Just say yes.\"",
     imagePrompt: "storybook illustration of a candle flame whispering a tempting offer, wax dripping like a grin",
     musicCue: "candle_theme",
     effects: {},
@@ -493,7 +493,7 @@ CW.StoryNodes = {
   C04: {
     id: "C04", title: "The Riddle in the Wax", location: "Party Street", theme: "candle",
     speaker: "Narrator",
-    text: "Wax drips into letters that form a riddle across the cobblestones. Solve it and you keep your last wish unspent.",
+    text: "The candle weeps wax onto the cobblestones and the wax crawls into letters, and the letters make a riddle, and you understand, watching them form, that the riddle is easy on purpose — that the whole thing is built so you'll take the shortcut instead, so you'll spend the wish rather than think. Solve it with your own head and you keep your last wish. Everything down here is like this: a hard right door, held open beside a soft wrong one, to see which you'll walk through when you're tired.",
     imagePrompt: "storybook illustration of dripping wax forming a glowing riddle across cobblestones at night",
     musicCue: "candle_theme",
     effects: {},
@@ -510,7 +510,7 @@ CW.StoryNodes = {
   B01: {
     id: "B01", title: "The Pull of the String", location: "Outside the Shop", theme: "balloon",
     speaker: "Narrator",
-    text: "The balloon tugs upward the instant you step outside, lifting you onto your toes, then off them.",
+    text: "The balloon tugs upward the instant the door shuts behind you — onto your toes, then off them, then past the point where letting go would only mean falling. The string does not feel tied to the balloon. It feels tied to you, threaded in at the wrist and pulling, and the town drops away underneath your dangling shoes, small and warm and already too far to shout to.",
     imagePrompt: "storybook illustration of a boy lifted off his feet by a glowing balloon over rooftops, blue-purple sky",
     musicCue: "balloon_theme",
     effects: {},
@@ -524,7 +524,7 @@ CW.StoryNodes = {
   B02: {
     id: "B02", title: "Three Roofs, One Party", location: "Above the Town", theme: "balloon",
     speaker: "Narrator",
-    text: "From up here three houses glow with birthday lights. Only one is your friend's. Choose the wrong roof and the night is lost.",
+    text: "From up here three houses glow with birthday lights, and they are the same house — the same lit windows, the same paper lanterns, the same small shape at the same gate looking up. Only one is really hers. The other two are for you: baited, patient, wearing her party like a coat. Choose wrong and you'll come down into a birthday that was never anyone's, and the door will lock sweetly behind you, and you will be a very long time realizing.",
     imagePrompt: "storybook illustration of a boy floating above three lantern-lit rooftops, choosing which is the real party",
     musicCue: "balloon_theme",
     effects: {},
@@ -538,7 +538,7 @@ CW.StoryNodes = {
   B03: {
     id: "B03", title: "Paper Birds", location: "The Clouds", theme: "balloon",
     speaker: "Narrator",
-    text: "A flock of folded paper birds swarms the string, pecking at the knots.",
+    text: "A flock of folded paper birds boils up out of the cloud and swarms the string, pecking at the knots — and they are not trying to cut you loose. They are trying to keep you. Each one is a page, you see as they wheel: a page torn from somewhere, creased into wings, and written over every wing in a child's careful hand is a name, and a date, and the words BACK BY DARK. None of them made it back by dark. They flew instead. They are still flying.",
     imagePrompt: "storybook illustration of origami paper birds attacking a balloon string in the clouds",
     musicCue: "balloon_theme",
     effects: {},
@@ -552,7 +552,7 @@ CW.StoryNodes = {
   B04: {
     id: "B04", title: "The Balloon's Request", location: "The Clouds", theme: "balloon",
     speaker: "Everlasting Balloon",
-    text: "The balloon slows. \"Untie me,\" it says softly, \"and trust where I take you.\"",
+    text: "The balloon slows and turns, so the seam of it faces you like a face. \"Untie me,\" it says, softly, \"and trust where I take you.\" It is the first thing all night that has asked instead of pulled — and that is exactly why you cannot tell if it is the one honest voice up here or the most patient liar of them all. Below your shoes the town is a scatter of embers. Somewhere in it is a gate, and a friend, and a door still open. For now.",
     imagePrompt: "storybook illustration of a balloon speaking to a boy high above a glowing town at night",
     musicCue: "balloon_theme",
     effects: {},
@@ -569,7 +569,7 @@ CW.StoryNodes = {
   D01: {
     id: "D01", title: "The Waking Gears", location: "Outside the Shop", theme: "dragon",
     speaker: "Narrator",
-    text: "The clockwork dragon wakes and clicks its metal wings, waiting to learn what kind of owner you will be.",
+    text: "The clockwork dragon wakes in your hands with a shiver of tin and clicks its wings open, and its little glass eyes find your face and hold it, and it waits — not to learn what it is, but to learn what you are. Whether you wind gently or wind cruel. Whether you are the kind that keeps a thing or the kind that uses it up. It has met both. You can tell by the way it flinches, very slightly, when your thumb moves toward the key.",
     imagePrompt: "storybook illustration of a small brass clockwork dragon spreading metal wings, ember sparks",
     musicCue: "dragon_theme",
     effects: {},
@@ -583,7 +583,7 @@ CW.StoryNodes = {
   D02: {
     id: "D02", title: "The Locked Bridge", location: "River Bridge", theme: "dragon",
     speaker: "Narrator",
-    text: "A toy bridge blocks the route, its gears jammed shut.",
+    text: "A toy bridge blocks the route, gears jammed shut across a river that is too black and too quiet to be water. Things turn over in it, slow, just under the surface — pale, jointed, patient. One of them has a face. It is not looking at you. It is waiting its turn, the way you wait a turn you know is coming, and the bridge stays locked, and the dragon in your hands ticks faster, which is the only way it has to scream.",
     imagePrompt: "storybook illustration of a jammed clockwork toy bridge over a small river, gears and levers",
     musicCue: "dragon_theme",
     effects: {},
@@ -597,7 +597,7 @@ CW.StoryNodes = {
   D03: {
     id: "D03", title: "Toy Soldiers", location: "The Gutter", theme: "dragon",
     speaker: "Narrator",
-    text: "Wind-up toy soldiers march from the gutter, tin swords drawn, blocking the way.",
+    text: "Wind-up soldiers march up out of the gutter in a neat tin line, swords drawn, and halt — and every painted face is the same face, and it is a child's, worn smooth at the cheeks the way a coin wears smooth, from being handled. They do not want to hurt you. You can see that. They want you to stop, and stay, and be counted, and fall in — because whoever winds them keys them tighter for every child they turn back, and looser, they have learned, for every one they let past into the dark.",
     imagePrompt: "storybook illustration of wind-up tin toy soldiers marching from a gutter, a clockwork dragon facing them",
     musicCue: "dragon_theme",
     effects: {},
@@ -611,7 +611,7 @@ CW.StoryNodes = {
   D04: {
     id: "D04", title: "The Cost of Loyalty", location: "Near the Party", theme: "dragon",
     speaker: "Narrator",
-    text: "The dragon throws itself between you and a falling toy cannon and lands dented and sparking at your feet.",
+    text: "The cannon comes loose above you — you never see who tips it — and the dragon does not decide to move, it simply is between you and the falling thing, the way it was built to be, and it takes the blow and lands at your feet dented and sparking and trying, still, to stand. It cost itself for you without weighing it. That is the terrible thing the shop makes and sells: love with no brake on it. Love wound too tight to stop. It is looking up at you now to see if it was worth it. You get to decide the answer.",
     imagePrompt: "storybook illustration of a small clockwork dragon dented and sparking after protecting a boy",
     musicCue: "dragon_theme",
     effects: {},
@@ -692,7 +692,7 @@ CW.StoryNodes = {
   T2_A: {
     id: "T2_A", title: "The Hollow Room", location: "Under the Alley", theme: "teddy", cast: ["lostChild"],
     speaker: "Narrator",
-    text: "The child leads you down a stair you never saw, into a room where hollow bears hang from hooks like coats — each with a small open door in its back, each one empty.",
+    text: "The child leads you down a stair that was not there until it wanted you, into a low room where hollow bears hang from hooks like coats in a cloakroom — rows of them, more than a shop could ever sell, each with a small door open in its back, each one empty, each one still faintly warm. This is where the softness comes from. Not a factory. A wardrobe. They keep the shapes here, on hooks, until a child comes in from the rain cold enough to want putting on.",
     imagePrompt: "storybook illustration of a dim cellar full of hollow teddy bears hanging on hooks, each with a little open door",
     musicCue: "teddy_theme",
     effects: {},
@@ -706,7 +706,7 @@ CW.StoryNodes = {
   T2_B: {
     id: "T2_B", title: "The Blue Bear", location: "Under the Alley", theme: "teddy", cast: ["lostChild"],
     speaker: "Lost Child",
-    text: "On the lowest hook hangs a small patched blue bear, and the child makes a sound you have not heard all night: a laugh. \"That's mine,\" they whisper. \"That's really mine.\"",
+    text: "On the lowest hook, where a small child could reach it, hangs a small patched blue bear — and the child beside you makes a sound you have not heard all night, a real one, a laugh with a wet edge. \"That's mine,\" they whisper. \"That's really mine.\" And you understand, all at once and too late to unfeel it, that the child is not leading you to be cruel. The child is down here looking for the rest of themselves. They have been looking a long time. They are so happy they found a piece.",
     imagePrompt: "storybook illustration of a small patched blue teddy bear on a hook, a barefoot child reaching for it with joy",
     musicCue: "teddy_theme",
     effects: {},
@@ -722,7 +722,7 @@ CW.StoryNodes = {
   C2_A: {
     id: "C2_A", title: "The Wax Museum", location: "Behind the Wax", theme: "candle",
     speaker: "Narrator",
-    text: "The wax trail opens into a gallery of wax figures — a child mid-wish at every pedestal, held forever in the second before they understood the price.",
+    text: "The wax trail opens into a warm gallery lined with figures on pedestals, and every figure is a child mid-wish — hands lifted, mouth just opening, face lit from within with wanting — caught and cooled in the one instant before the price arrived. The wax is very good. It has eyelashes. It has the little chapped place on the lip. Whoever poured these loved them, in the way a collector loves a thing: completely, and only, and forever exactly as it is. There is an empty pedestal near the back. It is your height.",
     imagePrompt: "storybook illustration of a candlelit gallery of wax figures of children frozen mid-wish",
     musicCue: "candle_theme",
     effects: {},
@@ -738,7 +738,7 @@ CW.StoryNodes = {
   B2_A: {
     id: "B2_A", title: "The Ring in the Clouds", location: "The High Anchor", theme: "balloon", scene: "sky",
     speaker: "Narrator",
-    text: "You climb down the string to a small iron ring set into the clouds, and knotted to it are a hundred other strings, each rising to a balloon, each balloon holding someone who once went up and never came down.",
+    text: "You climb down your own string to a cold iron ring set into the floor of the clouds, and knotted to it are a hundred more strings, a hundred more, rising away into the dark, each one taut, each one ending in a small far balloon, each balloon a child who stepped outside a shop one evening and went up and was patient and was good and waited to be brought down. No one came. No one was ever going to come. That is the trick of everlasting: it is only the waiting that lasts. You are standing in the anchor of it now, holding the knot that holds them all.",
     imagePrompt: "storybook illustration of an iron ring in the clouds with a hundred balloon strings tied to it, tiny figures far above",
     musicCue: "balloon_theme",
     effects: {},
@@ -754,7 +754,7 @@ CW.StoryNodes = {
   D2_A: {
     id: "D2_A", title: "The Toy Foundry", location: "The Foundry", theme: "dragon", cast: ["toySoldier"],
     speaker: "Narrator",
-    text: "The soldiers march you to a roaring foundry where the shop melts down old, unwanted toys and stamps out shining new ones to sell. Your dragon growls low at the heat.",
+    text: "The soldiers march you into the heat, into a foundry that roars under the whole street, where the shop feeds its old stock — the loved-out, the wound-down, the ones no child came back for — into the fire, and stamps the softened metal into shining new gifts to set under the glass upstairs. Nothing here is wasted. Nothing here is thrown away. It is only melted, and renamed, and sold again, and the ladle that pours the bright new dragons is dark with the old ones, and your dragon presses itself against your chest and growls low, because it can smell, in the smoke, exactly what it is made of.",
     imagePrompt: "storybook illustration of a fiery toy foundry melting old toys into new ones, a clockwork dragon watching",
     musicCue: "dragon_theme",
     effects: {},
