@@ -162,9 +162,10 @@ CW.Characters = (function () {
 
   function shopkeeper() {
     const x = 715, hk = 262; // head y
-    // A tall stooped figure: a hooded head on narrow shoulders that flare into a
-    // long ragged cloak. Shoulders sit right under the neck so nothing floats.
-    const cloak = `M${x} 344 C ${x - 34} 348 ${x - 46} 384 ${x - 52} 460 L ${x - 56} 578 L ${x + 56} 578 L ${x + 52} 460 C ${x + 46} 384 ${x + 34} 348 ${x} 344 Z`;
+    // A tall stooped figure: a hooded head on wide shoulders that flare into a
+    // long ragged cloak. The shoulders rise to y332 with a shallow neckline dip,
+    // and the neck plunges into them, so head->neck->cloak is one continuous form.
+    const cloak = `M${x - 33} 312 Q ${x - 50} 340 ${x - 52} 440 L ${x - 56} 578 L ${x + 56} 578 L ${x + 52} 440 Q ${x + 50} 340 ${x + 33} 312 L ${x + 15} 312 Q ${x} 324 ${x - 15} 312 Z`;
     return `<g class="fig loom">
       <ellipse cx="${x}" cy="578" rx="60" ry="13" class="km-shadow" fill="rgba(0,0,0,0.44)" filter="url(#kmSoftBlur)"/>
       <g filter="url(#kmFelt)">
@@ -172,7 +173,8 @@ CW.Characters = (function () {
         <path d="${cloak}" fill="none" stroke="rgba(255,200,120,0.15)" stroke-width="1.5"/>
         <path d="M${x} 356 L${x} 560" fill="none" stroke="rgba(0,0,0,0.28)" stroke-width="2" stroke-dasharray="3 5"/>
         <ellipse cx="${x - 14}" cy="430" rx="20" ry="80" fill="url(#kmHi)" opacity="0.35"/>
-        <rect x="${x - 9}" y="${hk + 22}" width="18" height="40" fill="#2a2038"/>
+        <rect x="${x - 9}" y="${hk + 18}" width="18" height="42" fill="#2a2038"/>
+        <path d="M${x - 33} 312 Q ${x} 328 ${x + 33} 312" fill="none" stroke="rgba(255,200,120,0.14)" stroke-width="1.5"/>
         <circle cx="${x - 22}" cy="450" r="7" fill="#6a4a86"/><circle cx="${x + 20}" cy="500" r="6" fill="#7a5a2a"/>
         <circle cx="${x}" cy="${hk}" r="30" fill="url(#kmSkinPale)"/>
         <ellipse cx="${x - 10}" cy="${hk - 9}" rx="12" ry="10" fill="url(#kmHi)"/>
