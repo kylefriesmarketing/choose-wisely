@@ -10,6 +10,7 @@
     CW.Debug.init();
     if (CW.TabHorror) CW.TabHorror.init();
     if (CW.OtherYou) CW.OtherYou.init((kind, count) => CW.UIController.theOtherYou(kind, count));
+    if (CW.Watching) CW.Watching.init();
     if (CW.Narrator) CW.Narrator.init();
 
     const UI = CW.UIController;

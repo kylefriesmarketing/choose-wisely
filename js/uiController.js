@@ -632,6 +632,16 @@ CW.UIController = (function () {
     clearTimeout(toastTimer); toastTimer = setTimeout(() => el.toast.classList.remove("show"), 2600);
   }
 
+  // The shop's voice reaching you outside the story flow (idle, right-click, etc.).
+  let whisperTimer = null;
+  function shopWhisper(line, holdMs) {
+    const w = $("shop-whisper"); if (!w || !line) return;
+    w.textContent = replaceTokens(line);
+    w.classList.add("show");
+    clearTimeout(whisperTimer);
+    whisperTimer = setTimeout(() => w.classList.remove("show"), holdMs || 6000);
+  }
+
   // "The Other You": the shop's real-time reaction to a second open tab of itself.
   let oyTimer = null;
   function theOtherYou(kind, count) {
@@ -904,7 +914,7 @@ CW.UIController = (function () {
   return {
     init, showMenu, hideMenu,
     renderNode, renderStats, renderInventory,
-    showStatPopups, showBondChange, showSubtle, flashLocked, toast, theOtherYou,
+    showStatPopups, showBondChange, showSubtle, flashLocked, toast, theOtherYou, shopWhisper,
     showEnding, hideEnding, showHint, replaceTokens,
     showTracker, hideTracker, showSettings, hideSettings, applySettingsToDom,
     showHistory, hideHistory, playIntro, showAbout, hideAbout, showEndingDetail, hideEndingDetail,

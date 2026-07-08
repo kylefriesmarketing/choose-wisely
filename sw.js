@@ -26,7 +26,7 @@ var SHELL = [
   "css/styles.css",
   "js/storyData.js", "js/gameState.js", "js/requirements.js", "js/applyChoice.js",
   "js/audio.js", "js/scenes.js", "js/characters.js", "js/shopkeeper.js", "js/traces.js",
-  "js/tabHorror.js", "js/otherYou.js", "js/narrator.js", "js/dread.js", "js/sceneManager.js", "js/titleSequence.js",
+  "js/tabHorror.js", "js/otherYou.js", "js/watching.js", "js/narrator.js", "js/dread.js", "js/sceneManager.js", "js/titleSequence.js",
   "js/uiController.js", "js/storyEngine.js", "js/share.js", "js/debug.js", "js/main.js",
   "assets/art/cover_hero.png", "assets/art/favicon.svg", "assets/art/icon-512.png"
 ];

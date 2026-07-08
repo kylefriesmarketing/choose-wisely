@@ -857,6 +857,19 @@ body.reduce-motion #haunt-veil { transition: none; }
 body.reduce-motion .other-you { transition: opacity 0.25s ease; backdrop-filter: none; }
 body.reduce-motion .oy-line { animation: none; }
 
+/* ---- shop whisper: the shop's voice reaching you outside the story --------
+ * Idle ("still there?"), right-click / copy ("trying to remember me?"). A
+ * disembodied line that floats in from the top over anything on screen. */
+#shop-whisper { position: fixed; left: 50%; top: 12%; transform: translate(-50%, -10px); z-index: 64;
+  max-width: min(560px, 88vw); text-align: center; padding: 13px 20px; border-radius: 13px;
+  font-family: var(--font-body); font-size: clamp(15px, 2vw, 18px); font-style: italic; line-height: 1.5;
+  color: #ecd8c4; background: rgba(12,4,10,0.92); border: 1px solid rgba(176,48,74,0.5);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 28px rgba(120,0,20,0.35); backdrop-filter: blur(5px);
+  text-shadow: 0 0 13px rgba(255,70,55,0.28); opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s ease; }
+#shop-whisper.show { opacity: 1; transform: translate(-50%, 0); }
+body.reduce-motion #shop-whisper { transition: opacity 0.25s ease; backdrop-filter: none; }
+
 /* ---- responsive: phones & small tablets --------------------------------- */
 /* On touch devices a tap shouldn't leave a button stuck in its hover state. */
 @media (hover: none) {
