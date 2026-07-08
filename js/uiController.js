@@ -721,7 +721,8 @@ CW.UIController = (function () {
       '<div class="set-row"><div class="set-info"><div class="set-name">Your name</div><div class="set-desc">What the story calls you. Default: Milo.</div></div>' +
       '<input id="set-heroName" class="set-text" type="text" maxlength="16" value="" placeholder="Milo"></div>' +
       '<div class="set-row"><div class="set-info"><div class="set-name">Your friend\'s name</div><div class="set-desc">The friend whose birthday it is. Default: June.</div></div>' +
-      '<input id="set-friendName" class="set-text" type="text" maxlength="16" value="" placeholder="June"></div>');
+      '<input id="set-friendName" class="set-text" type="text" maxlength="16" value="" placeholder="June"></div>' +
+      '<div class="set-row"><div class="set-info"><div class="set-name">Controls</div><div class="set-desc">Click a choice, or use the keyboard: <b>1</b>–<b>9</b> to choose, <b>↑ ↓</b> to move between choices, <b>Enter</b> to select.</div></div></div>');
     $("set-heroName").value = s.heroName || "Milo";
     $("set-friendName").value = s.friendName || "June";
     $("set-heroName").addEventListener("input", (ev) => { GS().setSetting("heroName", ev.target.value); CW.StoryEngine.rerenderCurrent(); });
