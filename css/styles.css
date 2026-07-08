@@ -475,6 +475,27 @@ body[data-haunt="3"] .menu-title, body[data-haunt="4"] .menu-title { background:
 .choice:focus-visible { border-color: var(--gold); transform: translateX(3px); }
 .choice:focus-visible::before { opacity: 0.85; }
 .icon-btn:focus-visible, .chip-btn:focus-visible { outline-offset: 1px; }
+/* a small press so choosing feels tactile */
+.choice:active { transform: translateX(3px) scale(0.992); }
+/* number badges tie the choices to the 1-9 keyboard shortcuts (keyboard devices
+   only; hidden on touch, where there are no number keys). Counter skips locked. */
+@media (hover: hover) and (pointer: fine) {
+  .choices { counter-reset: choicenum; }
+  .choice:not(.locked) { counter-increment: choicenum; padding-right: 38px; }
+  .choice:not(.locked)::after {
+    content: counter(choicenum);
+    position: absolute; top: 10px; right: 10px;
+    width: 18px; height: 18px; line-height: 17px; text-align: center;
+    font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+    color: var(--ink-dim); background: rgba(0,0,0,0.28);
+    border: 1px solid var(--panel-edge); border-radius: 6px;
+    opacity: 0.5; transition: 0.15s ease;
+  }
+  .choice:not(.locked):hover::after,
+  .choice:not(.locked):focus-visible::after {
+    opacity: 1; color: var(--gold); border-color: rgba(255,207,122,0.6); background: rgba(255,200,120,0.12);
+  }
+}
 
 .inventory { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--panel-edge); font-family: var(--font-ui); font-size: 12px; }
 .inv-label { color: var(--ink-dim); }
@@ -504,7 +525,7 @@ body[data-haunt="3"] .menu-title, body[data-haunt="4"] .menu-title { background:
 .cat-true { --cc: var(--true); }
 
 /* ending card */
-.ending-card { width: min(580px, 96vw); max-height: 90vh; overflow-y: auto; text-align: center; background: var(--panel); border: 2px solid var(--cc, var(--gold)); border-radius: 20px; padding: 26px 30px; box-shadow: var(--shadow); animation: fadeUp 0.5s ease; }
+.ending-card { width: min(580px, 96vw); max-height: 90vh; overflow-y: auto; text-align: center; background: var(--panel); border: 2px solid var(--cc, var(--gold)); border-radius: 20px; padding: 26px 30px; box-shadow: var(--shadow); filter: drop-shadow(0 0 15px var(--cc, var(--gold))); animation: fadeUp 0.5s ease; }
 .ending-card.cat-secret, .ending-card.cat-true { box-shadow: 0 0 40px rgba(199,155,255,0.35); }
 .ending-number { font-family: var(--font-ui); font-size: 12px; color: var(--ink-dim); letter-spacing: 2px; }
 .ending-new { font-family: var(--font-ui); font-size: 13px; color: var(--ink-dim); margin: 2px 0 4px; }
@@ -696,8 +717,10 @@ body.reduce-motion .popup { animation: none; }
 @media (prefers-reduced-motion: reduce) { .scene .particles { animation: none; } }
 
 /* ---- scrollbars ---------------------------------------------------------- */
+* { scrollbar-width: thin; scrollbar-color: rgba(255,200,120,0.28) transparent; } /* Firefox */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb { background: rgba(255,200,120,0.25); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,200,120,0.45); }
 ::-webkit-scrollbar-track { background: transparent; }
 
 /* ---- responsive: phones & small tablets --------------------------------- */
