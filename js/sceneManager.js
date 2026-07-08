@@ -57,6 +57,14 @@ CW.SceneManager = (function () {
     // off to the loop — the machinery is built and tested; two Seedance takes
     // at a door-entry intro came back static, so none ships yet.)
     __cover__: { src: "assets/video/cover_entrance.mp4", loop: true },
+    // Living scene backgrounds — each animates its own still (the .png poster is
+    // the fallback under reduce-motion / if the clip can't play). Signature beats:
+    // the hub, the keeper, the true-ending aisle, the dread candle, the choice.
+    shop:       { src: "assets/video/shop.mp4", loop: true },
+    shopkeeper: { src: "assets/video/shopkeeper.mp4", loop: true },
+    fifth:      { src: "assets/video/fifth.mp4", loop: true },
+    candle:     { src: "assets/video/candle.mp4", loop: true },
+    gifts:      { src: "assets/video/gifts.mp4", loop: true },
   };
 
   let sceneEl = null, artEl = null, imageEl = null, videoEl = null, loaderEl = null, currentTheme = null, currentScene = null;
