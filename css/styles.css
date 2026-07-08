@@ -844,6 +844,18 @@ body[data-haunt="4"] .stat-chip, body[data-haunt="4"] .hud-bracelet { border-col
 body.reduce-motion .menu-motes, body.reduce-motion .menu-card::before, body.reduce-motion .howto-hint { animation: none; }
 body.reduce-motion #haunt-veil { transition: none; }
 
+/* "The Other You": full-screen event when the shop notices a second open tab */
+.other-you { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 26px; pointer-events: none; opacity: 0; transition: opacity 0.9s ease;
+  background: radial-gradient(circle at 50% 50%, rgba(22,0,7,0.5) 0%, rgba(4,0,2,0.88) 100%); backdrop-filter: blur(3px); }
+.other-you.show { opacity: 1; }
+.oy-inner { max-width: 640px; text-align: center; }
+.oy-line { font-family: var(--font-body); font-size: clamp(20px, 3.4vw, 30px); line-height: 1.5; margin: 0 0 16px; color: #ecd8c4;
+  text-shadow: 2px 0 rgba(255,44,44,0.4), -2px 0 rgba(60,120,255,0.3), 0 0 26px rgba(255,60,50,0.35); animation: oyWaver 3s ease-in-out infinite; }
+.oy-attr { font-family: var(--font-ui); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--nightmare); opacity: 0.85; }
+@keyframes oyWaver { 0%,100% { text-shadow: 2px 0 rgba(255,44,44,0.4), -2px 0 rgba(60,120,255,0.3), 0 0 26px rgba(255,60,50,0.35); } 50% { text-shadow: -2px 0 rgba(255,44,44,0.4), 2px 0 rgba(60,120,255,0.3), 0 0 30px rgba(255,60,50,0.45); } }
+body.reduce-motion .other-you { transition: opacity 0.25s ease; backdrop-filter: none; }
+body.reduce-motion .oy-line { animation: none; }
+
 /* ---- responsive: phones & small tablets --------------------------------- */
 /* On touch devices a tap shouldn't leave a button stuck in its hover state. */
 @media (hover: none) {

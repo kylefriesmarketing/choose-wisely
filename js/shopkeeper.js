@@ -47,6 +47,7 @@ CW.Shopkeeper = (function () {
       wasWiped: !!(GS().wasWiped && GS().wasWiped()),
       ledger: (GS().getLedger && GS().getLedger()) || {},
       sins: (GS().ledgerSins && GS().ledgerSins()) || 0,
+      timesDoubled: (GS().timesDoubled && GS().timesDoubled()) || 0,
       gift: run.chosenGift || null,
       lastGift: meta.lastGift || null,
       giftHistory: meta.giftHistory || [],
@@ -162,6 +163,14 @@ CW.Shopkeeper = (function () {
         else line = "You went behind the counter. Then you have seen the shape of the offer — and you came back out to the floor to keep pretending you are a customer. That is the part of you I like best.";
         return [line];
       } },
+
+    // --- he remembers the night you brought a second you (a 2nd open tab) ----
+    { id: "doubled", tone: "sick", off: true,
+      where: (c) => c.timesDoubled > 0 && !c.onStage && c.haunt >= 1,
+      lines: [
+        "You brought a second you here once, didn't you. Another tab, another window, another cold pair of hands. I kept it. Or it kept you — it gets hard to tell, with copies, which one is the original and which is only the one still walking about.",
+        "Two of you, that other night, in two little windows. I remember the pair of you fondly. One of you never did settle which was the real one. Neither did I. Neither, in the end, did it matter.",
+      ] },
 
     // --- deeper-down slip while he isn't even on screen ----------------------
     { id: "dread3", tone: "slip", off: true,

@@ -137,6 +137,7 @@ CW.UIController = (function () {
       }
       const phrase = GS().awayPhrase();
       if (phrase) return "You were gone " + phrase + ". It kept your place.";
+      if (GS().timesDoubled && GS().timesDoubled() > 0) return "You brought yourself here once — two of you, in two little windows. I remember. I do wonder which of you it was that got to leave.";
     }
     return HAUNT_TAGLINES[haunt] || "";
   }
@@ -587,6 +588,28 @@ CW.UIController = (function () {
     clearTimeout(toastTimer); toastTimer = setTimeout(() => el.toast.classList.remove("show"), 2600);
   }
 
+  // "The Other You": the shop's real-time reaction to a second open tab of itself.
+  let oyTimer = null;
+  function theOtherYou(kind, count) {
+    try { GS().noteDoubled(); } catch (e) {}
+    const hero = replaceTokens("{HERO}");
+    let line;
+    if (count >= 3) {
+      line = "Three of you now. Four. However many doors you open tonight, " + hero + ", they all lead back to this one counter — and I am so very glad to meet each and every one of you.";
+    } else if (kind === "newcomer") {
+      line = "You have been here already tonight. I can feel the other you, one window over, choosing the same wisely with the same cold little hands. Say hello. It won't hear you. It is terribly busy being you.";
+    } else {
+      line = "…ah. Another one. You opened a second door and walked back in as yourself. Two of you now — two shops, two frayed bracelets, and only one way out that was ever cut to fit a single child. Decide, between you, which of you it is for.";
+    }
+    const oy = $("other-you"), lineEl = $("oy-line");
+    if (!oy || !lineEl) return;
+    lineEl.textContent = line;
+    oy.classList.add("show");
+    if (CW.Audio && CW.Audio.entrance) CW.Audio.entrance("wrong");
+    clearTimeout(oyTimer);
+    oyTimer = setTimeout(() => oy.classList.remove("show"), 7200);
+  }
+
   /* ---- ending screen ---------------------------------------------------- */
   function showEnding(result) {
     const e = result.ending;
@@ -833,7 +856,7 @@ CW.UIController = (function () {
   return {
     init, showMenu, hideMenu,
     renderNode, renderStats, renderInventory,
-    showStatPopups, showBondChange, showSubtle, flashLocked, toast,
+    showStatPopups, showBondChange, showSubtle, flashLocked, toast, theOtherYou,
     showEnding, hideEnding, showHint, replaceTokens,
     showTracker, hideTracker, showSettings, hideSettings, applySettingsToDom,
     showHistory, hideHistory, playIntro, showAbout, hideAbout, showEndingDetail, hideEndingDetail,
