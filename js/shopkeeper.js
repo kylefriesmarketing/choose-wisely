@@ -175,6 +175,7 @@ CW.Shopkeeper = (function () {
 
     // --- the small hours: the shop reads your real local clock ---------------
     { id: "hour", tone: "sick", off: true,
+      voiceKey: (c) => c.hour === 3 ? "HOUR_3AM" : "HOUR_LATE",
       where: (c) => !c.onStage && (c.hour < 5 || c.hour >= 23),
       lines: (c) => c.hour === 3
         ? ["Three in the morning. You know the thing they say about this hour — the one where the door between is thinnest. It is when I am most awake. And you came anyway. Good."]
@@ -303,7 +304,8 @@ CW.Shopkeeper = (function () {
       if (!pool) continue;
       const line = pool[Math.floor(Math.random() * pool.length)];
       seen[line] = true;
-      return { line: line, tone: r.tone, disembodied: !c.onStage, rule: r.id };
+      const vk = typeof r.voiceKey === "function" ? r.voiceKey(c) : (r.voiceKey || null);
+      return { line: line, tone: r.tone, disembodied: !c.onStage, rule: r.id, voiceKey: vk };
     }
     return null;
   }

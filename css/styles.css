@@ -848,7 +848,8 @@ body.reduce-motion #haunt-veil { transition: none; }
 .other-you { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 26px; pointer-events: none; opacity: 0; transition: opacity 0.9s ease;
   background: radial-gradient(circle at 50% 50%, rgba(22,0,7,0.5) 0%, rgba(4,0,2,0.88) 100%); backdrop-filter: blur(3px); }
 .other-you.show { opacity: 1; }
-.oy-inner { max-width: 640px; text-align: center; }
+.oy-bg { position: absolute; inset: 0; z-index: 0; background: url("assets/art/the_other_you.png") center/cover no-repeat; opacity: 0.3; filter: saturate(0.7) brightness(0.55); }
+.oy-inner { position: relative; z-index: 1; max-width: 640px; text-align: center; }
 .oy-line { font-family: var(--font-body); font-size: clamp(20px, 3.4vw, 30px); line-height: 1.5; margin: 0 0 16px; color: #ecd8c4;
   text-shadow: 2px 0 rgba(255,44,44,0.4), -2px 0 rgba(60,120,255,0.3), 0 0 26px rgba(255,60,50,0.35); animation: oyWaver 3s ease-in-out infinite; }
 .oy-attr { font-family: var(--font-ui); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--nightmare); opacity: 0.85; }

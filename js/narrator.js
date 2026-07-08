@@ -19,6 +19,10 @@ window.CW = window.CW || {};
 CW.VoiceClips = {
   S03_SHOPKEEPER_WARNING: "s03_warning.wav",   // the shopkeeper's rule
   UNMAKING_ROOM:          "unmaking_room.wav",  // the warm room where the work is done
+  // Voiced lines for the player-medium horror mechanics (fixed lines only).
+  OY_ARRIVAL:  "OY_ARRIVAL.mp3",  OY_NEWCOMER: "OY_NEWCOMER.mp3", OY_THREE: "OY_THREE.mp3", // The Other You
+  SKIM_1:      "SKIM_1.mp3",      SKIM_2:      "SKIM_2.mp3",      SKIM_3:   "SKIM_3.mp3",    // skimming
+  HOUR_3AM:    "HOUR_3AM.mp3",    HOUR_LATE:   "HOUR_LATE.mp3",   // the hour
 };
 
 CW.Narrator = (function () {

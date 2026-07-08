@@ -288,7 +288,8 @@ CW.UIController = (function () {
       if (elapsed < lastReadMs * 0.35) skimStreak++; else skimStreak = 0;
     }
     if (skimStreak >= 3) {
-      pendingInterjection = { line: SKIM_LINES[Math.min(SKIM_LINES.length - 1, Math.floor(skimStreak / 3) - 1)], tone: "sick" };
+      const si = Math.min(SKIM_LINES.length - 1, Math.floor(skimStreak / 3) - 1);
+      pendingInterjection = { line: SKIM_LINES[si], tone: "sick", voiceKey: "SKIM_" + (si + 1) };
       skimStreak = 0;
     } else if (reachedFor && !pendingInterjection && Math.random() < 0.5) {
       const x = reachedFor.length > 64 ? reachedFor.slice(0, 61) + "…" : reachedFor;
@@ -374,6 +375,7 @@ CW.UIController = (function () {
       el.skAside.classList.add("show", "tone-" + aside.tone);
       if (aside.disembodied) el.skAside.classList.add("disembodied");
       else if (CW.Cast && CW.Cast.setSpeaking) CW.Cast.setSpeaking("shopkeeper", true);
+      if (aside.voiceKey && CW.Narrator) CW.Narrator.speak(replaceTokens(aside.line), aside.voiceKey);
     };
     const instant = GS().getSettings().textSpeed === "instant" || document.body.classList.contains("reduce-motion");
     if (instant) reveal();
@@ -635,21 +637,25 @@ CW.UIController = (function () {
   function theOtherYou(kind, count) {
     try { GS().noteDoubled(); } catch (e) {}
     const hero = replaceTokens("{HERO}");
-    let line;
+    let line, voiceKey;
     if (count >= 3) {
       line = "Three of you now. Four. However many doors you open tonight, " + hero + ", they all lead back to this one counter — and I am so very glad to meet each and every one of you.";
+      voiceKey = "OY_THREE";
     } else if (kind === "newcomer") {
       line = "You have been here already tonight. I can feel the other you, one window over, choosing the same wisely with the same cold little hands. Say hello. It won't hear you. It is terribly busy being you.";
+      voiceKey = "OY_NEWCOMER";
     } else {
       line = "…ah. Another one. You opened a second door and walked back in as yourself. Two of you now — two shops, two frayed bracelets, and only one way out that was ever cut to fit a single child. Decide, between you, which of you it is for.";
+      voiceKey = "OY_ARRIVAL";
     }
     const oy = $("other-you"), lineEl = $("oy-line");
     if (!oy || !lineEl) return;
     lineEl.textContent = line;
     oy.classList.add("show");
     if (CW.Audio && CW.Audio.entrance) CW.Audio.entrance("wrong");
+    if (CW.Narrator) CW.Narrator.speak(line, voiceKey); // the shop, speaking to the copy of you
     clearTimeout(oyTimer);
-    oyTimer = setTimeout(() => oy.classList.remove("show"), 7200);
+    oyTimer = setTimeout(() => oy.classList.remove("show"), 11000);
   }
 
   /* ---- ending screen ---------------------------------------------------- */
