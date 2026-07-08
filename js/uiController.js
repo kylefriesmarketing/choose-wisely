@@ -59,11 +59,12 @@ CW.UIController = (function () {
   // The menu lies more the deeper it remembers you (indexed by haunt 0..4).
   const MENU_DECAY = {
     "menu-new":      ["Begin", "Begin", "Begin Again", "Again.", "Come In Out of the Rain."],
-    "menu-continue": ["Continue", "Continue", "Continue", "You Never Left", "You Never Left"],
-    "menu-endings":  ["Endings", "Endings", "Endings", "There Is No Ending", "There Is No Ending"],
-    "menu-about":    ["About", "About", "About", "About You", "About You"],
+    "menu-continue": ["Continue", "Continue", "Right Where You Left Off", "You Never Left", "You Never Left"],
+    "menu-endings":  ["Endings", "Endings", "The Collection", "There Is No Ending", "You're In There Too"],
+    "menu-settings": ["Settings", "Settings", "Settings", "What You'll Allow", "What You'll Allow"],
+    "menu-about":    ["About", "About", "About the Shop", "About You", "About You, Mostly"],
   };
-  const GLITCH_TITLES = ["CHOSEN ALREADY", "COME BACK IN", "STAY WISELY", "CHOOSE NOTHING", "YOU, AGAIN"];
+  const GLITCH_TITLES = ["CHOSEN ALREADY", "COME BACK IN", "STAY WISELY", "CHOOSE NOTHING", "YOU, AGAIN", "CHOSEN LONG AGO", "STILL HERE", "OURS NOW"];
   function showMenu() {
     el.menu.classList.add("open");
     el.topbar.classList.remove("visible");
