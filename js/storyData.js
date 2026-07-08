@@ -261,6 +261,7 @@ CW.StoryNodes = {
       { id: "S01_GREET", text: "Greet the shopkeeper politely, as if you have a choice.", nextNodeId: "S02_FOUR_GIFTS", gains: { wisdom: 1 } },
       { id: "S01_WANDER", text: "Read the labels on the high shelves — they are all names.", nextNodeId: "S02_FOUR_GIFTS", gains: { intelligence: 1 } },
       { id: "S01_STEADY", text: "Breathe slow. The air tastes faintly of other children.", nextNodeId: "S02_FOUR_GIFTS", gains: { strength: 1 } },
+      { id: "S01_LOSTFOUND", text: "A dusty bin in the corner, marked LOST & FOUND. Go to it, the way you'd go to something of hers.", nextNodeId: "SHOP_LOSTFOUND", requirements: { flags: { rememberedJune: true } }, gains: { perception: 1 }, hideWhenLocked: true },
     ],
   },
 
@@ -280,6 +281,52 @@ CW.StoryNodes = {
       { id: "S02_ASK", text: "Step to the counter and ask what the gifts cost.", nextNodeId: "S03_SHOPKEEPER_WARNING" },
       { id: "S02_TOUCH", text: "Press your palm to the glass. Feel which one is warm.", nextNodeId: "S03_SHOPKEEPER_WARNING", gains: { perception: 1 }, setFlags: { touchedGlass: true } },
       { id: "S02_LISTEN", text: "Lean in — is that the gifts breathing, or only you?", nextNodeId: "S03_SHOPKEEPER_WARNING", gains: { intelligence: 1 }, setFlags: { heardGifts: true } },
+      { id: "S02_LOSTFOUND", text: "In the corner, half in shadow, an old bin marked LOST & FOUND. Go and look.", nextNodeId: "SHOP_LOSTFOUND", requirements: { stats: { perception: 3 } }, gains: { perception: 1 }, lockedText: "There is a bin in the corner you can't quite make out from here." },
+    ],
+  },
+
+  /* ---- OPTIONAL SHOP SIDE-THREAD ----------------------------------------
+     The Lost & Found and the Layaway shelf. Reachable from S01 (if you
+     remembered {FRIEND} back in the prologue) or S02 (if you're observant).
+     Deepens the shop's guilt, teaches truth_trade, and offers another hidden
+     way down to the cellar — but adds NO new endings, so nothing needs new
+     art or voice. Routes only back into existing nodes. -------------------- */
+  SHOP_LOSTFOUND: {
+    id: "SHOP_LOSTFOUND",
+    dread: 1,
+    title: "The Lost and Found",
+    location: "Magic Shop",
+    theme: "shop", scene: "shop",
+    speaker: "Narrator",
+    text: "The bin is oak, and old, and heaped with the small things late children leave behind: a single wool mitten, a house key on a red ribbon, a party hat gone soft, a birthday candle burned halfway and never wished on. And near the top, coiled neat as if it had been set there for you to find, a friendship bracelet — the same pattern as the frayed one on your wrist, the very same, except this one is whole, unbroken, bright, with two sets of initials worked into the weave. Yours. And {FRIEND}'s.",
+    imagePrompt: "storybook illustration of an old oak lost-and-found bin heaped with children's small lost things, a whole friendship bracelet resting on top",
+    musicCue: "shop_theme",
+    effects: { setFlags: { sawLostFound: true } },
+    choices: [
+      { id: "LF_TAGS", text: "Read the paper tags knotted to each lost thing.", nextNodeId: "SHOP_LAYAWAY", gains: { perception: 1 }, setFlags: { readLostTags: true } },
+      { id: "LF_TAKE", text: "Lift the whole, unfrayed bracelet out of the bin.", nextNodeId: "S02_FOUR_GIFTS", gains: { perception: 1 }, setFlags: { sawWholeBracelet: true } },
+      { id: "LF_LEAVE", text: "Leave it. None of it was ever yours to take.", nextNodeId: "S02_FOUR_GIFTS", gains: { wisdom: 1 }, bond: 1, setFlags: { leftLostFound: true } },
+      { id: "LF_ASK", text: "Carry the bin to the counter and ask whose all this is.", nextNodeId: "S03_SHOPKEEPER_WARNING", gains: { intelligence: 1 }, setFlags: { askedLostFound: true } },
+      { id: "LF_DESCEND", text: "A single thread trails from the bin, over the lip, and down into the dark. Follow it.", nextNodeId: "CELLAR_1", requirements: { minDread: 3 }, hideWhenLocked: true },
+    ],
+  },
+
+  SHOP_LAYAWAY: {
+    id: "SHOP_LAYAWAY",
+    dread: 2,
+    title: "On Layaway",
+    location: "The Back Shelf",
+    theme: "shop", scene: "shop",
+    speaker: "Narrator",
+    text: "Behind the lost and found, where the candlelight does not quite reach, there is a second shelf — and on it sit toys that are not finished yet: a bear with only one button eye, a dragon with no key, a candle not yet lit. Each wears a paper tag on a string. A name. A date, back by. And a balance. Some read PAID IN FULL, in a neat old hand. The rest still owe. Greta. Tomas. Odile. Sam. And near the front, its ink not yet dry, a newer tag, in a hand very like the shopkeeper's — and the name inked on it is {HERO}. Beneath it, smaller, in the same hand: {FRIEND}. Where the balance should be, it says only: soon.",
+    imagePrompt: "storybook illustration of a dim back shelf of half-finished toys, each with a small paper name tag, one tag newer than the rest",
+    musicCue: "shop_theme",
+    effects: { learn: ["truth_trade"], setFlags: { sawLayaway: true } },
+    choices: [
+      { id: "LA_JUNE", text: "Take the tag with {FRIEND}'s name and close your fist around it.", nextNodeId: "S02_FOUR_GIFTS", gains: { perception: 1 }, bond: 1, setFlags: { tookJuneTag: true } },
+      { id: "LA_DEBT", text: "Read what the shop is still owed for the other children.", nextNodeId: "S02_FOUR_GIFTS", gains: { intelligence: 1 }, setFlags: { readTheDebt: true } },
+      { id: "LA_BACK", text: "Put every tag back exactly as you found it, and step away.", nextNodeId: "S02_FOUR_GIFTS", gains: { wisdom: 1 } },
+      { id: "LA_CONFRONT", text: "Go and find the shopkeeper. You have different questions now.", nextNodeId: "S03_SHOPKEEPER_WARNING", gains: { wisdom: 1 }, setFlags: { confrontedLayaway: true } },
     ],
   },
 
