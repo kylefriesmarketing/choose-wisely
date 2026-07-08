@@ -41,7 +41,8 @@ CW.GameState = (function () {
       lastSeen: 0,            // real-world ms you were last here (the shop counts the gap)
       ledger: { gave: 0, hooked: 0, passed: 0, stock: 0, fled: 0, pushed: 0 }, // the book of what you did
       seenIntro: false,       // has the atmospheric intro played once
-      settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, narration: false, heroName: "Milo", friendName: "June" },
+      narrationDefaultedOn: true, // marks that this save already has the narration-on default (fresh saves do; legacy saves lack the key)
+      settings: { showLockedChoices: true, reduceMotion: false, textSpeed: "instant", musicOn: true, narration: true, heroName: "Milo", friendName: "June" },
     };
   }
 
@@ -53,6 +54,15 @@ CW.GameState = (function () {
         const p = JSON.parse(raw);
         meta = Object.assign(defaultMeta(), p);
         meta.settings = Object.assign(defaultMeta().settings, p.settings || {});
+        // One-time migration: voiced narration is now on by default. A legacy
+        // save (from before this field existed) lacks the key entirely — flip it
+        // on once. Afterwards the player's own on/off choice sticks, because the
+        // saved key is then present and this block is skipped.
+        if (typeof p.narrationDefaultedOn === "undefined") {
+          meta.settings.narration = true;
+          meta.narrationDefaultedOn = true;
+          saveMeta();
+        }
       }
     } catch (e) { /* fresh */ }
     return meta;
