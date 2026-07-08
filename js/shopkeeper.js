@@ -148,6 +148,21 @@ CW.Shopkeeper = (function () {
         "You saw it. The second shadow, behind me, doing the opposite of what I do. Pretend you didn't. It's kinder — to both of us.",
       ] },
 
+    // --- he knows you went behind the counter and saw the working shop -------
+    { id: "backroom", tone: "slip", off: true,
+      where: (c) => !c.onStage && (c.flags.sawBackRoom || c.flags.readTheLedger || c.flags.sawSecondCoat || c.flags.sawDisplayInside),
+      lines: (c) => {
+        const f = c.flags;
+        let line;
+        if (f.refusedTheCoat) line = "You hid the second coat. Thoughtful. There are a great many hooks back there, {HERO}, and I have all the time that was ever going to be yours. It will turn up. It always does, when you're ready.";
+        else if (f.toreOwnPage) line = "You tore your page out of my book. Do you feel lighter? You shouldn't. I keep the accounts in a hand very like your own — I will simply write you in again, from memory. I have such a good memory for you.";
+        else if (f.readJuneAccount) line = "You looked up her page. I wondered if you would. I won't read you her balance. I will only say she has paid more of it than you have — and she did it without ever once setting foot in here.";
+        else if (f.readOwnAccount || f.readTheLedger) line = "You read ahead. Naughty. Now you know how it ends, and how it ends after that, and you will walk in and buy it anyway, every line, on schedule. Knowing never once stopped anybody. That is rather the whole horror of it.";
+        else if (f.namedTheDisplay) line = "You said their names at the glass. They cannot hear you through it — but I heard. It is a lovely thing, being remembered. I will see that yours gets said just as kindly, from the other side of it.";
+        else line = "You went behind the counter. Then you have seen the shape of the offer — and you came back out to the floor to keep pretending you are a customer. That is the part of you I like best.";
+        return [line];
+      } },
+
     // --- deeper-down slip while he isn't even on screen ----------------------
     { id: "dread3", tone: "slip", off: true,
       where: (c) => c.dread >= 3 && !c.onStage,
