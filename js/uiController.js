@@ -52,6 +52,35 @@ CW.UIController = (function () {
       const card = ev.target.closest(".coll-card.found[data-ending]");
       if (card) showEndingDetail(card.getAttribute("data-ending"));
     });
+
+    // Accessibility / keyboard play: label the choice group, announce narration
+    // to screen readers, and let the keyboard drive the story (see onStoryKey).
+    if (el.choices) { el.choices.setAttribute("role", "group"); el.choices.setAttribute("aria-label", "Your choices"); }
+    if (el.text) el.text.setAttribute("aria-live", "polite");
+    document.addEventListener("keydown", onStoryKey);
+  }
+
+  // Keyboard play in the story view: 1-9 pick the Nth available choice, and
+  // Up/Down move focus among them. Ignored while typing in a field, or while the
+  // menu or any overlay (ending, tracker, settings...) is open.
+  function onStoryKey(ev) {
+    const t = ev.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+    if (ev.altKey || ev.ctrlKey || ev.metaKey) return;
+    if (!el.stage || !el.stage.classList.contains("visible")) return;
+    if (document.querySelector(".overlay.open")) return;
+    const btns = Array.prototype.slice.call(el.choices.querySelectorAll(".choice:not(.locked)"));
+    if (!btns.length) return;
+    if (ev.key >= "1" && ev.key <= "9") {
+      const i = parseInt(ev.key, 10) - 1;
+      if (i < btns.length) { ev.preventDefault(); btns[i].click(); }
+    } else if (ev.key === "ArrowDown" || ev.key === "ArrowUp") {
+      ev.preventDefault();
+      let idx = btns.indexOf(document.activeElement);
+      if (idx === -1) idx = ev.key === "ArrowDown" ? -1 : 0;
+      const next = ev.key === "ArrowDown" ? (idx + 1) % btns.length : (idx - 1 + btns.length) % btns.length;
+      btns[next].focus();
+    }
   }
 
   /* ---- main menu -------------------------------------------------------- */
@@ -235,6 +264,7 @@ CW.UIController = (function () {
     el.panel.classList.remove("fade-in");
     void el.panel.offsetWidth;
     el.panel.classList.add("fade-in");
+    el.panel.scrollTop = 0; // always start a new beat from the top of the panel
 
     typeText(h.text || "");
     if (CW.Narrator) CW.Narrator.speak(h.text || "", node.id);
@@ -244,6 +274,10 @@ CW.UIController = (function () {
     (node.choices || []).forEach((choice) => {
       const btn = buildChoiceButton(node, choice);
       if (btn) el.choices.appendChild(btn);
+    });
+    // Announce each available choice's number-key shortcut to assistive tech.
+    Array.prototype.slice.call(el.choices.querySelectorAll(".choice:not(.locked)")).forEach((b, i) => {
+      if (i < 9) b.setAttribute("aria-keyshortcuts", String(i + 1));
     });
 
     // His voice, or the shop's dead children, but not both piling onto one beat.
