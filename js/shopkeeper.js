@@ -48,6 +48,7 @@ CW.Shopkeeper = (function () {
       ledger: (GS().getLedger && GS().getLedger()) || {},
       sins: (GS().ledgerSins && GS().ledgerSins()) || 0,
       timesDoubled: (GS().timesDoubled && GS().timesDoubled()) || 0,
+      hour: new Date().getHours(),
       gift: run.chosenGift || null,
       lastGift: meta.lastGift || null,
       giftHistory: meta.giftHistory || [],
@@ -171,6 +172,14 @@ CW.Shopkeeper = (function () {
         "You brought a second you here once, didn't you. Another tab, another window, another cold pair of hands. I kept it. Or it kept you — it gets hard to tell, with copies, which one is the original and which is only the one still walking about.",
         "Two of you, that other night, in two little windows. I remember the pair of you fondly. One of you never did settle which was the real one. Neither did I. Neither, in the end, did it matter.",
       ] },
+
+    // --- the small hours: the shop reads your real local clock ---------------
+    { id: "hour", tone: "sick", off: true,
+      where: (c) => !c.onStage && (c.hour < 5 || c.hour >= 23),
+      lines: (c) => c.hour === 3
+        ? ["Three in the morning. You know the thing they say about this hour — the one where the door between is thinnest. It is when I am most awake. And you came anyway. Good."]
+        : ["It is the dead middle of the night where you are, {HERO}. Everyone else went to bed hours ago. It is only us now, and the rain, and all this time we suddenly seem to have."],
+    },
 
     // --- deeper-down slip while he isn't even on screen ----------------------
     { id: "dread3", tone: "slip", off: true,

@@ -17,6 +17,20 @@ CW.UIController = (function () {
   let introTimer = null;
   let menuGlitchTimer = null;
   let skTimer = null;
+  // "It knows you're skimming" + "it feels your hesitation": behaviour the shop reads.
+  let lastNodeAt = 0, lastReadMs = 0, skimStreak = 0;
+  let hoveredThisNode = [], reachedFor = null;
+  let pendingInterjection = null;
+  function estimateReadMs(t) { const w = (t || "").trim().split(/\s+/).filter(Boolean).length; return w * 220; }
+  const SKIM_LINES = [
+    "You're not reading these, are you. You're clicking through them. That's quite all right — the ones who don't read are the very easiest to keep. They never see the price until it has already been taken.",
+    "Still rushing. Still not reading a word. Do you know how many children stood exactly here, clicking, certain they already knew how the story went? I do. I kept all their pages. Slow down, or don't. I win at either speed.",
+    "You never once slow down for me. Fine. Race to the bottom, then — racing is only a faster way of agreeing.",
+  ];
+  const HESITATION_LINES = [
+    "You reached for “{X}.” I saw your hand move, and stop, and move away. You always reach, and you never take, and that small wanting is the sweetest thing you carry in through my door.",
+    "Ah — you wanted “{X}.” You didn't take it. But you wanted it, and wanting is a kind of choosing too. I filed it away. I file every one of your almosts.",
+  ];
 
   const STAT_ICONS = { wisdom: "🧠", intelligence: "📘", perception: "👁", strength: "💪" };
   const STAT_NAMES = { wisdom: "Wisdom", intelligence: "Intelligence", perception: "Perception", strength: "Strength" };
@@ -111,6 +125,7 @@ CW.UIController = (function () {
     Object.keys(MENU_DECAY).forEach((id) => { const b = $(id); if (b) b.textContent = MENU_DECAY[id][haunt]; });
     if (el.caption) el.caption.textContent = "";
     stopTextRot();
+    lastNodeAt = 0; skimStreak = 0; hoveredThisNode = []; reachedFor = null; pendingInterjection = null;
     if (CW.Narrator) CW.Narrator.stop();
     if (CW.Cast) CW.Cast.clear();
     if (CW.Faces) CW.Faces.clear();
@@ -138,6 +153,9 @@ CW.UIController = (function () {
       const phrase = GS().awayPhrase();
       if (phrase) return "You were gone " + phrase + ". It kept your place.";
       if (GS().timesDoubled && GS().timesDoubled() > 0) return "You brought yourself here once — two of you, in two little windows. I remember. I do wonder which of you it was that got to leave.";
+      const nh = new Date().getHours();
+      if (nh === 3) return "Three in the morning. My favourite hour — the one where the shop is most awake, and you are least. We understand each other better at this hour, don't we.";
+      if (nh < 5 || nh >= 23) return "It's late where you are — the party ended hours ago, and everyone you know is asleep. Only you, and me, and the rain. I do like the ones who come at night. They stay the longest.";
     }
     return HAUNT_TAGLINES[haunt] || "";
   }
@@ -264,6 +282,21 @@ CW.UIController = (function () {
     hideMenu();
     hideEnding();
 
+    // Judge how you treated the PREVIOUS beat, then let the shop react to it.
+    if (lastNodeAt && lastReadMs > 900) {
+      const elapsed = Date.now() - lastNodeAt;
+      if (elapsed < lastReadMs * 0.35) skimStreak++; else skimStreak = 0;
+    }
+    if (skimStreak >= 3) {
+      pendingInterjection = { line: SKIM_LINES[Math.min(SKIM_LINES.length - 1, Math.floor(skimStreak / 3) - 1)], tone: "sick" };
+      skimStreak = 0;
+    } else if (reachedFor && !pendingInterjection && Math.random() < 0.5) {
+      const x = reachedFor.length > 64 ? reachedFor.slice(0, 61) + "…" : reachedFor;
+      pendingInterjection = { line: HESITATION_LINES[Math.floor(Math.random() * HESITATION_LINES.length)].replace("{X}", x), tone: "sick" };
+    }
+    reachedFor = null;
+    hoveredThisNode = [];
+
     const h = hauntedText(node);
     el.title.textContent = node.title || "";
     el.speaker.textContent = h.speaker || "";
@@ -278,6 +311,7 @@ CW.UIController = (function () {
     // Storybook drop-cap — only when the beat opens on an actual letter (never on a
     // line that starts with a quotation mark, where ::first-letter would balloon it).
     el.text.classList.toggle("dropcap", /^[A-Za-z]/.test((h.text || "").trim()));
+    lastNodeAt = Date.now(); lastReadMs = estimateReadMs(h.text || ""); // for skim detection
     if (CW.Narrator) CW.Narrator.speak(h.text || "", node.id);
     el.subtle.classList.remove("show");
 
@@ -324,11 +358,15 @@ CW.UIController = (function () {
   function renderShopkeeperAside(node) {
     clearTimeout(skTimer);
     if (!el.skAside) return null;
-    el.skAside.classList.remove("show", "disembodied", "tone-murmur", "tone-taunt", "tone-plead", "tone-bargain", "tone-slip");
+    el.skAside.classList.remove("show", "disembodied", "tone-murmur", "tone-taunt", "tone-plead", "tone-bargain", "tone-slip", "tone-sick");
     el.skAside.textContent = "";
     if (CW.Cast && CW.Cast.setSpeaking) CW.Cast.setSpeaking("shopkeeper", false);
 
-    const aside = CW.Shopkeeper && CW.Shopkeeper.asideFor(node);
+    // A behaviour-triggered interjection (skimming / hesitation) pre-empts the
+    // node's usual aside — the shop reacting to what you just DID, not where you are.
+    let aside;
+    if (pendingInterjection) { aside = { line: pendingInterjection.line, tone: pendingInterjection.tone || "sick", disembodied: true }; pendingInterjection = null; }
+    else { aside = CW.Shopkeeper && CW.Shopkeeper.asideFor(node); }
     if (!aside) return null;
 
     const reveal = () => {
@@ -464,8 +502,12 @@ CW.UIController = (function () {
     if (d.locked) tags.appendChild(tag("🔒", "lockchip"));
     if (tags.childNodes.length) btn.appendChild(tags);
 
-    btn.addEventListener("mouseenter", () => CW.Audio.play("hover"));
-    btn.addEventListener("click", () => CW.StoryEngine.chooseChoice(node, choice));
+    btn.addEventListener("mouseenter", () => { CW.Audio.play("hover"); hoveredThisNode.push(replaceTokens(d.text)); });
+    btn.addEventListener("click", () => {
+      const taken = replaceTokens(d.text);
+      for (let i = hoveredThisNode.length - 1; i >= 0; i--) { if (hoveredThisNode[i] !== taken) { reachedFor = hoveredThisNode[i]; break; } }
+      CW.StoryEngine.chooseChoice(node, choice);
+    });
     return btn;
   }
 
