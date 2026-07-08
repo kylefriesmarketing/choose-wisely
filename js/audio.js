@@ -45,7 +45,7 @@ CW.Audio = (function () {
     dragon_theme:  { theme: "dragon",  chord: [82.41, 123.47, 164.81],  amb: "tick",    vol: 0.5 },
     party_theme:   { theme: "party",   chord: [130.81, 196.00, 261.63], amb: "murmur",  vol: 0.55 },
     secret_theme:  { theme: "secret",  chord: [138.59, 207.65, 277.18], amb: "shimmer", vol: 0.45 },
-    menu_theme:    { theme: "june",    chord: [130.81, 196.00, 261.63], amb: "room",    vol: 0.5 },
+    menu_theme:    { theme: "june",    chord: [130.81, 196.00, 261.63], amb: "rain",    vol: 0.5 }, // the title film is a rainy street
   };
 
   /* ---- how dread + a frayed bracelet warp the music --------------------- */
@@ -123,6 +123,54 @@ CW.Audio = (function () {
     secret: () => seq([{ freq: 300, dur: 0.5, type: "sine", gain: 0.06, slideTo: 900, step: 120 }, { freq: 1200, dur: 0.6, type: "sine", gain: 0.05, slideTo: 400 }]),
   };
   function play(name) { const fn = SFX[name]; if (fn) fn(); }
+
+  /* ---- the entrance: cues timed to the title film ------------------------ */
+  // A small bell voice (partials of a struck shop bell). detune in cents.
+  function bellStrike(f0, delay, gain, detune, decay) {
+    const a = ac(); if (!a) return;
+    const t0 = a.currentTime + (delay || 0);
+    [[1, 1], [2.71, 0.42], [5.15, 0.16]].forEach(function (p) {
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(f0 * p[0], t0);
+      if (detune) o.detune.setValueAtTime(detune, t0);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime((gain || 0.05) * p[1], t0 + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + (decay || 1.2));
+      o.connect(g).connect(sfxBus);
+      o.start(t0); o.stop(t0 + (decay || 1.2) + 0.05);
+    });
+  }
+  const ENTRANCE = {
+    // A gust of rain rises and settles — the street leans in.
+    swell: function () {
+      const a = ac(); if (!a) return;
+      const src = a.createBufferSource(); src.buffer = noise(); src.loop = true;
+      const f = a.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 520; f.Q.value = 0.6;
+      const g = a.createGain(); const t0 = a.currentTime;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.05, t0 + 1.6);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 3.4);
+      f.frequency.setValueAtTime(420, t0); f.frequency.linearRampToValueAtTime(900, t0 + 3.2);
+      src.connect(f).connect(g).connect(sfxBus);
+      src.start(t0); src.stop(t0 + 3.6);
+    },
+    // The shop's doorbell, far away and inviting — two soft strikes.
+    bell: function () { bellStrike(1318.5, 0, 0.045, 0, 1.1); bellStrike(1318.5, 0.14, 0.032, 0, 1.4); },
+    // The same bell again — though no door has opened. Detuned, slower, wrong,
+    // over a breath of sub-bass. The shop rang for you anyway.
+    wrong: function () {
+      bellStrike(1318.5, 0, 0.034, -45, 2.6);
+      const a = ac(); if (!a) return;
+      const o = a.createOscillator(), g = a.createGain(); const t0 = a.currentTime;
+      o.type = "sine"; o.frequency.value = 66;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.05, t0 + 0.7);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
+      o.connect(g).connect(sfxBus); o.start(t0); o.stop(t0 + 2.4);
+    },
+  };
+  function entrance(name) { if (muted) return; const fn = ENTRANCE[name]; if (fn) fn(); }
 
   // Composed ending stings ([midi, beats, type?]).
   const STINGS = {
@@ -344,5 +392,5 @@ CW.Audio = (function () {
     };
   }
 
-  return { play, playCue, stopMusic, refreshMusic, setDread, playEndSting, setMuted, isMuted, state, _themes: THEMES, _cues: CUES, _warp: computeWarp };
+  return { play, playCue, stopMusic, refreshMusic, setDread, playEndSting, entrance, setMuted, isMuted, state, _themes: THEMES, _cues: CUES, _warp: computeWarp };
 })();

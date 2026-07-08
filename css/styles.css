@@ -319,6 +319,47 @@ body.reduce-motion[data-dread="4"] .dread-overlay { animation: none !important; 
 
 /* ---- main menu ----------------------------------------------------------- */
 .main-menu { background: rgba(6,4,10,0.55); backdrop-filter: blur(4px); }
+
+/* ---- the cold open: the menu reveals itself against the title film ------- */
+/* Staged pieces start hidden; TitleSequence adds show-* classes on the film's
+   own timeline. Without .cold-open (or with all show-*) everything is visible. */
+.main-menu.cold-open .menu-kicker, .main-menu.cold-open .menu-title, .main-menu.cold-open .menu-rule {
+  opacity: 0; transform: translateY(10px); transition: opacity 1.8s ease, transform 1.8s ease;
+}
+.main-menu.cold-open.show-title .menu-kicker, .main-menu.cold-open.show-title .menu-title, .main-menu.cold-open.show-title .menu-rule {
+  opacity: 1; transform: none;
+}
+.main-menu.cold-open .menu-tag { opacity: 0; transition: opacity 1.4s ease; }
+.main-menu.cold-open.show-tagline .menu-tag { opacity: 1; }
+.main-menu.cold-open .menu-haunt.show { opacity: 0; }
+.main-menu.cold-open.show-tagline .menu-haunt.show { opacity: 1; }
+.main-menu.cold-open .menu-actions, .main-menu.cold-open .menu-more {
+  opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity 1s ease, transform 1s ease;
+}
+.main-menu.cold-open.show-actions .menu-actions, .main-menu.cold-open.show-actions .menu-more {
+  opacity: 1; transform: none; pointer-events: auto;
+}
+.main-menu.cold-open .menu-progress.show { opacity: 0; }
+.main-menu.cold-open.show-actions .menu-progress.show { opacity: 1; }
+body.reduce-motion .main-menu.cold-open .menu-kicker, body.reduce-motion .main-menu.cold-open .menu-title,
+body.reduce-motion .main-menu.cold-open .menu-rule, body.reduce-motion .main-menu.cold-open .menu-tag,
+body.reduce-motion .main-menu.cold-open .menu-actions, body.reduce-motion .main-menu.cold-open .menu-more {
+  transition: none;
+}
+
+/* THE OMEN — one wrong blink of the world when the shop notices you. */
+.scene.omen #scene-video, .scene.omen .scene-image {
+  animation: omenBlink 0.6s steps(1) both;
+}
+@keyframes omenBlink {
+  0%   { filter: brightness(0.35) saturate(0.2) hue-rotate(-28deg) contrast(1.35); }
+  18%  { filter: none; }
+  30%  { filter: brightness(0.5) saturate(0.35) contrast(1.3) hue-rotate(-18deg); }
+  46%  { filter: none; }
+  62%  { filter: brightness(0.42) saturate(0.25) contrast(1.32) hue-rotate(-24deg); }
+  100% { filter: none; }
+}
+body.reduce-motion .scene.omen #scene-video, body.reduce-motion .scene.omen .scene-image { animation: none; }
 .menu-card { text-align: center; padding: 22px 24px; animation: fadeUp 0.7s ease; max-width: 460px; }
 .menu-kicker { display: flex; align-items: center; justify-content: center; gap: 14px; font-family: var(--font-ui); letter-spacing: 5px; text-transform: uppercase; font-size: 11px; color: var(--gold-strong); opacity: 0.9; }
 .menu-kicker::before, .menu-kicker::after { content: ""; height: 1px; width: 40px; }

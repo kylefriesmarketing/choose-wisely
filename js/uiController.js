@@ -85,6 +85,7 @@ CW.UIController = (function () {
     else { cont.classList.add("disabled"); cont.disabled = true; }
     renderMenuProgress();
     startMenuGlitch();
+    if (CW.TitleSequence) CW.TitleSequence.begin(); // the cold open: menu reveals with the film
   }
   // The shop's greeting when you come back. Once per session it may acknowledge,
   // in real-world time, how long you were gone — or that you wiped it and it kept

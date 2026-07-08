@@ -50,9 +50,11 @@ CW.SceneManager = (function () {
   // final frame (used for one-time entrances); loop:true is a seamless ambient
   // loop. The menu/title uses "__cover__". More scenes get video over time.
   const SCENE_VIDEOS = {
-    // The title opens with a one-time entrance: the child walks up out of the
-    // rain and steps inside; it holds on the glowing, now-empty storefront.
-    __cover__: { src: "assets/video/cover_entrance.mp4", loop: false },
+    // The title film: the child walks toward the shop, forever, and never
+    // arrives. First and last frames nearly match, so it loops as the eternal
+    // approach — the whole game in one shot. CW.TitleSequence directs the menu
+    // reveal + sound + omen against this clip's timeline.
+    __cover__: { src: "assets/video/cover_entrance.mp4", loop: true },
   };
 
   let sceneEl = null, artEl = null, imageEl = null, videoEl = null, currentTheme = null, currentScene = null;
