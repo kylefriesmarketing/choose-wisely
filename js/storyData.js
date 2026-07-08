@@ -327,6 +327,90 @@ CW.StoryNodes = {
       { id: "LA_DEBT", text: "Read what the shop is still owed for the other children.", nextNodeId: "S02_FOUR_GIFTS", gains: { intelligence: 1 }, setFlags: { readTheDebt: true } },
       { id: "LA_BACK", text: "Put every tag back exactly as you found it, and step away.", nextNodeId: "S02_FOUR_GIFTS", gains: { wisdom: 1 } },
       { id: "LA_CONFRONT", text: "Go and find the shopkeeper. You have different questions now.", nextNodeId: "S03_SHOPKEEPER_WARNING", gains: { wisdom: 1 }, setFlags: { confrontedLayaway: true } },
+      { id: "LA_BACKROOM", text: "There is a door past the shelf, marked STAFF ONLY, and it is ajar. Go through.", nextNodeId: "SHOP_BACKROOM", gains: { perception: 1 }, setFlags: { foundBackRoom: true } },
+    ],
+  },
+
+  /* ---- BEHIND THE COUNTER: the staff-only back of the shop ----------------
+     A hub (SHOP_BACKROOM) off the Layaway shelf (or slipped into from S03),
+     with three rooms that show the machinery. Teaches truth_loop (the office
+     ledger) and truth_keeper (the second coat) in-fiction, and opens NEW paths
+     into two EXISTING endings (END_DISPLAY_PRISONER, END_THE_REGULAR) — so it
+     adds real weight with no new endings, art, or voice. All shop scene. ----- */
+  SHOP_BACKROOM: {
+    id: "SHOP_BACKROOM",
+    dread: 2,
+    title: "Behind the Counter",
+    location: "Staff Only",
+    theme: "shop", scene: "shop",
+    speaker: "Narrator",
+    text: "Past the shelf, the door marked STAFF ONLY opens on a room that has no business being here — cramped, and low, and somehow far larger than the shop that holds it. This is the working shop, the real one, with the pretty part kept out front for children. A great ledger lies open on a desk. A velvet curtain hides the back of the display window, and small shapes shift behind it. A hatch is set into the floor. And on the wall, two coats hang from two hooks: the shopkeeper's, patched all over — and a second, new and clean and exactly your size.",
+    imagePrompt: "storybook illustration of a cramped impossible back room of a magic shop, a great ledger on a desk, a curtained window, two coats on hooks",
+    musicCue: "shop_theme",
+    effects: { setFlags: { sawBackRoom: true } },
+    choices: [
+      { id: "BR_LEDGER", text: "Go to the great ledger lying open on the desk.", nextNodeId: "SHOP_OFFICE", gains: { intelligence: 1 } },
+      { id: "BR_CURTAIN", text: "Draw back the velvet curtain over the window.", nextNodeId: "SHOP_DISPLAY", gains: { perception: 1 } },
+      { id: "BR_COATS", text: "Look at the two coats on their hooks — one of them your size.", nextNodeId: "SHOP_COATHOOK", gains: { perception: 1 } },
+      { id: "BR_OUT", text: "Slip back out to the shop floor before you're missed.", nextNodeId: "S02_FOUR_GIFTS", gains: { wisdom: 1 } },
+      { id: "BR_HATCH", text: "Lift the hatch in the floor and go down the stairs beneath it.", nextNodeId: "CELLAR_1", requirements: { minDread: 3 }, hideWhenLocked: true },
+    ],
+  },
+
+  SHOP_OFFICE: {
+    id: "SHOP_OFFICE",
+    dread: 2,
+    title: "The Accounts",
+    location: "Staff Only",
+    theme: "shop", scene: "shop",
+    speaker: "Narrator",
+    text: "The ledger is bigger than you are, and every page is a child, and every line is a thing they took down off a shelf and the price they paid for it, set out in a small neat hand. You turn to the most recent pages, and there are names you almost know. And then you find a page with your own name at the top — and the columns are already filled in, in that same hand, for visits you have not made yet, gifts you have not chosen, a whole tidy future of you priced out to the last thread. In the margin, a child has written, pressing so hard the paper tore: i said no. he said everyone says that.",
+    imagePrompt: "storybook illustration of an enormous open ledger, columns of names and prices in old handwriting, a child's frightened note scrawled in the margin",
+    musicCue: "shop_theme",
+    effects: { learn: ["truth_loop"], setFlags: { readTheLedger: true } },
+    choices: [
+      { id: "OF_MINE", text: "Read your own page — the future already inked in.", nextNodeId: "SHOP_BACKROOM", gains: { intelligence: 1 }, setFlags: { readOwnAccount: true } },
+      { id: "OF_JUNE", text: "Turn the pages until you find {FRIEND}'s.", nextNodeId: "SHOP_BACKROOM", gains: { perception: 1 }, setFlags: { readJuneAccount: true } },
+      { id: "OF_TEAR", text: "Tear your own page clean out of the book.", nextNodeId: "SHOP_BACKROOM", gains: { strength: 1 }, bond: 1, setFlags: { toreOwnPage: true } },
+      { id: "OF_CLOSE", text: "Close the great cover, gently, and step back.", nextNodeId: "SHOP_BACKROOM", gains: { wisdom: 1 } },
+    ],
+  },
+
+  SHOP_DISPLAY: {
+    id: "SHOP_DISPLAY",
+    dread: 2,
+    title: "The Window, From Inside",
+    location: "Staff Only",
+    theme: "shop", scene: "shop",
+    speaker: "Narrator",
+    text: "Behind the curtain is the back of the display window, and pressed to the glass — facing out, into the rain, into the street — are the children. A small girl in a paper crown, mouthing a wish. A boy at attention, saluting no one. A girl drifting a slow inch up off the floor. A very small boy who waves at you the instant he feels you there, sure he knows you. None of them turn round. They are watching the street, all of them, for the next late child to stop on the corner with empty hands. There is a gap in the display, between them, swept clean and waiting. It is exactly your size.",
+    imagePrompt: "storybook illustration seen from behind a shop display window, children pressed to the glass facing out at a rainy street, one empty child-sized gap",
+    musicCue: "shop_theme",
+    effects: { setFlags: { sawDisplayInside: true } },
+    choices: [
+      { id: "DI_TAP", text: "Tap the glass and try to make just one of them turn round.", nextNodeId: "SHOP_BACKROOM", gains: { perception: 1 }, setFlags: { tappedGlass: true } },
+      { id: "DI_NAMES", text: "Say their names out loud — Greta, Tomas, Odile, Sam.", nextNodeId: "SHOP_BACKROOM", gains: { wisdom: 1 }, bond: 1, setFlags: { namedTheDisplay: true } },
+      { id: "DI_STEP", text: "Step into the gap in the display. Just to see out. Just for a moment.", nextNodeId: "END_DISPLAY_PRISONER" },
+      { id: "DI_BACK", text: "Let the curtain fall and back away from the glass.", nextNodeId: "SHOP_BACKROOM", gains: { wisdom: 1 } },
+    ],
+  },
+
+  SHOP_COATHOOK: {
+    id: "SHOP_COATHOOK",
+    dread: 2,
+    title: "The Second Coat",
+    location: "Staff Only",
+    theme: "shop", scene: "shop",
+    speaker: "Narrator",
+    text: "Up close, the shopkeeper's patched coat is not patched at all. Every patch is a label, and every label is a name, sewn on in thread — hundreds of them, layered until there is no coat left underneath, only the names of everyone he ever rang up. He was a late child once. You understand it, looking at the coat: he came in from the rain with nothing, and the shop offered him the counter instead of the shelf, and he took it, because it was the only other way out, and he has been ringing up children ever since. The second coat is new. Unpatched. Clean. Exactly your size. A paper tag hangs from its collar, in his careful hand: FOR WHEN YOU'RE READY.",
+    imagePrompt: "storybook illustration of two coats on hooks, one covered entirely in small sewn-on name labels, the other new and clean and child-sized",
+    musicCue: "shop_theme",
+    effects: { learn: ["truth_keeper"], setFlags: { sawSecondCoat: true } },
+    choices: [
+      { id: "CO_TRY", text: "Take the new coat down and put your arms in — just to see how it hangs.", nextNodeId: "END_THE_REGULAR" },
+      { id: "CO_READ", text: "Read the names sewn into his coat, one by one.", nextNodeId: "SHOP_BACKROOM", gains: { intelligence: 1 }, setFlags: { readTheNames: true } },
+      { id: "CO_REFUSE", text: "Take the new coat off its hook and hide it where he won't find it.", nextNodeId: "SHOP_BACKROOM", gains: { wisdom: 1 }, bond: 1, setFlags: { refusedTheCoat: true } },
+      { id: "CO_LEAVE", text: "Leave both coats hanging and step away.", nextNodeId: "SHOP_BACKROOM", gains: { wisdom: 1 } },
     ],
   },
 
@@ -350,6 +434,7 @@ CW.StoryNodes = {
       { id: "S03_MOCK", text: "Scoff at the old warning.", nextNodeId: "S04_CHOOSE_GIFT", gains: { strength: 1 }, costs: { wisdom: 1 }, bond: -1 },
       { id: "S03_HAGGLE", text: "Try to talk him into letting you take two.", nextNodeId: "S04_CHOOSE_GIFT", gains: { intelligence: 1 }, setFlags: { triedHaggle: true } },
       { id: "S03_STUDY", text: "Say nothing, and study his face for a lie.", nextNodeId: "S04_CHOOSE_GIFT", requirements: { stats: { perception: 3 } }, gains: { perception: 1 }, setFlags: { studiedKeeper: true }, lockedText: "His smile gives away nothing you can read." },
+      { id: "S03_SLIP", text: "While he recites the rule, slip behind the counter through the door marked STAFF.", nextNodeId: "SHOP_BACKROOM", requirements: { stats: { perception: 4 } }, gains: { perception: 1 }, setFlags: { slippedBehind: true }, hideWhenLocked: true },
     ],
   },
 
