@@ -125,20 +125,31 @@ CW.UIController = (function () {
     el.stage.classList.add("visible");
     stopMenuGlitch();
   }
+  // The "already chosen" flicker: while anyone lingers on the menu — at ANY
+  // haunt level, from the very first visit — the world blinks wrong and the
+  // title slips to CHOSEN ALREADY (and, once the deeper glitch titles are in
+  // play, its siblings), on a recurring, jittered beat. It only stops when the
+  // menu closes. Reduce-motion opts out entirely.
   function startMenuGlitch() {
     stopMenuGlitch();
-    if (CW.GameState.hauntLevel() < 4 || document.body.classList.contains("reduce-motion")) return;
+    if (document.body.classList.contains("reduce-motion")) return;
     const title = document.querySelector(".menu-title");
     if (!title) return;
-    menuGlitchTimer = setInterval(() => {
+    const fire = () => {
       if (!el.menu.classList.contains("open")) { stopMenuGlitch(); return; }
-      title.textContent = GLITCH_TITLES[Math.floor(Math.random() * GLITCH_TITLES.length)];
+      const scene = document.getElementById("scene");
+      if (scene) { scene.classList.add("omen"); setTimeout(() => scene.classList.remove("omen"), 640); }
+      title.textContent = Math.random() < 0.5 ? "CHOSEN ALREADY" : GLITCH_TITLES[Math.floor(Math.random() * GLITCH_TITLES.length)];
       title.classList.add("glitch-flash");
-      setTimeout(() => { title.textContent = "CHOOSE WISELY"; title.classList.remove("glitch-flash"); }, 150);
-    }, 4200 + Math.random() * 3000);
+      setTimeout(() => { title.textContent = "CHOOSE WISELY"; title.classList.remove("glitch-flash"); }, 170);
+      if (CW.Audio && CW.Audio.entrance && Math.random() < 0.45) CW.Audio.entrance("wrong");
+      menuGlitchTimer = setTimeout(fire, 3800 + Math.random() * 3200);
+    };
+    menuGlitchTimer = setTimeout(fire, 2600 + Math.random() * 2200); // the first slip, a couple seconds in
   }
   function stopMenuGlitch() {
-    clearInterval(menuGlitchTimer); menuGlitchTimer = null;
+    clearTimeout(menuGlitchTimer); menuGlitchTimer = null;
+    const sc = document.getElementById("scene"); if (sc) sc.classList.remove("omen");
     const t = document.querySelector(".menu-title"); if (t) { t.textContent = "CHOOSE WISELY"; t.classList.remove("glitch-flash"); }
   }
 
