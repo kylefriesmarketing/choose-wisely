@@ -217,7 +217,7 @@ CW.UIController = (function () {
     el.aboutBody.innerHTML =
       '<div class="about-title">CHOOSE WISELY</div>' +
       '<div class="about-tag">One shop. Four gifts. Hundreds of endings.</div>' +
-      '<p class="about-p">A playable storybook about ' + friend + "'s birthday — and the little shop that appears on the corner with exactly what you need, for exactly what it takes. Every choice moves four attributes, frays or mends a friendship bracelet, and steers toward one of more than forty collectible endings. The deeper you go, the darker it gets; the more you play, the more the shop remembers you.</p>" +
+      '<p class="about-p">A playable storybook about ' + friend + "'s birthday — and the little shop that appears on the corner with exactly what you need, for exactly what it takes. Every choice moves four attributes, frays or mends a friendship bracelet, and steers toward one of more than fifty collectible endings. The deeper you go, the darker it gets; the more you play, the more the shop remembers you.</p>" +
       '<div class="cast-gallery">' +
         '<figure class="cast-card"><img src="assets/art/cast_milo.png" alt="' + hero + '" loading="lazy"><figcaption>' + hero + "<span>late, and sorry, and trying</span></figcaption></figure>" +
         '<figure class="cast-card"><img src="assets/art/cast_june.png" alt="' + friend + '" loading="lazy"><figcaption>' + friend + "<span>the friend at the party</span></figcaption></figure>" +
