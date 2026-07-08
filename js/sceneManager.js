@@ -51,9 +51,11 @@ CW.SceneManager = (function () {
   // loop. The menu/title uses "__cover__". More scenes get video over time.
   const SCENE_VIDEOS = {
     // The title film: the child walks toward the shop, forever, and never
-    // arrives. First and last frames nearly match, so it loops as the eternal
-    // approach — the whole game in one shot. CW.TitleSequence directs the menu
-    // reveal + sound + omen against this clip's timeline.
+    // arrives — the eternal approach, the whole game in one shot.
+    // CW.TitleSequence directs the menu reveal + sound + omen against it.
+    // (An `intro: "<clip>.mp4"` entry here plays once per page load, then hands
+    // off to the loop — the machinery is built and tested; two Seedance takes
+    // at a door-entry intro came back static, so none ships yet.)
     __cover__: { src: "assets/video/cover_entrance.mp4", loop: true },
   };
 
@@ -84,16 +86,39 @@ CW.SceneManager = (function () {
     });
   }
 
-  // Play a clip (cfg = { src, loop }) over the still. Returns true if shown.
+  // Intros that have already run this page load (keyed by clip path).
+  const introDone = {};
+  function introPending() {
+    const c = SCENE_VIDEOS.__cover__;
+    return !!(c && c.intro && !introDone[c.intro]);
+  }
+
+  // Play a clip (cfg = { intro?, src, loop }) over the still. An intro plays
+  // once per page load, then hands off to the loop; if it can't play, we skip
+  // straight to the loop. Returns true if a clip is being shown.
   function showVideo(cfg) {
-    const src = cfg && cfg.src, loop = !!(cfg && cfg.loop);
-    if (!videoEl || !src || !motionOK()) { hideVideo(); return false; }
+    if (!videoEl || !cfg || !cfg.src || !motionOK()) { hideVideo(); return false; }
+    if (cfg.intro && !introDone[cfg.intro]) {
+      playClip(cfg.intro, false);
+      const toLoop = function () {
+        videoEl.removeEventListener("ended", toLoop);
+        videoEl.removeEventListener("error", toLoop);
+        introDone[cfg.intro] = true;
+        playClip(cfg.src, !!cfg.loop);
+      };
+      videoEl.addEventListener("ended", toLoop);
+      videoEl.addEventListener("error", toLoop);
+      return true;
+    }
+    return playClip(cfg.src, !!cfg.loop);
+  }
+  function playClip(src, loop) {
     videoEl.loop = loop;
     if (videoEl.getAttribute("data-src") !== src) {
       videoEl.setAttribute("data-src", src);
       videoEl.src = src;
     } else if (!loop) {
-      try { videoEl.currentTime = 0; } catch (e) {} // replay the entrance from the top
+      try { videoEl.currentTime = 0; } catch (e) {} // replay from the top
     }
     const p = videoEl.play();
     if (p && p.catch) p.catch(function () {}); // autoplay blocked -> still shows through
@@ -161,5 +186,5 @@ CW.SceneManager = (function () {
     showVideo(SCENE_VIDEOS.__cover__); // living title background; the still is the fallback
   }
 
-  return { init, showScene, setTheme, sceneKeyFor, theme, cover, THEME_DEFAULT };
+  return { init, showScene, setTheme, sceneKeyFor, theme, cover, introPending, THEME_DEFAULT };
 })();

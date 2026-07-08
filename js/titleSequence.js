@@ -1,20 +1,24 @@
 /* ============================================================================
- * titleSequence.js  -  CW.TitleSequence. Directs the title screen as one beat:
- * the menu reveals itself against the title film (the child's eternal walk
- * toward the shop, looping, never arriving).
+ * titleSequence.js  -  CW.TitleSequence. Directs the title screen as one beat.
  *
- * Choreography (times are VIDEO time, read off #scene-video's timeupdate, so
- * the staging stays in sync even if the clip stalls while streaming):
- *   ~0.8s  kicker + title + rule fade in (with a gust of rain)
- *   ~2.4s  tagline + haunt line
- *   ~6.0s  the shop's doorbell, far away — an invitation
- *   ~8.4s  THE OMEN: the frame blinks wrong, the title flashes CHOSEN ALREADY,
- *          and the bell rings again, detuned — though no door ever opened
- *   ~9.2s  Begin / Continue / chips appear: your turn to walk in
+ * The title film plays in two movements (see sceneManager SCENE_VIDEOS):
+ *   INTRO (cover_door.mp4, once per page load): the child walks up, the door
+ *   opens, they step through into the light...
+ *   LOOP  (cover_entrance.mp4, forever): ...and the world blinks — and the
+ *   same child is walking toward the shop again. The loop is the trap.
+ *
+ * Beats ride the film's own timeupdate clock (never wall-clock, so staging
+ * survives streaming stalls), tagged per-film so the right ladder fires:
+ *   intro:  title (~0.8s) -> tagline (~2.4s) -> doorbell as the door opens ->
+ *           Begin appears (~9s) -> THE OMEN exactly at the loop handoff (the
+ *           'ended' event): the frame blinks wrong, the title flashes CHOSEN
+ *           ALREADY, the bell rings again detuned — they went in, and they
+ *           are walking up again.
+ *   loop (menu revisits): title/tagline quick, distant bell (~6s), omen
+ *           (~8.4s, once per visit), reveal (~9.2s).
  *
  * The full staging plays once per page load; returning to the menu shows
- * everything instantly (the beats still fire once per visit, quietly). Any
- * tap/keypress skips straight to the full menu. If the video can't play
+ * everything instantly. Any tap/keypress skips. If the video can't play
  * (reduce-motion, autoplay blocked, failure) the menu just appears — the
  * sequence can never hold the player hostage.
  * ========================================================================== */
@@ -24,7 +28,12 @@ CW.TitleSequence = (function () {
   let coldOpenDone = false;  // full staging only on the first menu of a page load
   let bound = false;
   let beats = [];
+  let omenThisVisit = false; // the shop only notices you once per menu visit
   let failsafe = null, autoplayCheck = null;
+
+  // Door-film beat times; tuned from extracted frames of cover_door.mp4.
+  const DOOR_OPEN_T = 6.2;   // the door swings open — the bell, far away
+  const DOOR_REVEAL_T = 9.0; // Begin appears as they cross the threshold
 
   const $ = (id) => document.getElementById(id);
   const menu = () => $("main-menu");
@@ -35,6 +44,8 @@ CW.TitleSequence = (function () {
 
   /* ---- the omen: the shop notices you ----------------------------------- */
   function omen() {
+    if (omenThisVisit) return;
+    omenThisVisit = true;
     const scene = $("scene");
     if (scene && !reduceMotion()) {
       scene.classList.add("omen");
@@ -50,14 +61,21 @@ CW.TitleSequence = (function () {
     sfx("wrong");
   }
 
+  /* Both ladders, tagged by film; only beats matching the playing clip fire. */
   function makeBeats() {
     return [
-      { t: 0.8, fn: () => { stage("show-title"); sfx("swell"); } },
-      { t: 2.4, fn: () => stage("show-tagline") },
-      { t: 6.0, fn: () => sfx("bell") },
-      { t: 8.4, fn: omen },
-      { t: 9.2, fn: revealAll },
-    ].map((b) => ({ t: b.t, fn: b.fn, done: false }));
+      // the door film — the once-per-load intro
+      { film: "cover_door", t: 0.8, fn: () => { stage("show-title"); sfx("swell"); } },
+      { film: "cover_door", t: 2.4, fn: () => stage("show-tagline") },
+      { film: "cover_door", t: DOOR_OPEN_T, fn: () => sfx("bell") },
+      { film: "cover_door", t: DOOR_REVEAL_T, fn: revealAll },
+      // the eternal approach — menu revisits (and the intro's fallback)
+      { film: "cover_entrance", t: 0.8, fn: () => { stage("show-title"); sfx("swell"); } },
+      { film: "cover_entrance", t: 2.4, fn: () => stage("show-tagline") },
+      { film: "cover_entrance", t: 6.0, fn: () => sfx("bell") },
+      { film: "cover_entrance", t: 8.4, fn: omen },
+      { film: "cover_entrance", t: 9.2, fn: revealAll },
+    ].map((b) => ({ ...b, done: false }));
   }
 
   function stage(cls) { const m = menu(); if (m) m.classList.add(cls); }
@@ -70,15 +88,26 @@ CW.TitleSequence = (function () {
 
   function onTime() {
     const v = video(); if (!v) return;
+    const src = v.getAttribute("data-src") || "";
     const t = v.currentTime;
-    for (const b of beats) if (!b.done && t >= b.t && t < b.t + 4) { b.done = true; b.fn(); }
+    for (const b of beats) {
+      if (!b.done && src.indexOf(b.film) !== -1 && t >= b.t && t < b.t + 4) { b.done = true; b.fn(); }
+    }
   }
+
+  // The handoff: the intro ends, the loop begins — the world blinks and the
+  // child is walking up again. THE moment the wrongness lands.
+  function onIntroEnded() { omen(); }
 
   /* Called by showMenu each time the menu opens. */
   function begin() {
     const m = menu(), v = video();
     beats = makeBeats();
+    omenThisVisit = false;
     if (v && !bound) { bound = true; v.addEventListener("timeupdate", onTime); }
+
+    const introComing = !!(CW.SceneManager && CW.SceneManager.introPending && CW.SceneManager.introPending());
+    if (v && introComing) v.addEventListener("ended", onIntroEnded, { once: true });
 
     // No film to conduct (reduce-motion / no clip) or a return visit:
     // everything at once. Beats still fire against the film where it plays.
