@@ -110,12 +110,14 @@ CW.Shopkeeper = (function () {
       lines: [
         "Down here I don't bother with the coat. Or the smile. Or the shop. Down here it is only the inventory — and you are inventory, {HERO}.",
         "You came down the stairs no one else can see. They all do, in the end. The stairs were always the point.",
+        "Mind the shelves on the way down. You'll recognise some of the stock. You carried most of it down here yourself.",
       ] },
     { id: "dread4", tone: "slip", off: true,
       where: (c) => c.dread >= 4 && !c.onStage,
       lines: [
         "Do you still think this is a shop?",
         "There was never a shopkeeper. There was only the part of you that keeps walking back in.",
+        "You keep looking round for the shopkeeper. Sweet. Look down at your own hands, {HERO}. Whose coat is that you're wearing.",
       ] },
 
     // --- reactions to the bracelet (the real gift) ---------------------------
@@ -124,6 +126,7 @@ CW.Shopkeeper = (function () {
       lines: [
         "The thread's gone from your wrist. I didn't even have to ask for that one. It's my favourite kind of sale.",
         "No bracelet. No {FRIEND}, not really. Just you, and me, and all these lovely aisles.",
+        "Lighter at the wrist, isn't it. That's the exact sound a person makes when they finally set someone down for good. I do so love that sound.",
       ] },
     { id: "whole", tone: "bargain", off: true,
       where: (c) => c.whole && !c.onStage,
@@ -180,6 +183,7 @@ CW.Shopkeeper = (function () {
       lines: [
         "{HERO}. I kept saying it while you were away. {HERO}, {HERO}, {HERO}. It wears so well with use.",
         "Back so soon, {HERO}? The rain hasn't even dried on the step.",
+        "I said your name so often while you were gone that it stopped sounding like yours. Now it sounds like mine. {HERO}. Hear it?",
       ] },
 
     // --- he approves of the gift you just chose (this run) -------------------
@@ -209,6 +213,20 @@ CW.Shopkeeper = (function () {
         "Go on, then. Give it to her. Let's the both of us see whether a toy can buy back a whole lost year.",
       ] },
 
+    // --- he heard the tender things you told yourself on the way here, and he
+    //     is already pricing them. Weaponizes the warm prologue choices. --------
+    { id: "tender", tone: "murmur", off: false,
+      where: (c) => c.onStage && (c.flags.rehearsedSorry || c.flags.rememberedJune || c.flags.promisedFence || c.flags.foundInitials || c.flags.letHimselfMiss || c.flags.clutchedThread),
+      lines: (c) => {
+        const f = c.flags, out = [];
+        if (f.rehearsedSorry) out.push("You practised an apology the whole way here — I heard every draft of it through the glass. Don't waste it on me. Save it for her, if you ever reach the part of the night where she is still there to hear it.");
+        if (f.rememberedJune || f.clutchedThread) out.push("You touched that last thread on your wrist and let yourself remember her. That. THAT is the thing I actually sell, {HERO} — not the bear, not the candle. Bring that warm little memory to the counter and we will discuss a real price.");
+        if (f.promisedFence) out.push("You promised a chain-link fence you'd put it right tonight. Fences are such patient listeners. Ask it, a few loops from now, how that promise aged.");
+        if (f.foundInitials) out.push("Two sets of initials, still scratched into that fence post. That is more of the pair of you left out in the world than there is anywhere in here. For now.");
+        if (f.letHimselfMiss) out.push("You slowed right down and let yourself miss her. Good. Missing is only wanting with the lights off — and wanting is the one key cut to fit my door.");
+        return out;
+      } },
+
     // --- ambient shop menace (fallback, only where he's actually standing) ---
     { id: "ambient", tone: "murmur", off: false,
       where: (c) => c.onStage,
@@ -216,6 +234,9 @@ CW.Shopkeeper = (function () {
         "Take your time. Time is the one thing I keep whole shelves of.",
         "Everything in here is a gift. That's the trick of the word — a gift is a thing you can never quite give back.",
         "Don't mind the small faces at the window. They chose, too. Now they only get to watch.",
+        "The bell will ring for you again. It always rings for you. I stopped counting which time this is; I find it kinder not to.",
+        "Careful with the glass. Some of the gifts have been waiting a very long time to be picked up, and they do get their little hopes up.",
+        "You may set anything down in here except the door. That one you carry back out with you. That one is always yours to open again.",
       ] },
   ];
 
