@@ -563,6 +563,7 @@ CW.StoryNodes = {
       { id: "T02_MAIN", text: "Keep to the main road, where the walls stay walls.", nextNodeId: "T03" },
       { id: "T02_ALLEY", text: "Take the hungry alley anyway — fast, before it wakes.", nextNodeId: "T03", gains: { strength: 1 }, setFlags: { tookAlley: true } },
       { id: "T02_ASK", text: "Ask the bear how it knows the alley gets hungry.", nextNodeId: "T03", gains: { intelligence: 1 }, setFlags: { askedAlley: true } },
+      { id: "T02_OWNERS", text: "Ask the bear, gently, who held it before you.", nextNodeId: "T_OWNERS", requirements: { stats: { wisdom: 3 } }, hideWhenLocked: true },
     ],
   },
   T03: {
@@ -622,6 +623,7 @@ CW.StoryNodes = {
       { id: "C02_WALK", text: "Walk it out. Spend nothing, however long it grows.", nextNodeId: "C03", gains: { wisdom: 1 }, bond: 1 },
       { id: "C02_RUN", text: "Run the growing road until your chest burns.", nextNodeId: "C03", gains: { strength: 1 }, setFlags: { ranRoad: true } },
       { id: "C02_MEASURE", text: "Measure the trick with your eyes and beat it.", nextNodeId: "C03", requirements: { stats: { intelligence: 3 } }, gains: { intelligence: 1 }, lockedText: "The perspective keeps sliding; you can't hold the trick in your head." },
+      { id: "C02_WICKS", text: "Follow the smell of struck matches off the road.", nextNodeId: "C_WICKS", requirements: { stats: { perception: 3 } }, hideWhenLocked: true },
     ],
   },
   C03: {
@@ -681,6 +683,7 @@ CW.StoryNodes = {
       { id: "B02_GUESS", text: "Guess, and drift toward the nearest lie.", nextNodeId: "B03", setFlags: { lostPath: true } },
       { id: "B02_CIRCLE", text: "Fight the wind down for a closer, colder look.", nextNodeId: "B03", gains: { perception: 1 }, costs: { strength: 1 }, setFlags: { circled: true } },
       { id: "B02_CALL", text: "Call her name into the wind and listen for her.", nextNodeId: "B03", requirements: { stats: { wisdom: 3 } }, gains: { wisdom: 1 }, setFlags: { rightRoof: true }, lockedText: "The wind snatches your voice away before it carries." },
+      { id: "B02_MOOR", text: "Follow the taut strings down to whatever they are tied to.", nextNodeId: "B_MOORINGS", requirements: { stats: { intelligence: 3 } }, hideWhenLocked: true },
     ],
   },
   B03: {
@@ -740,6 +743,7 @@ CW.StoryNodes = {
       { id: "D02_FORCE", text: "Force the bridge before the river takes its turn.", nextNodeId: "D03", requirements: { stats: { strength: 4 } }, lockedText: "The bridge will not budge by strength alone." },
       { id: "D02_SCOUT", text: "Send the dragon under, into the dark, to scout.", nextNodeId: "D03", gains: { perception: 1 }, setFlags: { dragonScouted: true } },
       { id: "D02_WAIT", text: "Wait out the mechanism, and don't look down.", nextNodeId: "D03", requirements: { stats: { wisdom: 3 } }, gains: { wisdom: 1 }, lockedText: "You haven't the patience to wait the mechanism out." },
+      { id: "D02_HATCH", text: "Take the maintenance stair the gears keep politely hidden.", nextNodeId: "D_WINDDOWN", requirements: { stats: { perception: 3 } }, hideWhenLocked: true },
     ],
   },
   D03: {
@@ -1050,6 +1054,68 @@ CW.StoryNodes = {
       { id: "WB_THREAD", text: "Loop the last thread you have around her wrist and pull, and hope it holds.", nextNodeId: "END_THE_LONG_WAY", requirements: { flags: { braceletSnapped: false, braceletWhole: false } }, hideWhenLocked: true },
       { id: "WB_BARE", text: "Reach for her with your bare, empty hands.", nextNodeId: "END_SO_CLOSE", requirements: { flags: { braceletSnapped: true } }, hideWhenLocked: true },
       { id: "WB_WAIT", text: "You're not ready. Not this run. Step back and keep it whole for next time.", nextNodeId: "F01_FIFTH_AISLE" },
+    ],
+  },
+
+  /* ---- THE ROUTE WINGS: one hidden room per gift (§18) ------------------- */
+  T_OWNERS: {
+    id: "T_OWNERS", dread: 2, title: "The Four Owners", location: "A Lost-Property Alcove", theme: "teddy",
+    speaker: "Narrator",
+    text: "The bear goes rigid in your arms and steers you off the road, through a door you would swear was a bricked-up window, into a little lost-property alcove that smells of wet wool and birthdays. On the wall hang four small coats, four sizes, oldest to newest — and beneath each coat, a name burned into a brass tag, and beneath each name, a date the bear was borrowed and a date it came back. The bear came back every time. The coats never did. There is a fifth hook, and a fifth tag, and the tag is blank, and the hook is empty, and both of them are exactly your size. The bear is very sorry. You can feel how sorry it is, all through its stuffing. It was not allowed to say.",
+    imagePrompt: "storybook illustration of four small coats on hooks with brass name tags and one empty fifth hook, dim lost-property room",
+    musicCue: "teddy_theme",
+    effects: { learn: ["truth_count"], setFlags: { sawFourOwners: true } },
+    choices: [
+      { id: "TO_NAMES", text: "Read the four names aloud, so someone has, once, kindly.", nextNodeId: "T03", gains: { wisdom: 1 }, bond: 1, setFlags: { namedOwners: true } },
+      { id: "TO_TAG", text: "Take the blank fifth tag and pocket it before it can learn your name.", nextNodeId: "T03", gains: { perception: 1 }, setFlags: { tookBlankTag: true } },
+      { id: "TO_ASK", text: "Ask the bear which of the four it still dreams about.", nextNodeId: "T03", gains: { intelligence: 1 }, setFlags: { askedOwners: true } },
+      { id: "TO_SIT", text: "Sit down under the fifth hook, just to see how it would feel.", nextNodeId: "END_T_BAD" },
+      { id: "TO_LEAVE", text: "Back out of the alcove and keep the bear moving.", nextNodeId: "T03" },
+    ],
+  },
+  C_WICKS: {
+    id: "C_WICKS", dread: 2, title: "The Wick Drawer", location: "A Match-Smelling Shed", theme: "candle",
+    speaker: "Wish Candle",
+    text: "The candle's flame leans hard left, off the road, toward a lean-to shed with a single long drawer where a workbench should be. The drawer is open. Inside, laid out on black felt like a jeweller's stock, are wicks — hundreds of them, each one clipped short, each one labelled in the small neat hand you are coming to know. \"Those are the days,\" the candle says, softly, ashamed. \"One wick is one day someone wished away. He doesn't burn them. He saves them. A day is worth so much more unspent.\" Near the front, newer than the rest, lies a little row clipped all from the same week — and you know, without picking them up, whose week it was, because you were the one who wished it would just be over.",
+    imagePrompt: "storybook illustration of a long open drawer of hundreds of clipped candle wicks on black felt, labelled, candlelit shed",
+    musicCue: "candle_theme",
+    effects: { learn: ["truth_trade"], setFlags: { sawWickDrawer: true } },
+    choices: [
+      { id: "CW_POCKET", text: "Steal back the week that was yours, wick by wick.", nextNodeId: "C03", gains: { strength: 1 }, bond: 1, setFlags: { tookWicksBack: true } },
+      { id: "CW_LIGHT", text: "Touch your flame to a stranger's wick and carry the burning day out to find them.", nextNodeId: "END_C_MELTED_FREE", requirements: { stats: { wisdom: 3 } }, lockedText: "You reach for a stranger's day and lose your nerve — what if they wanted it gone?" },
+      { id: "CW_PILOT", text: "Find the shed's little pilot flame and pinch it out.", nextNodeId: "END_C_SNUFFED" },
+      { id: "CW_ASK", text: "Ask the candle what the shop does with a saved day.", nextNodeId: "C03", gains: { intelligence: 1 }, setFlags: { askedWicks: true } },
+      { id: "CW_LEAVE", text: "Close the drawer gently, the way you'd close a coffin, and go.", nextNodeId: "C03", gains: { wisdom: 1 } },
+    ],
+  },
+  B_MOORINGS: {
+    id: "B_MOORINGS", dread: 2, title: "The Mooring Rail", location: "A Rooftop Below", theme: "balloon",
+    speaker: "Narrator",
+    text: "Between two chimneys the balloon dips, and you see it: a low iron rail bolted to a rooftop, and tied along it, string after string after string, running taut up into the dark like a harp played from above. Each mooring has a small lead seal, and each seal a name, and the strings hum very slightly in the wind — not one hum, but many, out of tune with each other in a way that is worse than silence. These are the ones still up there. The rail keeps them from setting down; the seals keep them from going all the way up; the shop, you understand at last, is not in the business of letting anything finish going anywhere. Your own string tugs at your wrist, wanting to know why you've stopped.",
+    imagePrompt: "storybook illustration of a rooftop iron rail with many taut balloon strings running up into darkness, lead name seals",
+    musicCue: "balloon_theme",
+    effects: { learn: ["truth_loop"], setFlags: { sawMoorings: true } },
+    choices: [
+      { id: "BM_ONE", text: "Untie one string — just one — and watch it drift gently down.", nextNodeId: "B03", gains: { wisdom: 1 }, bond: 1, setFlags: { untiedOne: true } },
+      { id: "BM_ALL", text: "Work down the whole rail, seal by seal, and free every string.", nextNodeId: "END_B_FREED_SKY", requirements: { stats: { perception: 4 } }, lockedText: "The knots are tied in a pattern you can't read yet." },
+      { id: "BM_TIE", text: "Tie your own string to the rail, just to rest your arms a moment.", nextNodeId: "END_B_ANCHORED" },
+      { id: "BM_READ", text: "Read the names on the seals until one of them stops you.", nextNodeId: "B03", gains: { perception: 1 }, setFlags: { readSeals: true } },
+      { id: "BM_LEAVE", text: "Let the wind take you past. Some rails are not yours to touch.", nextNodeId: "B03" },
+    ],
+  },
+  D_WINDDOWN: {
+    id: "D_WINDDOWN", dread: 2, title: "The Wind-Down Room", location: "Under the Bridge Works", theme: "dragon",
+    speaker: "Clockwork Dragon",
+    text: "Below the bridge machinery, behind a hatch the gears keep politely hidden, is a long room of shelves, and on the shelves stand toys that have stopped. Not broken — stopped. A soldier mid-salute. A bird mid-note. A little tin girl mid-cartwheel, balanced impossibly on one hand, waiting years for the other half of her turn. Above each toy hangs its key on a nail, close enough to see, too far to reach. Your dragon makes a sound you haven't heard from it before — a low, grinding note, gears meshing against grief. \"This is where we go,\" it says, \"when a child stops winding us. He doesn't melt us down. He just... lets us finish stopping. The keys are hung there so we can watch them.\"",
+    imagePrompt: "storybook illustration of shelves of clockwork toys frozen mid-motion, their keys hung on nails just out of reach, dim workshop",
+    musicCue: "dragon_theme",
+    effects: { learn: ["truth_keeper"], setFlags: { sawWindDown: true } },
+    choices: [
+      { id: "DW_ONE", text: "Take down one key and wind the little tin girl through her cartwheel.", nextNodeId: "D03", gains: { wisdom: 1 }, bond: 1, setFlags: { woundOne: true } },
+      { id: "DW_ALL", text: "Stay, and wind every last toy in the room back to life.", nextNodeId: "END_D_TOYMAKER", requirements: { stats: { wisdom: 4 } }, lockedText: "There are so many. You wouldn't know where to start, or how to bear finishing." },
+      { id: "DW_TIGHT", text: "Wind your own dragon tighter, much tighter, so it can never stop here.", nextNodeId: "END_D_BAD" },
+      { id: "DW_ASK", text: "Ask the dragon which shelf it stood on, before you.", nextNodeId: "D03", gains: { intelligence: 1 }, setFlags: { askedWindDown: true } },
+      { id: "DW_LEAVE", text: "Close the hatch softly. Some rooms you carry out by not staying in them.", nextNodeId: "D03", gains: { perception: 1 } },
     ],
   },
 };
