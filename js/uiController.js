@@ -724,8 +724,45 @@ CW.UIController = (function () {
     });
   }
 
-  /* ---- ending screen ---------------------------------------------------- */
+  /* ---- the night's account: the ledger page before the ending card ------ */
+  let rlTimer = null;
   function showEnding(result) {
+    const page = CW.RunLedger && CW.RunLedger.pageFor(GS().getRun(), result && result.ending);
+    const rl = $("run-ledger"), linesEl = $("rl-lines"), balEl = $("rl-balance");
+    if (!page || !rl || !linesEl || !balEl) { renderEnding(result); return; }
+    linesEl.innerHTML = "";
+    balEl.textContent = ""; balEl.classList.remove("shown");
+    rl.classList.add("show");
+    let finished = false;
+    const finish = () => {
+      if (finished) return; finished = true;
+      document.removeEventListener("pointerdown", finish);
+      document.removeEventListener("keydown", finish);
+      clearTimeout(rlTimer);
+      rl.classList.remove("show");
+      renderEnding(result);
+    };
+    const addLine = (t) => { const d = document.createElement("div"); d.className = "rl-line"; d.textContent = t; linesEl.appendChild(d); };
+    if (document.body.classList.contains("reduce-motion")) {
+      page.entries.forEach(addLine);
+      balEl.textContent = page.balance; balEl.classList.add("shown");
+      rlTimer = setTimeout(finish, 5600);
+    } else {
+      let t = 500;
+      page.entries.forEach((e) => { setTimeout(() => { if (!finished) addLine(e); }, t); t += 950; });
+      setTimeout(() => { if (!finished) { balEl.textContent = page.balance; balEl.classList.add("shown"); } }, t + 350);
+      rlTimer = setTimeout(finish, t + 350 + 3200);
+    }
+    // Arm the skip a beat late, so the tap that chose the ending doesn't eat the page.
+    setTimeout(() => {
+      if (finished) return;
+      document.addEventListener("pointerdown", finish);
+      document.addEventListener("keydown", finish);
+    }, 450);
+  }
+
+  /* ---- ending screen ---------------------------------------------------- */
+  function renderEnding(result) {
     const e = result.ending;
     const run = GS().getRun();
     const cat = (e.category || "Good").toLowerCase();
