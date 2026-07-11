@@ -798,6 +798,9 @@ CW.UIController = (function () {
     }
     else { $("ending-art").textContent = e.imagePrompt ? "🖼  " + e.imagePrompt : ""; $("ending-art").className = "ending-art"; }
     $("ending-text").textContent = replaceTokens(e.text);
+    // The shop's margin note: one unvoiced last word, inking in after the card settles.
+    const sting = (CW.EndingStingers && CW.EndingStingers[e.id]) || "";
+    $("ending-stinger").textContent = sting ? "— " + replaceTokens(sting) : "";
     if (CW.Narrator) CW.Narrator.speak(replaceTokens(e.text), e.id);
 
     // Discovered stats snapshot.

@@ -958,3 +958,9 @@ body.reduce-motion #shop-whisper { transition: opacity 0.25s ease; backdrop-filt
 .rl-skip { margin-top: 14px; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(216,201,184,0.35); }
 body.reduce-motion .rl-line { animation: none; }
 body.reduce-motion .run-ledger, body.reduce-motion .rl-balance { transition: none; }
+
+/* ---- the shop's margin note on the ending card --------------------------- */
+.ending-stinger { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 13.5px; line-height: 1.55; color: rgba(232,192,122,0.78); margin: 10px 0 0; opacity: 0; }
+.ending-screen.open .ending-stinger { animation: stingIn 1.4s ease 3.2s both; }
+@keyframes stingIn { from { opacity: 0; transform: translateY(3px); filter: blur(2px); } to { opacity: 0.9; transform: none; filter: none; } }
+body.reduce-motion .ending-screen.open .ending-stinger { animation: none; opacity: 0.9; }
