@@ -269,7 +269,31 @@ CW.UIController = (function () {
     $("detail-name").textContent = replaceTokens(e.title);
     $("detail-cat").textContent = e.category; $("detail-cat").className = "ending-cat-chip cat-" + cat;
     $("detail-text").textContent = replaceTokens(e.text);
-    $("detail-clue").textContent = e.clue ? "“" + replaceTokens(e.clue) + "”" : "";
+    // At heavy haunt the gallery stops describing the endings and starts
+    // describing YOU — the clue is replaced by the collection looking back.
+    let haunt = 0; try { haunt = GS().hauntLevel(); } catch (err) {}
+    const HAUNTED_CLUES = {
+      good: "You did this once. You check it the way you check an old photograph — to make sure you are still in it.",
+      bad: "You reread this one more than the others. It reads more like a diary every loop.",
+      cursed: "You keep this one behind glass. It keeps you the same way.",
+      nightmare: "You wrote this page. Not the boy in the story. You, with your choices, on purpose.",
+      funny: "You laugh at this one. The shop files the laugh.",
+      secret: "You found this. The shop has never quite forgiven the finding.",
+      true: "You did this once. The shop remembers it the way you remember a fire.",
+    };
+    const clueEl = $("detail-clue");
+    if (haunt >= 3 && HAUNTED_CLUES[cat]) {
+      clueEl.textContent = HAUNTED_CLUES[cat];
+      clueEl.classList.add("haunted");
+    } else {
+      clueEl.textContent = e.clue ? "“" + replaceTokens(e.clue) + "”" : "";
+      clueEl.classList.remove("haunted");
+    }
+    const dsting = $("detail-stinger");
+    if (dsting) {
+      const st = CW.EndingStingers && CW.EndingStingers[id];
+      dsting.textContent = st ? "— " + replaceTokens(st) : "";
+    }
     el.detail.dataset.ending = id;
     if (CW.Share) CW.Share.prepare(id);
     el.detail.classList.add("open");

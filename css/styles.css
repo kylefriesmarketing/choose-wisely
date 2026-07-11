@@ -992,3 +992,7 @@ body.reduce-motion #hud-bracelet.br-pulse { animation: none; }
 .hr-balance { margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(232,192,122,0.3); color: #e8c07a; font-size: 12.5px; letter-spacing: 1px; line-height: 1.6; }
 .hr-note { margin-top: 10px; font-style: italic; font-size: 13px; color: rgba(216,120,120,0.85); }
 .hr-foot { margin-top: 14px; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(216,201,184,0.35); }
+
+/* ---- the gallery misremembers -------------------------------------------- */
+.detail-stinger { opacity: 0.9 !important; animation: none !important; margin: 8px 0 0; }
+.detail-clue.haunted { color: rgba(216,120,120,0.85); font-style: italic; }
