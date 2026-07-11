@@ -106,7 +106,7 @@ CW.Shopkeeper = (function () {
         return ["I keep a book, in a hand very like your own, and your name is the header of my favourite page. " + t[0] + " " + t[1] + " — and that is only the one line I chose to read you today. You walked in so certain you were the one being robbed. Shall I read you the rest of it?"];
       } },
     // --- a blank page unnerves him more than a long one -----------------------
-    { id: "clean_ledger", tone: "sick", off: true,
+    { id: "clean_ledger", tone: "sick", off: true, voiceKey: "SK_CLEAN_LEDGER",
       where: (c) => c.sins === 0 && c.loops >= 1 && c.haunt >= 2 && !c.onStage,
       lines: [
         "Your page in my book is still blank. Loops and loops of you, and not one entry. I distrust a clean ledger, little saint — in my trade it only ever means the debt is being run up somewhere I haven't audited yet.",
@@ -148,7 +148,7 @@ CW.Shopkeeper = (function () {
         "You've been mending that. Thread by thread, the whole way here. How industrious of you, little mender. The ticket price never moves, of course.",
         "Give me the bracelet instead of a toy and I'll make her love you forever — no fraying, no forgetting. No? ...We'll talk again lower down.",
       ] },
-    { id: "bond_high", tone: "bargain", off: true,
+    { id: "bond_high", tone: "bargain", off: true, voiceKey: "SK_BOND_HIGH",
       where: (c) => c.bond >= 5 && !c.snapped && !c.onStage,
       lines: [
         "That bracelet of yours is appreciating. Dreadful habit in merchandise — I cannot shift stock that insists on being worth more every hour. So between us, little haggler: it is the one item in this building I would pay for.",
@@ -162,7 +162,7 @@ CW.Shopkeeper = (function () {
         "Good. Feel less. It's so much easier to shop when you feel a little less.",
       ] },
     // --- he counts the times you bolted for the door --------------------------
-    { id: "runner", tone: "taunt", off: true,
+    { id: "runner", tone: "taunt", off: true, voiceKey: "SK_RUNNER",
       where: (c) => (c.ledger.fled || 0) >= 2 && c.haunt >= 1 && !c.onStage,
       lines: [
         "You keep leaving without a purchase. That is quite all right. Walking out empty-handed is still foot traffic, and foot traffic is still mine — the door swings both ways, but it only ever rings the one bell.",
@@ -175,6 +175,7 @@ CW.Shopkeeper = (function () {
 
     // --- the fifth aisle: the one shelf he never priced -----------------------
     { id: "fifth_aisle", tone: "murmur", off: false,
+      voiceKey: (c, line) => line.indexOf("Mind how") === 0 ? "SK_FIFTH_1" : "SK_FIFTH_2",
       where: (c) => c.id === "F01_FIFTH_AISLE",
       lines: [
         "Mind how you browse down there. The fifth aisle is the one shelf in this shop that stocks ways out — and it only ever carries one of anything.",
@@ -223,6 +224,7 @@ CW.Shopkeeper = (function () {
 
     // --- he follows the purchase into its route, appraising as it wears -------
     { id: "route_follow", tone: "murmur", off: true,
+      voiceKey: (c) => "SK_ROUTE_" + c.theme.toUpperCase(),
       where: (c) => !c.onStage && !c.isMemory && c.dread >= 1 && c.gift && ["teddy", "candle", "balloon", "dragon"].indexOf(c.theme) > -1,
       lines: (c) => {
         const map = {
@@ -255,13 +257,13 @@ CW.Shopkeeper = (function () {
       } },
 
     // --- the very first time through his bell ---------------------------------
-    { id: "first_timer", tone: "murmur", off: false,
+    { id: "first_timer", tone: "murmur", off: false, voiceKey: "SK_FIRST_TIMER",
       where: (c) => c.onStage && c.haunt === 0 && c.visits <= 2 && c.loops === 0 && (c.id === "S00_OUTSIDE_SHOP" || c.id === "S01_ENTER_SHOP"),
       lines: [
         "First time through my bell. Mint condition — one can always tell. Browse as long as you like, little newcomer; everything in here is on approval. So are you.",
       ] },
     // --- double digits on the till -------------------------------------------
-    { id: "visits_ten", tone: "taunt", off: false,
+    { id: "visits_ten", tone: "taunt", off: false, voiceKey: "SK_VISITS_TEN",
       where: (c) => c.onStage && c.visits >= 10 && (c.id === "S00_OUTSIDE_SHOP" || c.id === "S01_ENTER_SHOP"),
       lines: [
         "Double digits on my till now, by my count. Regulars do get a discount, my favourite return. Yours has been coming off the top of you the whole time.",
@@ -368,7 +370,7 @@ CW.Shopkeeper = (function () {
       if (!pool) continue;
       const line = pool[Math.floor(Math.random() * pool.length)];
       seen[line] = true;
-      const vk = typeof r.voiceKey === "function" ? r.voiceKey(c) : (r.voiceKey || null);
+      const vk = typeof r.voiceKey === "function" ? r.voiceKey(c, line) : (r.voiceKey || null);
       return { line: line, tone: r.tone, disembodied: !c.onStage, rule: r.id, voiceKey: vk };
     }
     return null;

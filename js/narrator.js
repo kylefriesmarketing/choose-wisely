@@ -26,6 +26,12 @@ CW.VoiceClips = {
   // The Ledger's balance stamps (one per ending category; text in runLedger.js).
   RL_GOOD: "RL_GOOD.mp3", RL_BAD: "RL_BAD.mp3", RL_CURSED: "RL_CURSED.mp3", RL_NIGHTMARE: "RL_NIGHTMARE.mp3",
   RL_FUNNY: "RL_FUNNY.mp3", RL_SECRET: "RL_SECRET.mp3", RL_TRUE: "RL_TRUE.mp3",
+  // The shopkeeper's fixed asides (text in shopkeeper.js; dynamic lines stay unvoiced).
+  SK_FIFTH_1: "SK_FIFTH_1.mp3", SK_FIFTH_2: "SK_FIFTH_2.mp3",
+  SK_ROUTE_TEDDY: "SK_ROUTE_TEDDY.mp3", SK_ROUTE_CANDLE: "SK_ROUTE_CANDLE.mp3",
+  SK_ROUTE_BALLOON: "SK_ROUTE_BALLOON.mp3", SK_ROUTE_DRAGON: "SK_ROUTE_DRAGON.mp3",
+  SK_BOND_HIGH: "SK_BOND_HIGH.mp3", SK_FIRST_TIMER: "SK_FIRST_TIMER.mp3",
+  SK_VISITS_TEN: "SK_VISITS_TEN.mp3", SK_RUNNER: "SK_RUNNER.mp3", SK_CLEAN_LEDGER: "SK_CLEAN_LEDGER.mp3",
 };
 
 CW.Narrator = (function () {
