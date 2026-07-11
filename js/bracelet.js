@@ -79,6 +79,24 @@ CW.BraceletVoice = (function () {
     reunion: [
       "Last door. She's on the other side of it, older than you remember and exactly the same. Knock.",
     ],
+    regular: [
+      "A regular. That's his word for it. Hers was 'stubborn' — and she said it the way other people say 'loyal'.",
+    ],
+    lastgift: [
+      "He remembers what you gave. She remembers whether you came. Only one of those was ever the point.",
+    ],
+    gift_collector: [
+      "You've tried every gift but the one she asked for. She asked for you, at the table. The offer stands.",
+    ],
+    visits_ten: [
+      "Double digits. She'd have organised a rescue by visit five — and brought snacks to it.",
+    ],
+    runner: [
+      "You keep running out of here. She never minded the running. She minded the direction.",
+    ],
+    clean_ledger: [
+      "A blank page frightens him. Good. Some things refuse to be written down. You learned that from her.",
+    ],
   };
 
   /* When he says something rotten she has no specific answer for, the wrist
@@ -101,6 +119,18 @@ CW.BraceletVoice = (function () {
     ] },
     { match: "F01_FIFTH_AISLE", lines: [
       "The thread is pulling. Toward the aisle. She's on the other end of it — and she is pulling back.",
+    ] },
+    { match: "T_OWNERS", lines: [
+      "Four coats, and a fifth hook. She'd already be prying the tags off with her thumbnail. Take the blank one. Give them nothing to write on.",
+    ] },
+    { match: "C_WICKS", lines: [
+      "A drawer full of everyone's stolen days. She never once wished a day shorter — not even the worst ones. Especially not those.",
+    ] },
+    { match: "B_MOORINGS", lines: [
+      "All these strings, still holding on. So is she. That is the entire message. Pull.",
+    ] },
+    { match: "D_WINDDOWN", lines: [
+      "Wind the tin girl. If you can only free one thing tonight, free the cartwheel. She would.",
     ] },
   ];
 

@@ -38,6 +38,11 @@ CW.RunLedger = (function () {
     if (f.sawBackRoom || f.readTheLedger || f.readOwnAccount) out.push("One look at my books, unpaid for. Curiosity is charged at cost.");
     if (f.noticedShadow) out.push("One second shadow, seen and not reported. Discretion appreciated.");
     if (f.sensedWrong) out.push("One warning, felt on the step and ignored. Standard.");
+    if (f.namedOwners) out.push("Four names, read aloud in a lost-property alcove. Nobody had, before. Filed under irregular.");
+    if (f.tookBlankTag) out.push("One blank tag, stolen before it could learn a name. Cheeky. Noted.");
+    if (f.tookWicksBack) out.push("One week of days, taken back wick by wick. The drawer has been re-labelled.");
+    if (f.untiedOne) out.push("One mooring, untied. One string, let down easy. The rail holds fewer than it did.");
+    if (f.woundOne) out.push("One cartwheel, finished after years. The tin girl landed it. The room heard.");
     if ((run.dreadLevel || 0) >= 3) out.push("Assorted dread, accrued on the premises. Non-transferable.");
     return out;
   }
