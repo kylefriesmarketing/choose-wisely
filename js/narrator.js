@@ -23,6 +23,9 @@ CW.VoiceClips = {
   OY_ARRIVAL:  "OY_ARRIVAL.mp3",  OY_NEWCOMER: "OY_NEWCOMER.mp3", OY_THREE: "OY_THREE.mp3", // The Other You
   SKIM_1:      "SKIM_1.mp3",      SKIM_2:      "SKIM_2.mp3",      SKIM_3:   "SKIM_3.mp3",    // skimming
   HOUR_3AM:    "HOUR_3AM.mp3",    HOUR_LATE:   "HOUR_LATE.mp3",   // the hour
+  // The Ledger's balance stamps (one per ending category; text in runLedger.js).
+  RL_GOOD: "RL_GOOD.mp3", RL_BAD: "RL_BAD.mp3", RL_CURSED: "RL_CURSED.mp3", RL_NIGHTMARE: "RL_NIGHTMARE.mp3",
+  RL_FUNNY: "RL_FUNNY.mp3", RL_SECRET: "RL_SECRET.mp3", RL_TRUE: "RL_TRUE.mp3",
 };
 
 CW.Narrator = (function () {

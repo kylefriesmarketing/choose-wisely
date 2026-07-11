@@ -743,14 +743,24 @@ CW.UIController = (function () {
       renderEnding(result);
     };
     const addLine = (t) => { const d = document.createElement("div"); d.className = "rl-line"; d.textContent = t; linesEl.appendChild(d); };
+    // Sterling reads the sum as it stamps; if the clip really plays, hold the
+    // page long enough for him to finish. (Skipping still cuts him off — fine.)
+    const rlKey = "RL_" + (((result && result.ending && result.ending.category) || "Good").toUpperCase());
+    const stampVoice = () => {
+      if (!CW.Narrator) return;
+      Promise.resolve(CW.Narrator.speak(page.balance, rlKey)).then((ok) => {
+        if (ok && !finished) { clearTimeout(rlTimer); rlTimer = setTimeout(finish, 10000); }
+      });
+    };
     if (document.body.classList.contains("reduce-motion")) {
       page.entries.forEach(addLine);
       balEl.textContent = page.balance; balEl.classList.add("shown");
+      stampVoice();
       rlTimer = setTimeout(finish, 5600);
     } else {
       let t = 500;
       page.entries.forEach((e) => { setTimeout(() => { if (!finished) addLine(e); }, t); t += 950; });
-      setTimeout(() => { if (!finished) { balEl.textContent = page.balance; balEl.classList.add("shown"); } }, t + 350);
+      setTimeout(() => { if (!finished) { balEl.textContent = page.balance; balEl.classList.add("shown"); stampVoice(); } }, t + 350);
       rlTimer = setTimeout(finish, t + 350 + 3200);
     }
     // Arm the skip a beat late, so the tap that chose the ending doesn't eat the page.

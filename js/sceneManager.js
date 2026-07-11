@@ -41,8 +41,14 @@ CW.SceneManager = (function () {
   const SCENE_IMAGES = {
     street: 1, shop: 1, gifts: 1, teddy: 1, alley: 1, candle: 1,
     balloon: 1, sky: 1, dragon: 1, party_gate: 1, party_room: 1, fifth: 1,
-    shopkeeper: 1,
+    shopkeeper: 1, backroom: 1, office: 1, display: 1, coathook: 1,
   };
+  // Scenes with a haunt-wrong variant (<key>_h.png): at haunt 3+ the art itself
+  // misremembers — a detail quietly off — and any living loop goes still.
+  const HAUNT_IMAGES = { shop: 1, street: 1, gifts: 1 };
+  function hauntWrong(key) {
+    try { return !!(HAUNT_IMAGES[key] && CW.GameState.hauntLevel() >= 3); } catch (e) { return false; }
+  }
 
   // Living video backgrounds. Each entry: { src, loop }. The clip plays muted
   // over the scene's still (which is the poster/fallback). Falls back to the
@@ -164,10 +170,11 @@ CW.SceneManager = (function () {
     const vcfg = SCENE_VIDEOS[key];
     // Prefer a real illustration when one exists; otherwise use the SVG art.
     if (SCENE_IMAGES[key] && imageEl) {
-      const url = 'assets/images/' + key + '.png';
+      const hv = hauntWrong(key);
+      const url = 'assets/images/' + key + (hv ? '_h' : '') + '.png';
       if (sceneEl) sceneEl.classList.add("has-image");
       if (artEl) artEl.innerHTML = "";
-      if (vcfg) showVideo(vcfg); else hideVideo();
+      if (vcfg && !hv) showVideo(vcfg); else hideVideo();
       // Load-aware: shimmer while an uncached image loads, then fade it in. If one
       // is already showing, keep it up until the new one is ready (no flash).
       if (!imageEl.classList.contains("shown") && loaderEl) loaderEl.classList.add("show");
