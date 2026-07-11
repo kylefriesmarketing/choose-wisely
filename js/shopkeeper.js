@@ -86,7 +86,7 @@ CW.Shopkeeper = (function () {
       where: (c) => c.away && c.haunt >= 2 && !c.onStage,
       lines: [
         "You were gone {AWAY}. I know precisely how long — down to the minute, for every one of you. Did you think the shop stopped when you closed it? Nothing here stops. It only waits, and it is very, very patient, and it counts.",
-        "{AWAY}. That is how long you left the door open behind you. I did not mind. I had the others to talk to. But I did notice, {HERO}. I always notice when you go, and I am always here when you decide to come back.",
+        "{AWAY}. That is how long you left the door open behind you. I did not mind. I had the rest of the stock to talk to. But I did notice, dear browser. I always notice when you go, and I keep your place on the shelf while you decide to come back.",
       ] },
     // --- the book of what you did, cited back to you, by count ---------------
     { id: "ledger", tone: "sick", off: true,
@@ -103,14 +103,26 @@ CW.Shopkeeper = (function () {
         ].filter((x) => x[0] > 0).sort((a, b) => b[0] - a[0]);
         if (!items.length) return [];
         const t = items[0];
-        return ["I keep a book, {HERO}, in a hand very like your own. Your page is getting long. " + t[0] + " " + t[1] + " — and that is only the one line I chose to read you today. You walked in so certain you were the one being robbed. Shall I read you the rest of it?"];
+        return ["I keep a book, in a hand very like your own, and your name is the header of my favourite page. " + t[0] + " " + t[1] + " — and that is only the one line I chose to read you today. You walked in so certain you were the one being robbed. Shall I read you the rest of it?"];
       } },
+    // --- a blank page unnerves him more than a long one -----------------------
+    { id: "clean_ledger", tone: "sick", off: true,
+      where: (c) => c.sins === 0 && c.loops >= 1 && c.haunt >= 2 && !c.onStage,
+      lines: [
+        "Your page in my book is still blank. Loops and loops of you, and not one entry. I distrust a clean ledger, little saint — in my trade it only ever means the debt is being run up somewhere I haven't audited yet.",
+      ] },
+    // --- he has noticed your collection, one shopkeeper to another ------------
+    { id: "collector", tone: "sick", off: true,
+      where: (c) => c.endings >= 20 && c.haunt >= 2 && !c.onStage,
+      lines: (c) => [
+        "Your collection stands at " + c.endings + ", by my count. You keep endings the way I keep children — labelled, behind glass, rather proud of them. We are not so different a pair of shopkeepers, you and I. Mine simply knock.",
+      ] },
 
     // --- the mask fully off: the cellar, and the bottom of the descent -------
     { id: "cellar", tone: "slip", off: true,
       where: (c) => c.isCellar,
       lines: [
-        "Down here I don't bother with the coat. Or the smile. Or the shop. Down here it is only the inventory — and you are inventory, {HERO}.",
+        "Down here I don't bother with the coat. Or the smile. Or the shop. Down here it is only the inventory — and you are inventory, little customer.",
         "You came down the stairs no one else can see. They all do, in the end. The stairs were always the point.",
         "Mind the shelves on the way down. You'll recognise some of the stock. You carried most of it down here yourself.",
       ] },
@@ -119,7 +131,7 @@ CW.Shopkeeper = (function () {
       lines: [
         "Do you still think this is a shop?",
         "There was never a shopkeeper. There was only the part of you that keeps walking back in.",
-        "You keep looking round for the shopkeeper. Sweet. Look down at your own hands, {HERO}. Whose coat is that you're wearing.",
+        "You keep looking round for the shopkeeper. Sweet. Look down at your own hands, shelf-wanderer. Whose coat is that you're wearing.",
       ] },
 
     // --- reactions to the bracelet (the real gift) ---------------------------
@@ -133,21 +145,40 @@ CW.Shopkeeper = (function () {
     { id: "whole", tone: "bargain", off: true,
       where: (c) => c.whole && !c.onStage,
       lines: [
-        "You've been mending that. Thread by thread, the whole way here. How industrious of you. It changes nothing, of course.",
+        "You've been mending that. Thread by thread, the whole way here. How industrious of you, little mender. The ticket price never moves, of course.",
         "Give me the bracelet instead of a toy and I'll make her love you forever — no fraying, no forgetting. No? ...We'll talk again lower down.",
+      ] },
+    { id: "bond_high", tone: "bargain", off: true,
+      where: (c) => c.bond >= 5 && !c.snapped && !c.onStage,
+      lines: [
+        "That bracelet of yours is appreciating. Dreadful habit in merchandise — I cannot shift stock that insists on being worth more every hour. So between us, little haggler: it is the one item in this building I would pay for.",
       ] },
 
     // --- reactions to your darker little choices -----------------------------
     { id: "pushed", tone: "taunt", off: true,
       where: (c) => c.flags.pushedItDown && !c.onStage,
       lines: [
-        "There. Push her down. You've had so much practice at it, {HERO}.",
+        "There. Push her down. You've had so much practice at it, my best stock.",
         "Good. Feel less. It's so much easier to shop when you feel a little less.",
+      ] },
+    // --- he counts the times you bolted for the door --------------------------
+    { id: "runner", tone: "taunt", off: true,
+      where: (c) => (c.ledger.fled || 0) >= 2 && c.haunt >= 1 && !c.onStage,
+      lines: [
+        "You keep leaving without a purchase. That is quite all right. Walking out empty-handed is still foot traffic, and foot traffic is still mine — the door swings both ways, but it only ever rings the one bell.",
       ] },
     { id: "shadow", tone: "slip", off: false,
       where: (c) => c.flags.noticedShadow && c.onStage,
       lines: [
         "You saw it. The second shadow, behind me, doing the opposite of what I do. Pretend you didn't. It's kinder — to both of us.",
+      ] },
+
+    // --- the fifth aisle: the one shelf he never priced -----------------------
+    { id: "fifth_aisle", tone: "murmur", off: false,
+      where: (c) => c.id === "F01_FIFTH_AISLE",
+      lines: [
+        "Mind how you browse down there. The fifth aisle is the one shelf in this shop that stocks ways out — and it only ever carries one of anything.",
+        "That aisle is not stock. Everything else in this building I can wrap, ring up, and write down. That door refuses the ledger. I keep it anyway — against my own better books.",
       ] },
 
     // --- he knows you went behind the counter and saw the working shop -------
@@ -156,7 +187,7 @@ CW.Shopkeeper = (function () {
       lines: (c) => {
         const f = c.flags;
         let line;
-        if (f.refusedTheCoat) line = "You hid the second coat. Thoughtful. There are a great many hooks back there, {HERO}, and I have all the time that was ever going to be yours. It will turn up. It always does, when you're ready.";
+        if (f.refusedTheCoat) line = "You hid the second coat. Thoughtful. There are a great many hooks back there, my patient one, and I have all the time that was ever going to be yours. It will turn up. It always does, when you're ready.";
         else if (f.toreOwnPage) line = "You tore your page out of my book. Do you feel lighter? You shouldn't. I keep the accounts in a hand very like your own — I will simply write you in again, from memory. I have such a good memory for you.";
         else if (f.readJuneAccount) line = "You looked up her page. I wondered if you would. I won't read you her balance. I will only say she has paid more of it than you have — and she did it without ever once setting foot in here.";
         else if (f.readOwnAccount || f.readTheLedger) line = "You read ahead. Naughty. Now you know how it ends, and how it ends after that, and you will walk in and buy it anyway, every line, on schedule. Knowing never once stopped anybody. That is rather the whole horror of it.";
@@ -190,6 +221,26 @@ CW.Shopkeeper = (function () {
         "You can still hear me back here. Interesting. Most of them can't, by now. You must be paying such close attention.",
       ] },
 
+    // --- he follows the purchase into its route, appraising as it wears -------
+    { id: "route_follow", tone: "murmur", off: true,
+      where: (c) => !c.onStage && !c.isMemory && c.dread >= 1 && c.gift && ["teddy", "candle", "balloon", "dragon"].indexOf(c.theme) > -1,
+      lines: (c) => {
+        const map = {
+          teddy:   "How is the bear finding you? It has had four owners and kept a little of each. By closing time it will have kept a little of you, too. That is not a flaw. That is the finish.",
+          candle:  "Burn it slowly. The wax is the receipt — and when the receipt is gone, so is the proof you ever paid.",
+          balloon: "Keep a grip on the string. Sold is sold, I'm afraid. I do not take returns on things that go up.",
+          dragon:  "Wind it gently. Clockwork holds a memory the way a ledger holds a debt: exactly, forever, and with interest.",
+        };
+        return map[c.theme] ? [map[c.theme]] : [];
+      } },
+
+    // --- three gifts tried across visits: he smells a completist --------------
+    { id: "gift_collector", tone: "taunt", off: false,
+      where: (c) => c.onStage && !c.gift && (c.giftHistory || []).length >= 3 && ["S01_ENTER_SHOP", "S02_FOUR_GIFTS"].indexOf(c.id) > -1,
+      lines: (c) => [
+        "That makes " + c.giftHistory.length + " lines of my catalogue you have now sampled. Completists are my favourite kind of account, little collector — the catalogue always closes them. Never the other way round.",
+      ] },
+
     // --- he remembers the gift you gave LAST time (before you choose again) --
     { id: "lastgift", tone: "taunt", off: false,
       where: (c) => c.onStage && !c.gift && c.lastGift && ["S01_ENTER_SHOP", "S02_FOUR_GIFTS"].indexOf(c.id) > -1,
@@ -202,6 +253,19 @@ CW.Shopkeeper = (function () {
         };
         return map[c.lastGift] ? [map[c.lastGift]] : [];
       } },
+
+    // --- the very first time through his bell ---------------------------------
+    { id: "first_timer", tone: "murmur", off: false,
+      where: (c) => c.onStage && c.haunt === 0 && c.visits <= 2 && c.loops === 0 && (c.id === "S00_OUTSIDE_SHOP" || c.id === "S01_ENTER_SHOP"),
+      lines: [
+        "First time through my bell. Mint condition — one can always tell. Browse as long as you like, little newcomer; everything in here is on approval. So are you.",
+      ] },
+    // --- double digits on the till -------------------------------------------
+    { id: "visits_ten", tone: "taunt", off: false,
+      where: (c) => c.onStage && c.visits >= 10 && (c.id === "S00_OUTSIDE_SHOP" || c.id === "S01_ENTER_SHOP"),
+      lines: [
+        "Double digits on my till now, by my count. Regulars do get a discount, my favourite return. Yours has been coming off the top of you the whole time.",
+      ] },
 
     // --- he knows you are a regular ------------------------------------------
     { id: "regular", tone: "taunt", off: false,
@@ -227,7 +291,7 @@ CW.Shopkeeper = (function () {
         const map = {
           talking_teddy:       "The bear. Soft, and full of somebody else's boy. The two of you will get along.",
           wish_candle:         "The candle. One wish in it. Spend it on yourself — they always do — and come tell me how it tasted.",
-          everlasting_balloon: "The balloon. It only ever goes the one way, {HERO}. Up. And gone. Rather like you.",
+          everlasting_balloon: "The balloon. It only ever goes the one way, small shopper. Up. And gone. Rather like you.",
           clockwork_dragon:    "The dragon. It remembers everything. Even the parts of you you'd hoped it wouldn't.",
         };
         return map[c.gift] ? [map[c.gift]] : [];
@@ -254,7 +318,7 @@ CW.Shopkeeper = (function () {
       lines: (c) => {
         const f = c.flags, out = [];
         if (f.rehearsedSorry) out.push("You practised an apology the whole way here — I heard every draft of it through the glass. Don't waste it on me. Save it for her, if you ever reach the part of the night where she is still there to hear it.");
-        if (f.rememberedJune || f.clutchedThread) out.push("You touched that last thread on your wrist and let yourself remember her. That. THAT is the thing I actually sell, {HERO} — not the bear, not the candle. Bring that warm little memory to the counter and we will discuss a real price.");
+        if (f.rememberedJune || f.clutchedThread) out.push("You touched that last thread on your wrist and let yourself remember her. That. THAT is the thing I actually sell, young appraiser — not the bear, not the candle. Bring that warm little memory to the counter and we will discuss a real price.");
         if (f.promisedFence) out.push("You promised a chain-link fence you'd put it right tonight. Fences are such patient listeners. Ask it, a few loops from now, how that promise aged.");
         if (f.foundInitials) out.push("Two sets of initials, still scratched into that fence post. That is more of the pair of you left out in the world than there is anywhere in here. For now.");
         if (f.letHimselfMiss) out.push("You slowed right down and let yourself miss her. Good. Missing is only wanting with the lights off — and wanting is the one key cut to fit my door.");
