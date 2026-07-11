@@ -122,6 +122,12 @@ CW.OtherChildren = [
     whisper: "\"i came in to fetch my little brother — he wandered in first. we're still together, at least. that's something. that's something, isn't it.\"",
     fate: "She came in only to pull a littler kid back out. The shop kept the pair of them, gladly, together.",
   },
+  { id: "noname", name: "(the tag is blank)", gift: null,
+    note: "A note with no signature, folded eight times, soft as cloth from rereading: “if you find this it means the bell rang for you too. don’t tell him your name. it’s the name he files you under.”",
+    bracelet: "A little bracelet with no tag at all — someone picked the knots of the name out, thread by thread, so the shop would have nothing to call them. It is the only bracelet on the hook that looks like it won.",
+    window: "One face at the glass stands apart from the others, features worn smooth as a sea-stone. The children have names you could learn. This one made sure you never could. It nods at you, once, like a colleague.",
+    whisper: "The toy in your hands whispers with no voice you could place — boy, girl, old, young, all rubbed out. “I traded my name to keep my middle,” it says. “He got the worse half. Tell no one yours.”",
+  },
 ];
 
 /* Which endings set which of the other children free — they walk out of the

@@ -33,7 +33,7 @@ CW.Traces = (function () {
     const id = node.id || "";
     return {
       id: id,
-      isShop: STAGE_NODES.indexOf(id) > -1,
+      isShop: STAGE_NODES.indexOf(id) > -1 || id.indexOf("SHOP_") === 0,
       isCellar: id.indexOf("CELLAR") === 0,
       isMemory: id.indexOf("TM_") === 0,
       isPrologue: id.indexOf("PRE_") === 0,
@@ -86,7 +86,10 @@ CW.Traces = (function () {
       const child = pickChild(kind, c, seen);
       if (!child) continue;
       seen[kind + ":" + child.id] = true;
-      return { kind: kind, child: child, text: child[kind] };
+      // A kind may carry one line or several (replays get a different one).
+      const t = child[kind];
+      const text = Array.isArray(t) ? t[Math.floor(Math.random() * t.length)] : t;
+      return { kind: kind, child: child, text: text };
     }
     return null;
   }
