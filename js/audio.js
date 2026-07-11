@@ -384,6 +384,12 @@ CW.Audio = (function () {
   /* ---- master mute + state --------------------------------------------- */
   function setMuted(m) { muted = m; if (master && ctx) master.gain.setTargetAtTime(m ? 0 : MASTER_VOL, ctx.currentTime, 0.02); }
   function isMuted() { return muted; }
+  // Two open tabs would layer two whole soundtracks on top of each other; a
+  // hidden tab goes quiet and swells back in when you return to it.
+  document.addEventListener("visibilitychange", function () {
+    if (!ctx || !master) return;
+    master.gain.setTargetAtTime(muted || document.hidden ? 0 : MASTER_VOL, ctx.currentTime, 0.05);
+  });
   function state() {
     return {
       hasCtx: !!ctx, ctxState: ctx ? ctx.state : null, currentCue: currentCue, theme: currentTheme,

@@ -643,9 +643,37 @@ CW.UIController = (function () {
   }
 
   // "The Other You": the shop's real-time reaction to a second open tab of itself.
-  let oyTimer = null;
+  // The voice belongs to the tab you are LOOKING at. A hidden tab holds its
+  // reaction until you switch back to it (its clip would talk over the tab you
+  // are reading — and mismatch its text). A brand-new tab that the browser
+  // blocks from speaking retries on your first touch, while the words are still
+  // up. A cross-tab claim keeps two visible windows from speaking at once.
+  let oyTimer = null, oyPending = null, oySpokeAt = 0, oyLastClaim = 0, oyChan = null;
+  try {
+    if (typeof BroadcastChannel !== "undefined") {
+      oyChan = new BroadcastChannel("choose_wisely_the_other_you");
+      oyChan.addEventListener("message", (ev) => {
+        if (ev.data && ev.data.type === "voiced") oyLastClaim = Date.now();
+      });
+    }
+  } catch (e) { oyChan = null; }
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      // Walk away mid-line and the shop stops talking to the empty room.
+      if (CW.Narrator && Date.now() - oySpokeAt < 20000) CW.Narrator.stop();
+    } else if (oyPending) {
+      const p = oyPending; oyPending = null;
+      presentOtherYou(p.kind, p.count);
+    }
+  });
+
   function theOtherYou(kind, count) {
     try { GS().noteDoubled(); } catch (e) {}
+    if (document.hidden) { oyPending = { kind: kind, count: count }; return; }
+    presentOtherYou(kind, count);
+  }
+
+  function presentOtherYou(kind, count) {
     const hero = replaceTokens("{HERO}");
     let line, voiceKey;
     if (count >= 3) {
@@ -663,9 +691,37 @@ CW.UIController = (function () {
     lineEl.textContent = line;
     oy.classList.add("show");
     if (CW.Audio && CW.Audio.entrance) CW.Audio.entrance("wrong");
-    if (CW.Narrator) CW.Narrator.speak(line, voiceKey); // the shop, speaking to the copy of you
+    oySpeak(line, voiceKey, oy); // the shop, speaking to the copy of you
     clearTimeout(oyTimer);
     oyTimer = setTimeout(() => oy.classList.remove("show"), 11000);
+  }
+
+  function oySpeak(line, voiceKey, oy) {
+    if (!CW.Narrator || !CW.Narrator.enabled()) return;
+    if (CW.Audio && CW.Audio.isMuted && CW.Audio.isMuted()) return;
+    if (Date.now() - oyLastClaim < 15000) return; // another window already has the line
+    const claim = () => {
+      oySpokeAt = Date.now();
+      if (oyChan) { try { oyChan.postMessage({ type: "voiced", t: Date.now() }); } catch (e) {} }
+    };
+    Promise.resolve(CW.Narrator.speak(line, voiceKey)).then((ok) => {
+      if (ok) { claim(); return; }
+      // Autoplay blocked (a brand-new tab): speak on the first touch, and hold
+      // the words up so the voice and the text stay together.
+      const kick = () => {
+        document.removeEventListener("pointerdown", kick);
+        document.removeEventListener("keydown", kick);
+        if (!oy.classList.contains("show")) return; // the moment passed; stay silent
+        Promise.resolve(CW.Narrator.speak(line, voiceKey)).then((ok2) => {
+          if (!ok2) return;
+          claim();
+          clearTimeout(oyTimer);
+          oyTimer = setTimeout(() => oy.classList.remove("show"), 11000);
+        });
+      };
+      document.addEventListener("pointerdown", kick);
+      document.addEventListener("keydown", kick);
+    });
   }
 
   /* ---- ending screen ---------------------------------------------------- */

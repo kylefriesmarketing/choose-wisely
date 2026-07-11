@@ -45,17 +45,20 @@ CW.Narrator = (function () {
 
   // Speak this beat if it has a recorded clip; otherwise stay silent.
   // (`text` is accepted for a stable call signature but is not read by a machine.)
+  // Resolves true only if the clip actually started — callers that must keep
+  // voice and text in sync (The Other You) retry or stay silent on false.
   function speak(text, key) {
     stop();
-    if (!enabled() || muted()) return;
+    if (!enabled() || muted()) return Promise.resolve(false);
     const src = clipSrc(key);
-    if (!src) return;
+    if (!src) return Promise.resolve(false);
     try {
       clipEl = new Audio(src);
       clipEl.volume = 0.95;
       const p = clipEl.play();
-      if (p && p.catch) p.catch(function () {});
-    } catch (e) { /* autoplay blocked or missing file */ }
+      if (p && p.then) return p.then(function () { return true; }, function () { return false; });
+      return Promise.resolve(true);
+    } catch (e) { return Promise.resolve(false); /* autoplay blocked or missing file */ }
   }
 
   function init() { /* nothing to warm up */ }
