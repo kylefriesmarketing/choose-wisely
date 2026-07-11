@@ -1030,14 +1030,40 @@ CW.UIController = (function () {
 
   /* ---- history (§18, optional) ------------------------------------------ */
   function showHistory() {
+    // The Receipt: the shop writes your night down as line items, priced in you.
     const run = GS().getRun();
-    const h = run ? run.choiceHistory : [];
-    el.historyBody.innerHTML = h.length
-      ? h.map((x, i) => {
-          const d = (x.deltas || []).map((y) => (y.amount > 0 ? "+" : "") + y.amount + " " + STAT_NAMES[y.stat]).join(", ");
-          return "<div class='hist-row'><span class='hist-i'>" + (i + 1) + ".</span> " + x.text + (d ? " <span class='hist-d'>(" + d + ")</span>" : "") + "</div>";
-        }).join("")
-      : "<div class='memory-empty'>No choices made yet this run.</div>";
+    const h = run ? run.choiceHistory || [] : [];
+    const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const pad = (n) => (n < 10 ? "0" + n : "" + n);
+    if (run) run._hrOpens = (run._hrOpens || 0) + 1;
+    const opens = run ? run._hrOpens : 1;
+    let haunt = 0; try { haunt = GS().hauntLevel(); } catch (e) {}
+
+    const rows = h.map((x, i) => {
+      const d = (x.deltas || []).map((y) => (y.amount > 0 ? "+" : "") + y.amount + " " + STAT_NAMES[y.stat]).join(", ");
+      return "<div class='hist-row'><span class='hist-i'>" + pad(i + 1) + "</span><span class='hist-t'>" + esc(replaceTokens(x.text)) + "</span><span class='hist-d'>" + (d || "no charge") + "</span></div>";
+    }).join("");
+
+    // The bracelet, carried as the running balance — in his terms, not yours.
+    const bond = run ? (run.bond || 0) : 0;
+    const snapped = !!(run && run.flags && run.flags.braceletSnapped);
+    const bal = snapped ? "one thread, snapped. Account settled in my favour."
+      : bond >= 6 ? "one bracelet, whole. Account, annoyingly, in hers."
+      : bond >= 4 ? "mending noted. Balance drifting out of my reach."
+      : bond >= 2 ? "fraying nicely. Balance tipping my way."
+      : "down to a single thread. Very nearly settled.";
+
+    // He notices the checking. Of course he notices the checking.
+    let note = "";
+    if (opens >= 3) note = "You keep checking the receipt. It has not changed. You keep hoping it will.";
+    else if (haunt >= 3) note = "You always open this page around now. Every loop. I have started leaving it out for you.";
+
+    el.historyBody.innerHTML =
+      "<div class='hr-head'>choose wisely &mdash; itemised receipt</div>" +
+      (h.length ? rows : "<div class='memory-empty'>Nothing on the docket yet. Even browsing gets written down, eventually.</div>") +
+      "<div class='hr-balance'>RUNNING BALANCE &mdash; " + bal + "</div>" +
+      (note ? "<div class='hr-note'>" + note + "</div>" : "") +
+      "<div class='hr-foot'>all sales final &middot; no refunds &middot; the register is particular</div>";
     el.history.classList.add("open");
   }
   function hideHistory() { el.history.classList.remove("open"); }

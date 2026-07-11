@@ -974,3 +974,16 @@ body.reduce-motion .ending-screen.open .ending-stinger { animation: none; opacit
 @keyframes brPulse { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 7px rgba(123, 224, 138, 0.9)); } }
 body.reduce-motion .br-voice.show { animation: none; }
 body.reduce-motion #hud-bracelet.br-pulse { animation: none; }
+
+/* ---- the receipt: choice history in the shopkeeper's hand ---------------- */
+#history-body { font-family: Georgia, 'Times New Roman', serif; }
+.hr-head { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,192,122,0.65); text-align: center; margin-bottom: 12px; }
+.hr-head::after { content: ""; display: block; margin: 10px auto 0; width: 110px; border-bottom: 1px dashed rgba(232,192,122,0.3); }
+#history-body .hist-row { display: flex; align-items: baseline; gap: 8px; margin: 7px 0; font-size: 14px; line-height: 1.5; }
+#history-body .hist-i { color: rgba(232,192,122,0.55); font-size: 12px; flex: none; }
+#history-body .hist-t { flex: 1; font-style: italic; color: #d8c9b8; }
+#history-body .hist-t::after { content: ""; display: inline-block; width: 2em; border-bottom: 1px dotted rgba(216,201,184,0.25); margin-left: 6px; vertical-align: 3px; }
+#history-body .hist-d { flex: none; color: rgba(232,192,122,0.8); font-size: 12px; white-space: nowrap; }
+.hr-balance { margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(232,192,122,0.3); color: #e8c07a; font-size: 12.5px; letter-spacing: 1px; line-height: 1.6; }
+.hr-note { margin-top: 10px; font-style: italic; font-size: 13px; color: rgba(216,120,120,0.85); }
+.hr-foot { margin-top: 14px; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(216,201,184,0.35); }
