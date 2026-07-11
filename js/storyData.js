@@ -191,6 +191,7 @@ CW.StoryNodes = {
     text: "You cut past the chain-link fence where you and {FRIEND} used to sit after school, backs against the wire, talking until the streetlights buzzed on. She told the worst jokes in the world and laughed so hard at them she'd snort, and she never once minded that you weren't funny — you just had to be there. You just had to show up. You haven't sat at this fence in a long, long time. The last time you two really talked, it ended cold, and neither of you ever went back and fixed it. And running past it now, you notice the small cruel thing: you can see her there so clearly, backs against the wire — but when you reach for the actual jokes, the exact words, they come up soft at the center, just out of reach, as if someone has been very gently helping you forget. That's only what a year does to a thing you let go cold. You tell yourself that. You tell yourself that.",
     haunt: {
       3: { text: "You cut past a fence where you and {FRIEND} used to — used to do something. Sit? Talk? The shape of the memory is there but the middle of it has been scooped clean out. You know it was good. You know you let it go cold. You cannot remember a single one of her terrible jokes, and that, somehow, is the part that frightens you most." },
+      4: { text: "You cut past the chain-link fence and the memory is all there — the wire at your backs, the streetlights, the terrible jokes, the snort — every detail present and accounted for, which is how you know. It plays like a film that has been restored: too clean, the laughter mixed a little too high, her face lit from an angle the streetlight never managed. And she turns to you in it and says something she never said, in a voice that is almost hers: “You’ll be late. Go on. I’ll keep.” The shop does its mending all the way out here now. It starts you owing." },
     },
     imagePrompt: "storybook illustration of an old chain-link fence at dusk, two faint ghostly kids sitting against it in memory",
     choices: [
@@ -201,6 +202,10 @@ CW.StoryNodes = {
     ],
   },
   PRE_3: {
+    haunt: {
+      3: { text: "You round the last corner and it hits you all at once: you have nothing to give. Give — whom? You stand in the rain with the fear climbing your throat, late for something you can no longer name, empty-handed for someone whose face won’t come. The fear is in perfect working order. Only the person has been worn out of it. On the corner, exactly on cue, a little shop glows warm." },
+      4: { text: "You round the last corner already holding a gift. You don’t remember buying it. It is wrapped in the shop’s paper — you know the shop’s paper now — and your hands are careful around it in a practised way, and the old fear doesn’t climb your throat at all, because the fear has been handled, the forgetting has been handled, everything has been handled. All that’s left is to walk in anyway. You always walk in anyway. The wrapped thing in your hands is exactly the weight of a boy who stopped asking what’s inside." },
+    },
     id: "PRE_3", title: "Nothing in Your Hands", location: "The Last Corner", theme: "street", scene: "street",
     speaker: "Narrator", musicCue: "street_theme", effects: {},
     text: "You round the last corner and it hits you all at once: you have nothing to give her. Not a card, not a thing. And the old fear climbs your throat — you're always late, you always forget, and forgetting is the exact thing that lost her the first time. You cannot walk in empty-handed. Not again. Not tonight. You want, with your whole chest, for there to be some way to fix this — and on the word tonight, as if the wanting were a key turning in a lock, you see it: on the corner where the empty lot has sat your whole life, a little shop, glowing warm in the rain, that absolutely was not there a breath ago. The gold letters above the door settle as you read them, the way rain-lit things do, into two words: CHOOSE WISELY. For just a second they feel like they were waiting to be read by you, specifically. Then the second passes, the way such seconds do.",
@@ -267,6 +272,7 @@ CW.StoryNodes = {
   },
 
   S02_FOUR_GIFTS: {
+    haunt: { 3: { text: "Four gifts wait under glass, and none of them perform for you anymore. The bear’s button eyes don’t choose you; they check you off. The flame doesn’t lean; it nods. The balloon hangs slack on its string, and the dragon doesn’t lift its head — you have stood at this case so many times that the merchandise has stopped auditioning. Somewhere behind you, the shopkeeper doesn’t bother with his opening line." } },
     id: "S02_FOUR_GIFTS",
     dread: 1,
     title: "Four Kinds of Magic",
@@ -446,6 +452,7 @@ CW.StoryNodes = {
   },
 
   S04_CHOOSE_GIFT: {
+    haunt: { 4: { text: "The glass is already lifted. One of the four is already wrapped — you never see which — and sitting on the counter with your name on the tag, in a hand very like your own. The choosing, the weighing, the small agony you came here to have: done for you, in advance, from your file. All that remains is the reaching out. It is so considerate you could scream." } },
     id: "S04_CHOOSE_GIFT",
     dread: 1,
     title: "Choose Wisely",
