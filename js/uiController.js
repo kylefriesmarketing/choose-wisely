@@ -368,6 +368,7 @@ CW.UIController = (function () {
     let aside;
     if (pendingInterjection) { aside = { line: pendingInterjection.line, tone: pendingInterjection.tone || "sick", disembodied: true }; pendingInterjection = null; }
     else { aside = CW.Shopkeeper && CW.Shopkeeper.asideFor(node); }
+    scheduleBraceletVoice(node, aside); // her side of the conversation — or her silence
     if (!aside) return null;
 
     const reveal = () => {
@@ -381,6 +382,30 @@ CW.UIController = (function () {
     if (instant) reveal();
     else skTimer = setTimeout(reveal, 900);
     return aside;
+  }
+
+  // The bracelet answers: while the bond holds (>= 4), a line of HER surfaces
+  // after his barbs — warm, remembered, unafraid of him. Snapped, there is only
+  // one visible silence where she should have been. (Content: CW.BraceletVoice.)
+  let brTimer = null;
+  function scheduleBraceletVoice(node, aside) {
+    clearTimeout(brTimer);
+    const brEl = $("bracelet-voice");
+    if (!brEl) return;
+    brEl.classList.remove("show", "silent");
+    brEl.textContent = "";
+    const hud = $("hud-bracelet");
+    if (hud) hud.classList.remove("br-pulse");
+    const v = CW.BraceletVoice && CW.BraceletVoice.answerFor(node, aside);
+    if (!v) return;
+    const instant = GS().getSettings().textSpeed === "instant" || document.body.classList.contains("reduce-motion");
+    const delay = instant ? 500 : (aside ? 3400 : 1400); // let his line land first; she takes her time
+    brTimer = setTimeout(() => {
+      if (v.kind === "silence") { brEl.textContent = "…"; brEl.classList.add("show", "silent"); return; }
+      brEl.textContent = replaceTokens(v.line);
+      brEl.classList.add("show");
+      if (hud) { hud.classList.add("br-pulse"); } // the wrist goes warm where she speaks
+    }, delay);
   }
 
   // The other children: a note behind a toy, a little frayed bracelet, a face at

@@ -964,3 +964,13 @@ body.reduce-motion .run-ledger, body.reduce-motion .rl-balance { transition: non
 .ending-screen.open .ending-stinger { animation: stingIn 1.4s ease 3.2s both; }
 @keyframes stingIn { from { opacity: 0; transform: translateY(3px); filter: blur(2px); } to { opacity: 0.9; transform: none; filter: none; } }
 body.reduce-motion .ending-screen.open .ending-stinger { animation: none; opacity: 0.9; }
+
+/* ---- the bracelet answers: her counter-voice under his asides ------------ */
+.br-voice { display: none; margin: 10px 0 0; padding: 8px 12px; font-style: italic; font-size: 14px; line-height: 1.55; color: #cfe9d8; border-left: 3px solid; border-image: linear-gradient(180deg, #ff9db1, #ffd166, #8ad7ff, #7be08a) 1; background: rgba(58, 143, 122, 0.08); border-radius: 0 6px 6px 0; }
+.br-voice.show { display: block; animation: brIn 0.9s ease both; }
+.br-voice.silent { color: rgba(207, 233, 216, 0.35); border-image: none; border-left-color: rgba(207, 233, 216, 0.18); background: none; letter-spacing: 5px; }
+@keyframes brIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+#hud-bracelet.br-pulse { animation: brPulse 1.6s ease 2; }
+@keyframes brPulse { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 7px rgba(123, 224, 138, 0.9)); } }
+body.reduce-motion .br-voice.show { animation: none; }
+body.reduce-motion #hud-bracelet.br-pulse { animation: none; }
