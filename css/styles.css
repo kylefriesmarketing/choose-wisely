@@ -400,6 +400,11 @@ body.reduce-motion .scene.omen #scene-video, body.reduce-motion .scene.omen .sce
 .menu-progress b { color: var(--gold); font-weight: 700; }
 .menu-progress .mp-dot { opacity: 0.4; }
 
+/* trilogy cross-link */
+.menu-shelf { margin-top: 14px; font-family: var(--font-ui); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-dim); opacity: 0.65; }
+.menu-shelf a { color: var(--gold); text-decoration: none; }
+.menu-shelf a:hover { color: var(--gold-strong); }
+
 /* the title's storybook gold gives way to the glitch once the shop remembers you */
 body[data-haunt="3"] .menu-title, body[data-haunt="4"] .menu-title { background: none; -webkit-text-fill-color: currentColor; filter: none; }
 .menu-title.glitch-flash { background: none; -webkit-text-fill-color: currentColor; }
