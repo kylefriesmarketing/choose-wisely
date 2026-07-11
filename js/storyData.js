@@ -538,6 +538,7 @@ CW.StoryNodes = {
 
   /* ---- TEDDY ROUTE (§12) ------------------------------------------------ */
   T01: {
+    haunt: { 3: { text: "Before you reach the door the bear turns its head and speaks so only you can hear. “Don’t trust—” it begins, warm and small and certain, and then stops, the way a music box stops, mid-phrase. “Don’t trust… someone. There was someone. I had this warning perfect. I have said it so many times.” It grinds its head back round to face the shop, embarrassed, and in your arms you can feel its stuffing worrying at the hole in itself where the rest of the sentence used to live." } },
     id: "T01", title: "The Whisper in the Wrapping", location: "Shop Doorway", theme: "teddy",
     speaker: "Teddy Bear",
     text: "Before you reach the door the bear turns its head — you feel the little grind of it against your collarbone — and speaks so only you can hear. \"Don't trust him. He wraps children in soft shapes and sells them to other children. Listen only to me.\" Its voice is warm and small and certain, and that is the trouble with it: you want, very badly, to listen only to it.",
@@ -581,6 +582,7 @@ CW.StoryNodes = {
     ],
   },
   T04: {
+    haunt: { 4: { text: "“I remember this shop,” the bear says, brighter now, “from the inside of the shelf. And do you know — the party turned out fine. I did get carried out. The friend forgave me; the cake was lit; everyone waited.” It nuzzles your collarbone, content. It has never once been content. Under the new plush of its voice you can hear the seams where the true ending was unpicked and a kinder one — display quality, never played with — sewn carefully in. The bear believes it now. That is what the mending is for. Ask it about the party again and it will tell you the same eleven words, in the same order, forever." } },
     id: "T04", title: "What the Bear Remembers", location: "Near the Party", theme: "teddy",
     speaker: "Teddy Bear",
     text: "\"I remember this shop,\" the bear says, quieter now, \"from the inside of the shelf. It is dark in there, and you can hear the bell every time the door opens, and every time you think: this one. This one will pick me up and carry me out. I was a boy once. Late to a party. Empty hands.\" It pauses. \"I don't remember the party. I don't remember the friend. That's the part they take first, so you'll stop trying to leave.\"",
@@ -598,6 +600,7 @@ CW.StoryNodes = {
 
   /* ---- CANDLE ROUTE (§13) ----------------------------------------------- */
   C01: {
+    haunt: { 3: { text: "The candle lights itself the moment you are alone with it, and the flame lies down flat, reaching, pointing at you like a finger. “Make it quick,” it crackles, kind as a nurse. “You’re late for—” The flame gutters, confused. “You are late for something. Someone. It knew this morning.” The wax runs anyway, spelling half a name it can no longer finish, and the flame keeps pointing at you, certain only of the taking — the what-for burned off it loops ago." } },
     id: "C01", title: "Make It Quick", location: "Shop Doorway", theme: "candle",
     speaker: "Wish Candle",
     text: "The candle lights itself the moment you are alone with it, and the flame lies down flat, reaching, pointing at you like a finger. \"Make it quick,\" it crackles, kind as a nurse. \"You're late, and I can shorten anything. The walk. The waiting. The wanting.\" The wax has already begun to run, though nothing is burning it. \"A whole year of missing her — I could take that down to nothing. You wouldn't even feel where it used to be.\"",
@@ -641,6 +644,7 @@ CW.StoryNodes = {
     ],
   },
   C04: {
+    haunt: { 4: { text: "The candle weeps wax onto the cobblestones and the wax crawls into letters, and the letters spell — your answer. Already solved. The riddle arrives finished, in your own handwriting, the wish unspent and applauding itself. It is exactly the small clever victory you always wanted, delivered smooth and frictionless — and that is the seam in it: nothing down here was ever easy for you, not once, and the wax knows your handwriting far too well. Somewhere a page of you has been studied. Somewhere the shop practised being you until it could do the thinking on your behalf, and call the answer yours, and charge for it later." } },
     id: "C04", title: "The Riddle in the Wax", location: "Party Street", theme: "candle",
     speaker: "Narrator",
     text: "The candle weeps wax onto the cobblestones and the wax crawls into letters, and the letters make a riddle, and you understand, watching them form, that the riddle is easy on purpose — that the whole thing is built so you'll take the shortcut instead, so you'll spend the wish rather than think. Solve it with your own head and you keep your last wish. Everything down here is like this: a hard right door, held open beside a soft wrong one, to see which you'll walk through when you're tired.",
@@ -658,6 +662,7 @@ CW.StoryNodes = {
 
   /* ---- BALLOON ROUTE (§14) ---------------------------------------------- */
   B01: {
+    haunt: { 3: { text: "The balloon tugs upward the instant the door shuts behind you — onto your toes, then off them, then past the point where letting go would only mean falling — and the town drops away underneath your dangling shoes. You look for her street, the one you could find blind, rain or no rain. It is not where it goes. The streets rearrange politely beneath you like a shuffled deck, small and warm and anonymous, and you can no longer point to the one window in the whole town that was ever waiting up for you." } },
     id: "B01", title: "The Pull of the String", location: "Outside the Shop", theme: "balloon",
     speaker: "Narrator",
     text: "The balloon tugs upward the instant the door shuts behind you — onto your toes, then off them, then past the point where letting go would only mean falling. The string does not feel tied to the balloon. It feels tied to you, threaded in at the wrist and pulling, and the town drops away underneath your dangling shoes, small and warm and already too far to shout to.",
@@ -701,6 +706,7 @@ CW.StoryNodes = {
     ],
   },
   B04: {
+    haunt: { 4: { text: "The balloon slows and turns, so the seam of it faces you like a face. “Untie me,” it says, softly, “and trust where I take you.” And you remember — you did. You already did this. It carried you down through the chimney smoke and set you in her garden and the whole party turned and cheered; the memory is right there, round and complete and lit warm gold. Except you are still up here. Your shoes are still swinging over embers. The landing exists only in the memory the shop has already sold you — in advance, marked paid — and the balloon waits to hear whether you will accept the delivery, or insist, unreasonably, on the real thing." } },
     id: "B04", title: "The Balloon's Request", location: "The Clouds", theme: "balloon",
     speaker: "Everlasting Balloon",
     text: "The balloon slows and turns, so the seam of it faces you like a face. \"Untie me,\" it says, softly, \"and trust where I take you.\" It is the first thing all night that has asked instead of pulled — and that is exactly why you cannot tell if it is the one honest voice up here or the most patient liar of them all. Below your shoes the town is a scatter of embers. Somewhere in it is a gate, and a friend, and a door still open. For now.",
@@ -718,6 +724,7 @@ CW.StoryNodes = {
 
   /* ---- DRAGON ROUTE (§15) ----------------------------------------------- */
   D01: {
+    haunt: { 3: { text: "The clockwork dragon wakes in your hands with a shiver of tin, and its little glass eyes find your face and hold it, and it waits — and keeps waiting. Whatever it used to look for in a child’s face, it cannot seem to find in yours, or cannot remember what it was. Gentle or cruel; keeper or user-up. It ticks through its small test twice and comes up empty, and settles at last into your palms with the resignation of a thing that has decided the results no longer change anything." } },
     id: "D01", title: "The Waking Gears", location: "Outside the Shop", theme: "dragon",
     speaker: "Narrator",
     text: "The clockwork dragon wakes in your hands with a shiver of tin and clicks its wings open, and its little glass eyes find your face and hold it, and it waits — not to learn what it is, but to learn what you are. Whether you wind gently or wind cruel. Whether you are the kind that keeps a thing or the kind that uses it up. It has met both. You can tell by the way it flinches, very slightly, when your thumb moves toward the key.",
@@ -761,6 +768,7 @@ CW.StoryNodes = {
     ],
   },
   D04: {
+    haunt: { 4: { text: "The cannon comes loose above you, and the dragon is between you and the falling thing, and it takes the blow — and stands up whole. No dent. No sparking. It performs the sacrifice flawlessly and turns to be admired, and that is how you know: the shop has serviced this moment. The cost has been buffed out of it, the love with no brakes recalled and fitted with brakes, the scar that made it real priced out of the design. It cost itself nothing for you, beautifully. Somewhere below the bridge works, on a shelf, the dented original watches the understudy perform, and ticks." } },
     id: "D04", title: "The Cost of Loyalty", location: "Near the Party", theme: "dragon",
     speaker: "Narrator",
     text: "The cannon comes loose above you — you never see who tips it — and the dragon does not decide to move, it simply is between you and the falling thing, the way it was built to be, and it takes the blow and lands at your feet dented and sparking and trying, still, to stand. It cost itself for you without weighing it. That is the terrible thing the shop makes and sells: love with no brake on it. Love wound too tight to stop. It is looking up at you now to see if it was worth it. You get to decide the answer.",
